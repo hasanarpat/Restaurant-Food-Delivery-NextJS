@@ -4,7 +4,7 @@
 <img src="https://github.com/hasanarpat/Restaurant-Food-Delivery-NextJS/blob/master/public/readme/1.gif"/>
 
 <br/>
-<img src="https://github.com/hasanarpat/Restaurant-Food-Delivery-NextJS/blob/master/public/readme/1.gif"/>
+<img src="https://github.com/hasanarpat/Restaurant-Food-Delivery-NextJS/blob/master/public/readme/2.gif"/>
 
 <br/>
-<img src="https://github.com/hasanarpat/Restaurant-Food-Delivery-NextJS/blob/master/public/readme/1.gif"/>
+<img src="https://github.com/hasanarpat/Restaurant-Food-Delivery-NextJS/blob/master/public/readme/3.gif"/>
