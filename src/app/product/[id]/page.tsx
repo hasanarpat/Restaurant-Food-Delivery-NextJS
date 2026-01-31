@@ -8,6 +8,9 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useParams, notFound } from 'next/navigation';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import Reviews from '@/components/Reviews';
+import NutritionalInfo from '@/components/NutritionalInfo';
+import RelatedProducts from '@/components/RelatedProducts';
 
 const SingleProductPage = () => {
   const params = useParams();
@@ -37,53 +40,125 @@ const SingleProductPage = () => {
   ];
 
   return (
-    <div className='min-h-screen bg-gradient-to-br from-cream via-white to-primary-50 pt-36 pb-16 md:pt-48 md:pb-24'>
+    <div className='min-h-screen bg-gradient-to-br from-cream via-white to-primary-50 pt-28 pb-12 md:pt-32 md:pb-16'>
       <Container>
         <Breadcrumbs items={breadcrumbItems} />
 
-        {/* Product Details */}
-        <div className='flex flex-col md:flex-row gap-12 md:gap-16'>
-          {/* Product Image */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            className='flex-1'
-          >
-            <div className='relative aspect-square bg-white rounded-3xl shadow-soft overflow-hidden p-8'>
+        {/* Main Product Section */}
+        <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 mb-12'>
+          {/* Left Column: Image & Nutrition */}
+          <div className='flex flex-col gap-6'>
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              className='relative aspect-square bg-white rounded-[2.5rem] shadow-soft-lg overflow-hidden p-8 md:p-12 border border-gray-100'
+            >
               {product.img && (
                 <Image
                   src={product.img}
                   alt={product.title}
                   fill
-                  className='object-contain hover:scale-105 transition-transform duration-500'
+                  className='object-contain hover:scale-105 transition-transform duration-700'
+                  priority
                 />
               )}
-            </div>
-          </motion.div>
+              {/* Floating Badge */}
+              <div className='absolute top-6 right-6 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full shadow-sm text-sm font-bold text-gray-800 flex items-center gap-1'>
+                <span>🔥</span> Popular
+              </div>
+            </motion.div>
 
-          {/* Product Info */}
+            {/* Desktop Nutritional Info (Visible on LG) */}
+            <div className='hidden lg:block'>
+              <NutritionalInfo />
+            </div>
+          </div>
+
+          {/* Right Column: Details & Price */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
-            className='flex-1 flex flex-col gap-6'
+            className='flex flex-col h-full'
           >
-            <div>
-              <h1 className='font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-gradient mb-4'>
+            <div className='sticky top-28'>
+              <h1 className='font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 tracking-tight leading-tight'>
                 {product.title}
               </h1>
-              <p className='font-body text-lg text-gray-600'>{product.desc}</p>
-            </div>
 
-            <div className='border-t border-gray-200 pt-6'>
-              <Price
-                id={product.id}
-                title={product.title}
-                price={product.price}
-                image={product.img}
-                options={product.options}
-              />
+              {/* Rating Summary */}
+              <div className='flex items-center gap-2 mb-4'>
+                <div className='flex text-yellow-400'>★★★★★</div>
+                <span className='text-sm text-gray-500 font-semibold'>
+                  (128 reviews)
+                </span>
+              </div>
+
+              <p className='font-body text-base md:text-lg text-gray-600 mb-6 leading-relaxed'>
+                {product.desc}
+              </p>
+
+              {/* Ingredients Tag */}
+              <div className='mb-6'>
+                <h3 className='font-heading text-sm font-bold text-gray-900 mb-3 uppercase tracking-wider'>
+                  Key Ingredients
+                </h3>
+                <div className='flex flex-wrap gap-2'>
+                  {[
+                    'Organic Flour',
+                    'Fresh Mozzarella',
+                    'San Marzano Tomatoes',
+                    'Basil',
+                    'Virgin Olive Oil',
+                  ].map((ing) => (
+                    <span
+                      key={ing}
+                      className='px-3 py-1 bg-white border border-gray-200 rounded-full text-xs font-semibold text-gray-600'
+                    >
+                      {ing}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Allergens */}
+              <div className='mb-6 p-4 bg-orange-50 rounded-xl border border-orange-100 flex items-start gap-3'>
+                <span className='text-xl'>⚠️</span>
+                <div>
+                  <h4 className='font-bold text-orange-800 text-sm'>
+                    Allergen Info
+                  </h4>
+                  <p className='text-xs text-orange-700 mt-1'>
+                    Contains: Gluten, Dairy. May contain traces of nuts.
+                  </p>
+                </div>
+              </div>
+
+              <div className='bg-white p-6 md:p-8 rounded-3xl shadow-soft border border-gray-100'>
+                <Price
+                  id={product.id}
+                  title={product.title}
+                  price={product.price}
+                  image={product.img}
+                  options={product.options}
+                />
+              </div>
             </div>
           </motion.div>
+        </div>
+
+        {/* Mobile Nutritional Info (Visible on Mobile only) */}
+        <div className='lg:hidden mb-12'>
+          <NutritionalInfo />
+        </div>
+
+        {/* Reviews Section */}
+        <div className='border-t border-gray-200 pt-12 mb-12'>
+          <Reviews />
+        </div>
+
+        {/* Related Products Slider */}
+        <div className='border-t border-gray-200 pt-12'>
+          <RelatedProducts currentId={id} />
         </div>
       </Container>
     </div>
