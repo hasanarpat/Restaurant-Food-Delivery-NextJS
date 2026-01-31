@@ -25,7 +25,7 @@ const HowItWorks = () => {
           />
         </svg>
       ),
-      color: 'bg-blue-500',
+      color: 'bg-primary-500',
       emoji: '🔍',
     },
     {
@@ -48,7 +48,7 @@ const HowItWorks = () => {
           />
         </svg>
       ),
-      color: 'bg-purple-500',
+      color: 'bg-secondary-500',
       emoji: '🛒',
     },
     {
@@ -71,7 +71,7 @@ const HowItWorks = () => {
           />
         </svg>
       ),
-      color: 'bg-success-500',
+      color: 'bg-accent-500',
       emoji: '📍',
     },
     {
@@ -94,7 +94,7 @@ const HowItWorks = () => {
           />
         </svg>
       ),
-      color: 'bg-primary-500',
+      color: 'bg-primary-600',
       emoji: '🎉',
     },
   ];

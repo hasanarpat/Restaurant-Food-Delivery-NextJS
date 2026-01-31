@@ -8,7 +8,7 @@ import { motion } from 'framer-motion';
 
 const Offer = () => {
   return (
-    <section className='relative py-16 md:py-24 bg-gradient-to-br from-primary-50 via-accent-50 to-orange-50 overflow-hidden'>
+    <section className='relative py-16 md:py-24 bg-gradient-to-br from-primary-50 via-accent-50 to-secondary-50 overflow-hidden'>
       {/* Floating decorative elements */}
       <div className='absolute top-10 right-10 w-32 h-32 bg-primary-300 rounded-full blur-3xl opacity-30 animate-float' />
       <div

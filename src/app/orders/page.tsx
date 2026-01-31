@@ -53,9 +53,9 @@ const OrdersPage = () => {
 
   const getStatusBadge = (status: string) => {
     const styles = {
-      'on-the-way': 'bg-blue-100 text-blue-700',
-      preparing: 'bg-yellow-100 text-yellow-700',
-      delivered: 'bg-green-100 text-green-700',
+      'on-the-way': 'bg-secondary-100 text-secondary-700',
+      preparing: 'bg-accent-100 text-accent-700',
+      delivered: 'bg-primary-100 text-primary-700',
       placed: 'bg-gray-100 text-gray-700',
     };
 

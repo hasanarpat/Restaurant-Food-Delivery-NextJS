@@ -195,7 +195,7 @@ const Partnership = () => {
                           repeat: Infinity,
                           delay: idx * 0.2,
                         }}
-                        className='w-6 h-6 text-green-500 flex-shrink-0'
+                        className='w-6 h-6 text-accent-500 flex-shrink-0'
                         fill='currentColor'
                         viewBox='0 0 20 20'
                       >

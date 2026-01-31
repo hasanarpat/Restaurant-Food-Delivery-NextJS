@@ -1,13 +1,34 @@
 'use client';
 import Price from '@/components/Price';
-import { singleProduct } from '@/data';
+import { pizzas, burgers, pastas, featuredProducts } from '@/data';
 import Image from 'next/image';
 import React from 'react';
 import Container from '@/components/ui/Container';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { useParams, notFound } from 'next/navigation';
 
 const SingleProductPage = () => {
+  const params = useParams();
+  const id = Number(params.id);
+
+  // Find product in all data sources
+  const product =
+    pizzas.find((p) => p.id === id) ||
+    burgers.find((p) => p.id === id) ||
+    pastas.find((p) => p.id === id) ||
+    featuredProducts.find((p) => p.id === id);
+
+  // Determine category for breadcrumb
+  let category = '';
+  if (pizzas.find((p) => p.id === id)) category = 'pizzas';
+  else if (burgers.find((p) => p.id === id)) category = 'burgers';
+  else if (pastas.find((p) => p.id === id)) category = 'pastas';
+
+  if (!product) {
+    return notFound();
+  }
+
   return (
     <div className='min-h-screen bg-gradient-to-br from-cream via-white to-primary-50 py-16 md:py-24'>
       <Container>
@@ -23,10 +44,19 @@ const SingleProductPage = () => {
           >
             Menu
           </Link>
+          {category && (
+            <>
+              <span>/</span>
+              <Link
+                href={`/menu/${category}`}
+                className='hover:text-primary-600 transition-colors capitalize'
+              >
+                {category}
+              </Link>
+            </>
+          )}
           <span>/</span>
-          <span className='text-gray-900 font-semibold'>
-            {singleProduct.title}
-          </span>
+          <span className='text-gray-900 font-semibold'>{product.title}</span>
         </div>
 
         {/* Product Details */}
@@ -38,10 +68,10 @@ const SingleProductPage = () => {
             className='flex-1'
           >
             <div className='relative aspect-square bg-white rounded-3xl shadow-soft overflow-hidden p-8'>
-              {singleProduct.img && (
+              {product.img && (
                 <Image
-                  src={singleProduct.img}
-                  alt={singleProduct.title}
+                  src={product.img}
+                  alt={product.title}
                   fill
                   className='object-contain hover:scale-105 transition-transform duration-500'
                 />
@@ -57,20 +87,18 @@ const SingleProductPage = () => {
           >
             <div>
               <h1 className='font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-gradient mb-4'>
-                {singleProduct.title}
+                {product.title}
               </h1>
-              <p className='font-body text-lg text-gray-600'>
-                {singleProduct.desc}
-              </p>
+              <p className='font-body text-lg text-gray-600'>{product.desc}</p>
             </div>
 
             <div className='border-t border-gray-200 pt-6'>
               <Price
-                id={singleProduct.id}
-                title={singleProduct.title}
-                price={singleProduct.price}
-                image={singleProduct.img}
-                options={singleProduct.options}
+                id={product.id}
+                title={product.title}
+                price={product.price}
+                image={product.img}
+                options={product.options}
               />
             </div>
           </motion.div>

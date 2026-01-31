@@ -4,31 +4,31 @@
 
 /* CSS Variables */
 :root {
-  /* Gradients - Pantone Fast Food Colors */
+  /* Gradients - Pantone Purple/Violet Colors */
   --gradient-hero: linear-gradient(
     135deg,
-    #da291c 0%,
-    #ff6900 50%,
-    #ffd100 100%
+    #7c3aed 0%,
+    #5b48d4 50%,
+    #4338ca 100%
   );
   --gradient-hero-dark: linear-gradient(
     135deg,
-    #6b1311 0%,
-    #7c2d12 50%,
-    #1a0f0a 100%
+    #3b0764 0%,
+    #2e2870 50%,
+    #1e1b4b 100%
   );
   --gradient-card: linear-gradient(
     180deg,
     rgba(255, 255, 255, 0) 0%,
-    rgba(218, 41, 28, 0.08) 100%
+    rgba(124, 58, 237, 0.08) 100%
   );
   --gradient-overlay: linear-gradient(
     180deg,
     rgba(0, 0, 0, 0) 0%,
     rgba(0, 0, 0, 0.7) 100%
   );
-  --gradient-button: linear-gradient(135deg, #da291c 0%, #ff6900 100%);
-  --gradient-button-hover: linear-gradient(135deg, #c41e1a 0%, #ea580c 100%);
+  --gradient-button: linear-gradient(135deg, #7c3aed 0%, #5b48d4 100%);
+  --gradient-button-hover: linear-gradient(135deg, #6d28d9 0%, #4c3fb8 100%);
 }
 
 /* Base Styles */
@@ -55,7 +55,7 @@ body {
 
 /* Focus Visible Utility */
 .focus-visible:focus {
-  outline: 2px solid #da291c;
+  outline: 2px solid #7c3aed;
   outline-offset: 2px;
 }
 

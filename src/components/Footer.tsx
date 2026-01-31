@@ -162,7 +162,7 @@ const Footer = () => {
               />
               <button
                 type='submit'
-                className='w-full px-4 py-2 bg-gradient-button hover:bg-gradient-button-hover text-white rounded-lg font-semibold transition-all duration-300 shadow-md hover:shadow-lg text-sm'
+                className='w-full px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-semibold transition-all duration-300 shadow-md hover:shadow-lg text-sm'
               >
                 Subscribe
               </button>

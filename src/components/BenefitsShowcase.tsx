@@ -24,8 +24,8 @@ const BenefitsShowcase = () => {
       title: 'Thousands of Restaurants',
       description:
         'Choose from thousands of restaurants serving delicious meals, delivered hot and fresh to your door.',
-      color: 'bg-orange-500',
-      textColor: 'text-orange-500',
+      color: 'bg-primary-500',
+      textColor: 'text-primary-500',
       emoji: '🏪',
     },
     {
@@ -70,8 +70,8 @@ const BenefitsShowcase = () => {
       title: "Neighborhood's Best",
       description:
         'Discover highly-rated restaurants loved by customers for their speed, quality, and service.',
-      color: 'bg-purple-500',
-      textColor: 'text-purple-500',
+      color: 'bg-secondary-500',
+      textColor: 'text-secondary-500',
       emoji: '⭐',
     },
     {
@@ -99,8 +99,8 @@ const BenefitsShowcase = () => {
       title: 'Live Tracking',
       description:
         'Track your order in real-time on the map and know exactly when it will arrive.',
-      color: 'bg-success-500',
-      textColor: 'text-success-500',
+      color: 'bg-accent-500',
+      textColor: 'text-accent-500',
       emoji: '📍',
     },
     {
@@ -122,8 +122,8 @@ const BenefitsShowcase = () => {
       title: 'Earn Discount Coupons',
       description:
         'The more you order, the more coupons you earn. Save on every order with accumulated rewards.',
-      color: 'bg-blue-500',
-      textColor: 'text-blue-500',
+      color: 'bg-primary-600',
+      textColor: 'text-primary-600',
       emoji: '🎟️',
     },
     {

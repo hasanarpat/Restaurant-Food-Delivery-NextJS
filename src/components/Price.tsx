@@ -125,7 +125,7 @@ const Price = ({ id, title, price, image, options }: Props) => {
       </Button>
 
       {isAdded && (
-        <p className='font-ui text-sm text-green-600'>
+        <p className='font-ui text-sm text-primary-600'>
           Item added successfully! Check your cart to continue.
         </p>
       )}
