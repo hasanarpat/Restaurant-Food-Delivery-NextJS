@@ -1,14 +1,21 @@
 import Featured from '@/components/Featured';
 import Offer from '@/components/Offer';
 import Slider from '@/components/Slider';
-import Image from 'next/image';
+import AppDownload from '@/components/AppDownload';
+import BenefitsShowcase from '@/components/BenefitsShowcase';
+import HowItWorks from '@/components/HowItWorks';
+import Partnership from '@/components/Partnership';
 
 export default function Home() {
   return (
-    <main className=''>
+    <main>
       <Slider />
-      <Offer />
+      <AppDownload />
+      <BenefitsShowcase />
       <Featured />
+      <HowItWorks />
+      <Offer />
+      <Partnership />
     </main>
   );
 }

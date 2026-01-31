@@ -41,8 +41,9 @@ const Offer = () => {
             </h2>
 
             <p className='text-lg md:text-xl text-gray-700 font-body max-w-xl'>
-              Progressively simplify effective e-toilers and process-centric
-              methods of empowerment. Quickly pontificate parallel.
+              Get ready for a taste of heaven with our limited-time offer!
+              Indulge in our signature burger and French fries, available only
+              for a limited time. Don't miss out on this delicious opportunity!
             </p>
 
             <div className='space-y-4'>
