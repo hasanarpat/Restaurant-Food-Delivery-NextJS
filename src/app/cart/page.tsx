@@ -22,7 +22,7 @@ const CartPage = () => {
   };
 
   return (
-    <div className='min-h-screen bg-gradient-to-br from-cream via-white to-primary-50 py-16 md:py-24'>
+    <div className='min-h-screen bg-gradient-to-br from-cream via-white to-primary-50 pt-36 pb-16 md:pt-48 md:pb-24'>
       <Container>
         <PageHeader
           title='Shopping Cart'

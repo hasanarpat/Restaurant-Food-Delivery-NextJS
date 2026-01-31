@@ -4,11 +4,14 @@ import React from 'react';
 import Container from '@/components/ui/Container';
 import MenuCategoryCard from '@/components/MenuCategoryCard';
 import { motion } from 'framer-motion';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
 
 const MenuPage = () => {
   return (
-    <div className='min-h-screen bg-gradient-to-br from-cream via-white to-primary-50 py-16 md:py-24'>
+    <div className='min-h-screen bg-gradient-to-br from-cream via-white to-primary-50 pt-36 pb-16 md:pt-48 md:pb-24'>
       <Container>
+        <Breadcrumbs items={[{ label: 'Menu' }]} />
+
         {/* Page Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

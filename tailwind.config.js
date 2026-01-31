@@ -63,11 +63,11 @@ module.exports = {
           800: '#166534',
           900: '#14532d',
         },
-        cream: '#fff5f0', // Warmer cream for food brand
+        cream: '#FDFAFF', // Slightly lavender tinted cream
         dark: {
-          bg: '#1a0f0a',
-          card: '#2d1810',
-          border: '#3d2418',
+          bg: '#1e1b4b', // Deep Indigo
+          card: '#2e2870', // Dark Violet
+          border: '#3d3494',
         },
       },
       fontFamily: {
@@ -99,20 +99,20 @@ module.exports = {
       boxShadow: {
         soft: '0 2px 15px 0 rgba(0, 0, 0, 0.08)',
         'soft-lg': '0 10px 40px 0 rgba(0, 0, 0, 0.1)',
-        glow: '0 0 20px rgba(218, 41, 28, 0.4)', // Red glow
-        'glow-lg': '0 0 30px rgba(218, 41, 28, 0.5)', // Stronger red glow
+        glow: '0 0 20px rgba(124, 58, 237, 0.4)', // Violet glow
+        'glow-lg': '0 0 30px rgba(124, 58, 237, 0.5)', // Stronger violet glow
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
         'gradient-hero':
-          'linear-gradient(135deg, #DA291C 0%, #FF6900 50%, #FFD100 100%)', // Red to Orange to Yellow
+          'linear-gradient(135deg, #7C3AED 0%, #5B48D4 50%, #4338CA 100%)', // Panteone Purple Gradient
         'gradient-hero-dark':
-          'linear-gradient(135deg, #6b1311 0%, #7c2d12 50%, #1a0f0a 100%)',
-        'gradient-button': 'linear-gradient(135deg, #DA291C 0%, #FF6900 100%)', // Red to Orange
+          'linear-gradient(135deg, #3b0764 0%, #2e2870 50%, #1e1b4b 100%)',
+        'gradient-button': 'linear-gradient(135deg, #7C3AED 0%, #5B48D4 100%)', // Violet to Ultra Violet
         'gradient-button-hover':
-          'linear-gradient(135deg, #c41e1a 0%, #ea580c 100%)', // Darker on hover
+          'linear-gradient(135deg, #6d28d9 0%, #4c3fb8 100%)', // Darker on hover
       },
       animation: {
         float: 'float 3s ease-in-out infinite',

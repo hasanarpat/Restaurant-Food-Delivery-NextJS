@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import Breadcrumbs from './Breadcrumbs';
 
 interface PageHeaderProps {
   title: string;
@@ -19,29 +20,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({
     <div className={`mb-12 ${centered ? 'text-center' : ''}`}>
       {/* Breadcrumbs */}
       {breadcrumbs && breadcrumbs.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className='mb-6 flex items-center gap-2 text-sm font-ui text-gray-600'
-        >
-          {breadcrumbs.map((crumb, index) => (
-            <React.Fragment key={index}>
-              {index > 0 && <span>/</span>}
-              {index === breadcrumbs.length - 1 ? (
-                <span className='text-gray-900 font-semibold'>
-                  {crumb.label}
-                </span>
-              ) : (
-                <Link
-                  href={crumb.href}
-                  className='hover:text-primary-600 transition-colors'
-                >
-                  {crumb.label}
-                </Link>
-              )}
-            </React.Fragment>
-          ))}
-        </motion.div>
+        <Breadcrumbs items={breadcrumbs} />
       )}
 
       {/* Title */}

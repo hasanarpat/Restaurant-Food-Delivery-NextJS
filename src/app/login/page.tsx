@@ -91,7 +91,7 @@ const LoginPage = () => {
       >
         <div className='flex flex-col lg:flex-row min-h-[600px]'>
           {/* Image Side */}
-          <div className='relative h-64 lg:h-auto lg:w-1/2 bg-gradient-to-br from-primary-400 to-primary-600'>
+          <div className='relative h-64 lg:h-auto lg:w-1/2 bg-gradient-to-br from-primary-100 to-primary-700'>
             <Image
               src='/loginBg.png'
               alt='Login'

@@ -6,6 +6,7 @@ import Container from '@/components/ui/Container';
 import ProductCard from '@/components/ProductCard';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
 
 type SortOption = 'popular' | 'price-low' | 'price-high' | 'newest';
 
@@ -60,27 +61,11 @@ const SingleCategory = () => {
   }, [products, sortBy]);
 
   return (
-    <div className='min-h-screen bg-gradient-to-br from-cream via-white to-primary-50 py-16 md:py-24'>
+    <div className='min-h-screen bg-gradient-to-br from-cream via-white to-primary-50 pt-36 pb-16 md:pt-48 md:pb-24'>
       <Container>
-        {/* Breadcrumb */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className='mb-8 flex items-center gap-2 text-sm font-ui text-gray-600'
-        >
-          <Link href='/' className='hover:text-primary-600 transition-colors'>
-            Home
-          </Link>
-          <span>/</span>
-          <Link
-            href='/menu'
-            className='hover:text-primary-600 transition-colors'
-          >
-            Menu
-          </Link>
-          <span>/</span>
-          <span className='text-gray-900 font-semibold'>{categoryName}</span>
-        </motion.div>
+        <Breadcrumbs
+          items={[{ label: 'Menu', href: '/menu' }, { label: categoryName }]}
+        />
 
         {/* Category Header */}
         <motion.div

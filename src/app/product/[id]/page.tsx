@@ -7,6 +7,7 @@ import Container from '@/components/ui/Container';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useParams, notFound } from 'next/navigation';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
 
 const SingleProductPage = () => {
   const params = useParams();
@@ -29,35 +30,16 @@ const SingleProductPage = () => {
     return notFound();
   }
 
+  const breadcrumbItems = [
+    { label: 'Menu', href: '/menu' },
+    ...(category ? [{ label: category, href: `/menu/${category}` }] : []),
+    { label: product.title },
+  ];
+
   return (
-    <div className='min-h-screen bg-gradient-to-br from-cream via-white to-primary-50 py-16 md:py-24'>
+    <div className='min-h-screen bg-gradient-to-br from-cream via-white to-primary-50 pt-36 pb-16 md:pt-48 md:pb-24'>
       <Container>
-        {/* Breadcrumb */}
-        <div className='mb-8 flex items-center gap-2 text-sm font-ui text-gray-600'>
-          <Link href='/' className='hover:text-primary-600 transition-colors'>
-            Home
-          </Link>
-          <span>/</span>
-          <Link
-            href='/menu'
-            className='hover:text-primary-600 transition-colors'
-          >
-            Menu
-          </Link>
-          {category && (
-            <>
-              <span>/</span>
-              <Link
-                href={`/menu/${category}`}
-                className='hover:text-primary-600 transition-colors capitalize'
-              >
-                {category}
-              </Link>
-            </>
-          )}
-          <span>/</span>
-          <span className='text-gray-900 font-semibold'>{product.title}</span>
-        </div>
+        <Breadcrumbs items={breadcrumbItems} />
 
         {/* Product Details */}
         <div className='flex flex-col md:flex-row gap-12 md:gap-16'>
