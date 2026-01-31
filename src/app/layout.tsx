@@ -5,6 +5,7 @@ import { Outfit, Poppins, Inter } from 'next/font/google';
 import Footer from '@/components/Footer';
 import Notifications from '@/components/Notifications';
 import { CartProvider } from '@/context/CartContext';
+import { NotificationProvider } from '@/components/Notifications';
 
 const outfit = Outfit({
   subsets: ['latin'],
@@ -43,12 +44,14 @@ export default function RootLayout({
       className={`${outfit.variable} ${poppins.variable} ${inter.variable}`}
     >
       <body className={`${inter.className} bg-cream text-gray-900`}>
-        <CartProvider>
-          <Navbar />
-          <Notifications />
-          {children}
-          <Footer />
-        </CartProvider>
+        <NotificationProvider>
+          <CartProvider>
+            <Navbar />
+            <Notifications />
+            {children}
+            <Footer />
+          </CartProvider>
+        </NotificationProvider>
       </body>
     </html>
   );

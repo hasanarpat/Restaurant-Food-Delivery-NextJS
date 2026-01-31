@@ -6,10 +6,13 @@ import Button from '@/components/ui/Button';
 import { motion } from 'framer-motion';
 import { useCart } from '@/context/CartContext';
 import { useRouter } from 'next/navigation';
+import CreditCardPreview from '@/components/CreditCardPreview';
+import { useNotification } from '@/components/Notifications';
 
 const CheckoutPage = () => {
   const { cart, totalPrice, clearCart } = useCart();
   const router = useRouter();
+  const { success, error } = useNotification();
   const [formData, setFormData] = React.useState({
     // Address
     fullName: '',
@@ -31,15 +34,93 @@ const CheckoutPage = () => {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+
+    // Auto-format card number (XXXX XXXX XXXX XXXX)
+    if (name === 'cardNumber') {
+      const cleaned = value.replace(/\s/g, '');
+      const formatted = cleaned.match(/.{1,4}/g)?.join(' ') || cleaned;
+      setFormData((prev) => ({ ...prev, [name]: formatted }));
+      return;
+    }
+
+    // Auto-format expiry date (MM/YY)
+    if (name === 'expiryDate') {
+      let formatted = value.replace(/\D/g, '');
+      if (formatted.length >= 2) {
+        formatted = formatted.slice(0, 2) + '/' + formatted.slice(2, 4);
+      }
+      setFormData((prev) => ({ ...prev, [name]: formatted }));
+      return;
+    }
+
+    // Only allow numbers for CVV
+    if (name === 'cvv') {
+      const cleaned = value.replace(/\D/g, '');
+      setFormData((prev) => ({ ...prev, [name]: cleaned }));
+      return;
+    }
+
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const validateForm = (): boolean => {
+    // Card number validation (must be 16 digits)
+    const cardNumberClean = formData.cardNumber.replace(/\s/g, '');
+    if (cardNumberClean.length !== 16 || !/^\d+$/.test(cardNumberClean)) {
+      error('Please enter a valid 16-digit card number');
+      return false;
+    }
+
+    // Expiry date validation (MM/YY format and not expired)
+    const expiryParts = formData.expiryDate.split('/');
+    if (expiryParts.length !== 2) {
+      error('Please enter expiry date in MM/YY format');
+      return false;
+    }
+    const month = parseInt(expiryParts[0]);
+    const year = parseInt('20' + expiryParts[1]);
+    if (month < 1 || month > 12) {
+      error('Please enter a valid month (01-12)');
+      return false;
+    }
+    const now = new Date();
+    const expiry = new Date(year, month - 1);
+    if (expiry < now) {
+      error('Card has expired');
+      return false;
+    }
+
+    // CVV validation (3 digits)
+    if (formData.cvv.length !== 3 || !/^\d{3}$/.test(formData.cvv)) {
+      error('Please enter a valid 3-digit CVV');
+      return false;
+    }
+
+    // Phone validation
+    if (formData.phone.length < 10) {
+      error('Please enter a valid phone number');
+      return false;
+    }
+
+    return true;
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically send the order to your backend
-    alert('Order placed successfully! 🎉');
-    clearCart();
-    router.push('/');
+
+    if (!validateForm()) {
+      return;
+    }
+
+    // Show success notification
+    success('Order placed successfully! 🎉 Your food is on the way!', 6000);
+
+    // Clear cart and redirect after a short delay
+    setTimeout(() => {
+      clearCart();
+      router.push('/');
+    }, 2000);
   };
 
   if (cart.length === 0) {
@@ -178,65 +259,82 @@ const CheckoutPage = () => {
               <h2 className='font-heading text-2xl font-bold text-gray-900 mb-6'>
                 Payment Information
               </h2>
-              <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-                <div className='md:col-span-2'>
-                  <label className='font-ui text-sm font-semibold text-gray-700 mb-2 block'>
-                    Card Number
-                  </label>
-                  <input
-                    type='text'
-                    name='cardNumber'
-                    value={formData.cardNumber}
-                    onChange={handleChange}
-                    required
-                    maxLength={19}
-                    className='w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-primary-500 transition-colors font-body'
-                    placeholder='1234 5678 9012 3456'
+
+              {/* Grid layout: Card preview on left, form on right (md+) */}
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+                {/* Credit Card Preview */}
+                <div className='flex items-start'>
+                  <CreditCardPreview
+                    cardNumber={formData.cardNumber}
+                    cardName={formData.cardName}
+                    expiryDate={formData.expiryDate}
+                    cvv={formData.cvv}
                   />
                 </div>
-                <div className='md:col-span-2'>
-                  <label className='font-ui text-sm font-semibold text-gray-700 mb-2 block'>
-                    Cardholder Name
-                  </label>
-                  <input
-                    type='text'
-                    name='cardName'
-                    value={formData.cardName}
-                    onChange={handleChange}
-                    required
-                    className='w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-primary-500 transition-colors font-body'
-                    placeholder='JOHN DOE'
-                  />
-                </div>
-                <div>
-                  <label className='font-ui text-sm font-semibold text-gray-700 mb-2 block'>
-                    Expiry Date
-                  </label>
-                  <input
-                    type='text'
-                    name='expiryDate'
-                    value={formData.expiryDate}
-                    onChange={handleChange}
-                    required
-                    maxLength={5}
-                    className='w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-primary-500 transition-colors font-body'
-                    placeholder='MM/YY'
-                  />
-                </div>
-                <div>
-                  <label className='font-ui text-sm font-semibold text-gray-700 mb-2 block'>
-                    CVV
-                  </label>
-                  <input
-                    type='text'
-                    name='cvv'
-                    value={formData.cvv}
-                    onChange={handleChange}
-                    required
-                    maxLength={3}
-                    className='w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-primary-500 transition-colors font-body'
-                    placeholder='123'
-                  />
+
+                {/* Form Fields */}
+                <div className='space-y-4'>
+                  <div>
+                    <label className='font-ui text-sm font-semibold text-gray-700 mb-2 block'>
+                      Card Number
+                    </label>
+                    <input
+                      type='text'
+                      name='cardNumber'
+                      value={formData.cardNumber}
+                      onChange={handleChange}
+                      required
+                      maxLength={19}
+                      className='w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-primary-500 transition-colors font-body'
+                      placeholder='1234 5678 9012 3456'
+                    />
+                  </div>
+                  <div>
+                    <label className='font-ui text-sm font-semibold text-gray-700 mb-2 block'>
+                      Cardholder Name
+                    </label>
+                    <input
+                      type='text'
+                      name='cardName'
+                      value={formData.cardName}
+                      onChange={handleChange}
+                      required
+                      className='w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-primary-500 transition-colors font-body'
+                      placeholder='JOHN DOE'
+                    />
+                  </div>
+                  <div className='grid grid-cols-2 gap-4'>
+                    <div>
+                      <label className='font-ui text-sm font-semibold text-gray-700 mb-2 block'>
+                        Expiry Date
+                      </label>
+                      <input
+                        type='text'
+                        name='expiryDate'
+                        value={formData.expiryDate}
+                        onChange={handleChange}
+                        required
+                        maxLength={5}
+                        className='w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-primary-500 transition-colors font-body'
+                        placeholder='MM/YY'
+                      />
+                    </div>
+                    <div>
+                      <label className='font-ui text-sm font-semibold text-gray-700 mb-2 block'>
+                        CVV
+                      </label>
+                      <input
+                        type='text'
+                        name='cvv'
+                        value={formData.cvv}
+                        onChange={handleChange}
+                        required
+                        maxLength={3}
+                        className='w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-primary-500 transition-colors font-body'
+                        placeholder='123'
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
             </motion.div>

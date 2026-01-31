@@ -1,16 +1,197 @@
-import Image from "next/image";
-import React from "react";
+'use client';
+import React, { createContext, useContext, useState, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
-const Notifications = () => {
+type NotificationType = 'success' | 'error' | 'info' | 'warning';
+
+interface Notification {
+  id: string;
+  type: NotificationType;
+  message: string;
+  duration?: number;
+}
+
+interface NotificationContextType {
+  showNotification: (
+    type: NotificationType,
+    message: string,
+    duration?: number,
+  ) => void;
+  success: (message: string, duration?: number) => void;
+  error: (message: string, duration?: number) => void;
+  info: (message: string, duration?: number) => void;
+  warning: (message: string, duration?: number) => void;
+}
+
+const NotificationContext = createContext<NotificationContextType | undefined>(
+  undefined,
+);
+
+export const useNotification = () => {
+  const context = useContext(NotificationContext);
+  if (!context) {
+    throw new Error('useNotification must be used within NotificationProvider');
+  }
+  return context;
+};
+
+export const NotificationProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+
+  const showNotification = useCallback(
+    (type: NotificationType, message: string, duration: number = 5000) => {
+      const id = Math.random().toString(36).substring(7);
+      const notification: Notification = { id, type, message, duration };
+
+      setNotifications((prev) => [...prev, notification]);
+
+      if (duration > 0) {
+        setTimeout(() => {
+          setNotifications((prev) => prev.filter((n) => n.id !== id));
+        }, duration);
+      }
+    },
+    [],
+  );
+
+  const success = useCallback(
+    (message: string, duration?: number) =>
+      showNotification('success', message, duration),
+    [showNotification],
+  );
+
+  const error = useCallback(
+    (message: string, duration?: number) =>
+      showNotification('error', message, duration),
+    [showNotification],
+  );
+
+  const info = useCallback(
+    (message: string, duration?: number) =>
+      showNotification('info', message, duration),
+    [showNotification],
+  );
+
+  const warning = useCallback(
+    (message: string, duration?: number) =>
+      showNotification('warning', message, duration),
+    [showNotification],
+  );
+
+  const getIcon = (type: NotificationType) => {
+    switch (type) {
+      case 'success':
+        return (
+          <svg className='w-6 h-6' fill='currentColor' viewBox='0 0 20 20'>
+            <path
+              fillRule='evenodd'
+              d='M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z'
+              clipRule='evenodd'
+            />
+          </svg>
+        );
+      case 'error':
+        return (
+          <svg className='w-6 h-6' fill='currentColor' viewBox='0 0 20 20'>
+            <path
+              fillRule='evenodd'
+              d='M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z'
+              clipRule='evenodd'
+            />
+          </svg>
+        );
+      case 'warning':
+        return (
+          <svg className='w-6 h-6' fill='currentColor' viewBox='0 0 20 20'>
+            <path
+              fillRule='evenodd'
+              d='M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z'
+              clipRule='evenodd'
+            />
+          </svg>
+        );
+      case 'info':
+        return (
+          <svg className='w-6 h-6' fill='currentColor' viewBox='0 0 20 20'>
+            <path
+              fillRule='evenodd'
+              d='M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z'
+              clipRule='evenodd'
+            />
+          </svg>
+        );
+    }
+  };
+
+  const getColors = (type: NotificationType) => {
+    switch (type) {
+      case 'success':
+        return 'bg-green-50 text-green-800 border-green-200';
+      case 'error':
+        return 'bg-red-50 text-red-800 border-red-200';
+      case 'warning':
+        return 'bg-yellow-50 text-yellow-800 border-yellow-200';
+      case 'info':
+        return 'bg-blue-50 text-blue-800 border-blue-200';
+    }
+  };
+
   return (
-    <div className="h-12 gap-4 bg-green-500 text-white px-4 flex items-center justify-center text-center text-sm md:text-base cursor-pointer">
-      Free Delivery for all orders over +50. Order your food now.
-      <div className="hidden md:flex lg:hidden items-center gap-2 cursor-pointer bg-orange-300 px-1 rounded-md">
-        <Image alt="" src="/phone.png" width={20} height={20} />
-        <span>555 55 55</span>
+    <NotificationContext.Provider
+      value={{ showNotification, success, error, info, warning }}
+    >
+      {children}
+
+      {/* Toast Container */}
+      <div className='fixed top-4 right-4 z-50 space-y-3 pointer-events-none'>
+        <AnimatePresence>
+          {notifications.map((notification) => (
+            <motion.div
+              key={notification.id}
+              initial={{ opacity: 0, y: -20, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, x: 100, scale: 0.95 }}
+              transition={{ duration: 0.3 }}
+              className={`pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg border ${getColors(
+                notification.type,
+              )} min-w-[320px] max-w-md`}
+            >
+              <div className='flex-shrink-0'>{getIcon(notification.type)}</div>
+              <p className='font-body text-sm font-medium flex-1'>
+                {notification.message}
+              </p>
+              <button
+                onClick={() =>
+                  setNotifications((prev) =>
+                    prev.filter((n) => n.id !== notification.id),
+                  )
+                }
+                className='flex-shrink-0 hover:opacity-70 transition-opacity'
+              >
+                <svg
+                  className='w-4 h-4'
+                  fill='currentColor'
+                  viewBox='0 0 20 20'
+                >
+                  <path
+                    fillRule='evenodd'
+                    d='M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z'
+                    clipRule='evenodd'
+                  />
+                </svg>
+              </button>
+            </motion.div>
+          ))}
+        </AnimatePresence>
       </div>
-    </div>
+    </NotificationContext.Provider>
   );
 };
 
+// Export default component for backward compatibility
+const Notifications = () => null;
 export default Notifications;

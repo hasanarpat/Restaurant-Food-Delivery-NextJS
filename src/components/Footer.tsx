@@ -127,7 +127,7 @@ const Footer = () => {
                   href='tel:5555555'
                   className='hover:text-primary-400 transition-colors'
                 >
-                  555 55 55
+                  0 555 55 55
                 </Link>
               </li>
               <li className='flex items-center gap-2'>
