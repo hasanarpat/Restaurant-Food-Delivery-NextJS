@@ -2,6 +2,7 @@
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import Button from './ui/Button';
 
 const slides = [
@@ -100,8 +101,9 @@ const Slider = () => {
               transition={{ delay: 0.6, duration: 0.6 }}
               className='z-10'
             >
-              <Button size='lg' variant='primary'>
-                Order Now 🍕
+              <Button size='lg' variant='primary' className='group gap-2'>
+                Order Now{' '}
+                <ArrowRight className='w-5 h-5 group-hover:translate-x-1 transition-transform' />
               </Button>
             </motion.div>
 
@@ -151,19 +153,7 @@ const Slider = () => {
         className='absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white/90 hover:bg-white shadow-lg hover:shadow-xl flex items-center justify-center transition-all duration-300 hover:scale-110 group'
         aria-label='Previous slide'
       >
-        <svg
-          className='w-6 h-6 text-gray-800 group-hover:text-primary-600 transition-colors'
-          fill='none'
-          stroke='currentColor'
-          viewBox='0 0 24 24'
-        >
-          <path
-            strokeLinecap='round'
-            strokeLinejoin='round'
-            strokeWidth={2}
-            d='M15 19l-7-7 7-7'
-          />
-        </svg>
+        <ChevronLeft className='w-6 h-6 text-gray-800 group-hover:text-primary-600 transition-colors' />
       </button>
 
       <button
@@ -171,19 +161,7 @@ const Slider = () => {
         className='absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white/90 hover:bg-white shadow-lg hover:shadow-xl flex items-center justify-center transition-all duration-300 hover:scale-110 group'
         aria-label='Next slide'
       >
-        <svg
-          className='w-6 h-6 text-gray-800 group-hover:text-primary-600 transition-colors'
-          fill='none'
-          stroke='currentColor'
-          viewBox='0 0 24 24'
-        >
-          <path
-            strokeLinecap='round'
-            strokeLinejoin='round'
-            strokeWidth={2}
-            d='M9 5l7 7-7 7'
-          />
-        </svg>
+        <ChevronRight className='w-6 h-6 text-gray-800 group-hover:text-primary-600 transition-colors' />
       </button>
     </div>
   );

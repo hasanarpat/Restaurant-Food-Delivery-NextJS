@@ -11,6 +11,7 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import Reviews from '@/components/Reviews';
 import NutritionalInfo from '@/components/NutritionalInfo';
 import RelatedProducts from '@/components/RelatedProducts';
+import { Flame, AlertTriangle, Star } from 'lucide-react';
 
 const SingleProductPage = () => {
   const params = useParams();
@@ -64,7 +65,8 @@ const SingleProductPage = () => {
               )}
               {/* Floating Badge */}
               <div className='absolute top-6 right-6 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full shadow-sm text-sm font-bold text-gray-800 flex items-center gap-1'>
-                <span>🔥</span> Popular
+                <Flame className='w-4 h-4 text-orange-500 fill-orange-500' />{' '}
+                Popular
               </div>
             </motion.div>
 
@@ -87,7 +89,11 @@ const SingleProductPage = () => {
 
               {/* Rating Summary */}
               <div className='flex items-center gap-2 mb-4'>
-                <div className='flex text-yellow-400'>★★★★★</div>
+                <div className='flex text-yellow-500'>
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className='w-5 h-5 fill-current' />
+                  ))}
+                </div>
                 <span className='text-sm text-gray-500 font-semibold'>
                   (128 reviews)
                 </span>
@@ -122,7 +128,7 @@ const SingleProductPage = () => {
 
               {/* Allergens */}
               <div className='mb-6 p-4 bg-orange-50 rounded-xl border border-orange-100 flex items-start gap-3'>
-                <span className='text-xl'>⚠️</span>
+                <AlertTriangle className='w-6 h-6 text-orange-500 shrink-0' />
                 <div>
                   <h4 className='font-bold text-orange-800 text-sm'>
                     Allergen Info

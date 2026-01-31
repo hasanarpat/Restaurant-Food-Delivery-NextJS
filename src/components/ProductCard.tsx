@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Badge from './ui/Badge';
 import Rating from './ui/Rating';
 import { useCart } from '@/context/CartContext';
+import { Flame, Sparkles, Star, Check } from 'lucide-react';
 
 interface ProductCardProps {
   id: number;
@@ -48,12 +49,15 @@ const ProductCard: React.FC<ProductCardProps> = ({
     <Link href={`/product/${id}`}>
       <div className='group relative bg-white rounded-2xl shadow-soft hover:shadow-soft-lg transition-all duration-300 overflow-hidden flex flex-col h-full'>
         {/* Badge */}
+        {/* Badge */}
         {badge && (
           <div className='absolute top-4 left-4 z-10'>
             <Badge variant={badge}>
-              {badge === 'hot' && '🔥'}
-              {badge === 'new' && '✨'}
-              {badge === 'bestseller' && '⭐'}
+              {badge === 'hot' && <Flame className='w-4 h-4 fill-current' />}
+              {badge === 'new' && <Sparkles className='w-4 h-4' />}
+              {badge === 'bestseller' && (
+                <Star className='w-4 h-4 fill-current' />
+              )}
             </Badge>
           </div>
         )}
@@ -100,20 +104,10 @@ const ProductCard: React.FC<ProductCardProps> = ({
               }`}
             >
               {isAdded ? (
-                <>
-                  <svg
-                    className='w-4 h-4 inline mr-1'
-                    fill='currentColor'
-                    viewBox='0 0 20 20'
-                  >
-                    <path
-                      fillRule='evenodd'
-                      d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
-                      clipRule='evenodd'
-                    />
-                  </svg>
+                <div className='flex items-center gap-1'>
+                  <Check className='w-4 h-4' />
                   Added!
-                </>
+                </div>
               ) : (
                 <>+ Cart</>
               )}
