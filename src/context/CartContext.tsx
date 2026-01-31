@@ -34,7 +34,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   // Load cart from localStorage on mount
   useEffect(() => {
-    const savedCart = localStorage.getItem('kopernik-cart');
+    const savedCart = localStorage.getItem('antepli-cart');
     if (savedCart) {
       try {
         setCart(JSON.parse(savedCart));
@@ -48,7 +48,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   // Save cart to localStorage whenever it changes
   useEffect(() => {
     if (isLoaded) {
-      localStorage.setItem('kopernik-cart', JSON.stringify(cart));
+      localStorage.setItem('antepli-cart', JSON.stringify(cart));
     }
   }, [cart, isLoaded]);
 

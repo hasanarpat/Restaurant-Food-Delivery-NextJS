@@ -216,7 +216,7 @@ const AppDownload = () => {
                         </svg>
                       </motion.div>
                       <h3 className='font-heading text-xl font-bold text-gray-900 mb-2'>
-                        Kopernik Pizza
+                        Antepli Pizza
                       </h3>
                       <p className='font-body text-sm text-gray-600'>
                         Order your favorite meals

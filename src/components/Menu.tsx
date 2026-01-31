@@ -89,7 +89,7 @@ const Menu = () => {
             {/* Header */}
             <div className='bg-gradient-to-br from-primary-500 to-primary-600 p-6 pt-20'>
               <h2 className='font-heading text-2xl font-bold text-white mb-1'>
-                Kopernik Pizza
+                Antepli Pizza
               </h2>
               <p className='font-body text-sm text-white/90'>
                 Delicious food delivery

@@ -45,8 +45,8 @@ const ContactPage = () => {
         </svg>
       ),
       title: 'Email',
-      value: 'support@kopernikpizza.com',
-      link: 'mailto:support@kopernikpizza.com',
+      value: 'support@anteplipizza.com',
+      link: 'mailto:support@anteplipizza.com',
       gradient: 'from-blue-500 to-cyan-500',
     },
     {
