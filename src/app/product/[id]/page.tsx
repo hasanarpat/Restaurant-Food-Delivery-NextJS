@@ -10,6 +10,25 @@ import {
 } from '@/data';
 import Image from 'next/image';
 import React from 'react';
+
+// Generate static params for all known products
+export async function generateStaticParams() {
+  const allProducts = [
+    ...pizzas,
+    ...burgers,
+    ...pastas,
+    ...lahmacun,
+    ...baklava,
+    ...featuredProducts,
+  ];
+
+  // Remove duplicates based on ID
+  const uniqueIds = Array.from(new Set(allProducts.map((p) => p.id)));
+
+  return uniqueIds.map((id) => ({
+    id: id.toString(),
+  }));
+}
 import Container from '@/components/ui/Container';
 import Link from 'next/link';
 import { motion } from 'framer-motion';

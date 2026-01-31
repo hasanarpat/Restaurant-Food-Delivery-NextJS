@@ -27,8 +27,6 @@ const inter = Inter({
   display: 'swap',
 });
 
-export const runtime = 'edge';
-
 export const metadata: Metadata = {
   title: 'Antepli Pizza - Delicious Food Delivery',
   description:

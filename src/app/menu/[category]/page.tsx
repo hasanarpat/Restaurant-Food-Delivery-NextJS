@@ -1,5 +1,16 @@
 'use client';
 import { pizzas, burgers, pastas, lahmacun, baklava } from '@/data';
+
+// Generate static params for all categories
+export async function generateStaticParams() {
+  return [
+    { category: 'pizzas' },
+    { category: 'burgers' },
+    { category: 'pastas' },
+    { category: 'lahmacun' },
+    { category: 'baklava' },
+  ];
+}
 import { usePathname } from 'next/navigation';
 import React, { useState, useMemo } from 'react';
 import Container from '@/components/ui/Container';
