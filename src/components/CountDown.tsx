@@ -3,7 +3,13 @@ import React from 'react';
 import Countdown from 'react-countdown';
 
 const CountDown = () => {
-  const endingDate = new Date('2024-12-31');
+  // Always start from 3 days, 16 hours, 7 minutes from now
+  const endingDate = new Date(
+    new Date().getTime() +
+      3 * 24 * 60 * 60 * 1000 + // 3 days
+      16 * 60 * 60 * 1000 + // 16 hours
+      7 * 60 * 1000, // 7 minutes
+  );
 
   const renderer = ({ days, hours, minutes, seconds }: any) => {
     return (
