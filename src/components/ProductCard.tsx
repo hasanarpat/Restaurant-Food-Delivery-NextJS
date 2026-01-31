@@ -69,7 +69,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
               src={img}
               alt={title}
               fill
-              className='object-contain p-6 group-hover:scale-110 transition-transform duration-300'
+              className='object-contain object-center p-4 group-hover:scale-110 transition-transform duration-300'
             />
           )}
         </div>

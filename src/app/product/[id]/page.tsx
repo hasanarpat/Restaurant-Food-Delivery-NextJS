@@ -1,6 +1,13 @@
 'use client';
 import Price from '@/components/Price';
-import { pizzas, burgers, pastas, featuredProducts } from '@/data';
+import {
+  pizzas,
+  burgers,
+  pastas,
+  lahmacun,
+  baklava,
+  featuredProducts,
+} from '@/data';
 import Image from 'next/image';
 import React from 'react';
 import Container from '@/components/ui/Container';
@@ -22,6 +29,8 @@ const SingleProductPage = () => {
     pizzas.find((p) => p.id === id) ||
     burgers.find((p) => p.id === id) ||
     pastas.find((p) => p.id === id) ||
+    lahmacun.find((p) => p.id === id) ||
+    baklava.find((p) => p.id === id) ||
     featuredProducts.find((p) => p.id === id);
 
   // Determine category for breadcrumb
@@ -29,6 +38,8 @@ const SingleProductPage = () => {
   if (pizzas.find((p) => p.id === id)) category = 'pizzas';
   else if (burgers.find((p) => p.id === id)) category = 'burgers';
   else if (pastas.find((p) => p.id === id)) category = 'pastas';
+  else if (lahmacun.find((p) => p.id === id)) category = 'lahmacun';
+  else if (baklava.find((p) => p.id === id)) category = 'baklava';
 
   if (!product) {
     return notFound();
@@ -41,7 +52,7 @@ const SingleProductPage = () => {
   ];
 
   return (
-    <div className='min-h-screen bg-gradient-to-br from-cream via-white to-primary-50 pt-28 pb-12 md:pt-32 md:pb-16'>
+    <div className='min-h-screen bg-gradient-to-br from-cream via-white to-primary-50 pt-40 pb-12 md:pt-52 md:pb-16'>
       <Container>
         <Breadcrumbs items={breadcrumbItems} />
 

@@ -1,5 +1,5 @@
 'use client';
-import { pizzas, burgers, pastas } from '@/data';
+import { pizzas, burgers, pastas, lahmacun, baklava } from '@/data';
 import { usePathname } from 'next/navigation';
 import React, { useState, useMemo } from 'react';
 import Container from '@/components/ui/Container';
@@ -29,6 +29,10 @@ const SingleCategory = () => {
         return burgers;
       case 'pastas':
         return pastas;
+      case 'lahmacun':
+        return lahmacun;
+      case 'baklava':
+        return baklava;
       default:
         return pizzas;
     }
@@ -61,7 +65,7 @@ const SingleCategory = () => {
   }, [products, sortBy]);
 
   return (
-    <div className='min-h-screen bg-gradient-to-br from-cream via-white to-primary-50 pt-36 pb-16 md:pt-48 md:pb-24'>
+    <div className='min-h-screen bg-gradient-to-br from-cream via-white to-primary-50 pt-40 pb-16 md:pt-52 md:pb-24'>
       <Container>
         <Breadcrumbs
           items={[{ label: 'Menu', href: '/menu' }, { label: categoryName }]}

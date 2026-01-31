@@ -200,16 +200,88 @@ export const pastas: Products = [
   },
 ];
 
+export const lahmacun: Products = [
+  {
+    id: 61,
+    title: 'Classic Lahmacun',
+    desc: 'Crispy thin dough topped with minced meat, fresh herbs, and spices. Served with lemon and parsley.',
+    img: '/temporary/p1.png',
+    price: 8.9,
+    options: [
+      { title: 'Small', additionalPrice: 0 },
+      { title: 'Large', additionalPrice: 2 },
+    ],
+  },
+  {
+    id: 62,
+    title: 'Spicy Lahmacun',
+    desc: 'Our classic lahmacun with an extra kick of hot peppers and spicy tomato paste.',
+    img: '/temporary/p1.png',
+    price: 9.9,
+    options: [
+      { title: 'Small', additionalPrice: 0 },
+      { title: 'Large', additionalPrice: 2 },
+    ],
+  },
+  {
+    id: 63,
+    title: 'Cheese Lahmacun',
+    desc: 'A twist on the classic, topped with a blend of melted cheeses for a savory delight.',
+    img: '/temporary/p1.png',
+    price: 10.9,
+    options: [
+      { title: 'Small', additionalPrice: 0 },
+      { title: 'Large', additionalPrice: 2 },
+    ],
+  },
+];
+
+export const baklava: Products = [
+  {
+    id: 81,
+    title: 'Pistachio Baklava',
+    desc: 'Layers of phyllo pastry filled with chopped pistachios and sweetened with syrup.',
+    img: '/temporary/p1.png',
+    price: 15.9,
+    options: [
+      { title: 'Small', additionalPrice: 0 },
+      { title: 'Large', additionalPrice: 10 },
+    ],
+  },
+  {
+    id: 82,
+    title: 'Walnut Baklava',
+    desc: 'Traditional baklava filled with crushed walnuts and soaked in honey syrup.',
+    img: '/temporary/p1.png',
+    price: 14.9,
+    options: [
+      { title: 'Small', additionalPrice: 0 },
+      { title: 'Large', additionalPrice: 10 },
+    ],
+  },
+  {
+    id: 83,
+    title: 'Chocolate Baklava',
+    desc: 'A modern twist with rich chocolate filling and glaze.',
+    img: '/temporary/p1.png',
+    price: 16.9,
+    options: [
+      { title: 'Small', additionalPrice: 0 },
+      { title: 'Large', additionalPrice: 10 },
+    ],
+  },
+];
+
 export const featuredProducts: Products = [
   pizzas[0], // Sicilian (ID 1)
   burgers[1], // Bacon Deluxe (ID 22)
+  lahmacun[0], // Classic Lahmacun (ID 61)
   pizzas[2], // Bella Napoli (ID 3)
   pastas[0], // Spicy Arrabbiata (ID 41)
+  baklava[0], // Pistachio Baklava (ID 81)
   burgers[2], // Jalapeño Fiesta (ID 23)
   pizzas[6], // Margherita Magic (ID 7)
   pastas[1], // Garlic Parmesan (ID 42)
-  pizzas[1], // Mediterranean Delight (ID 2)
-  burgers[3], // Hawaiian Teriyaki (ID 24)
 ];
 
 export const singleProduct: Product = pizzas[0];
@@ -246,6 +318,22 @@ export const menu: Menu = [
     title: 'Cheesy Pizzas',
     desc: 'Pizza Paradise: Irresistible slices, mouthwatering toppings, and cheesy perfection.',
     img: '/temporary/m3.png',
+    color: 'white',
+  },
+  {
+    id: 4,
+    slug: 'lahmacun',
+    title: 'Crispy Lahmacun',
+    desc: 'Traditional taste: Thin, crispy dough with seasoned minced meat.',
+    img: '/temporary/m3.png', // Temporary placeholder
+    color: 'black',
+  },
+  {
+    id: 5,
+    slug: 'baklava',
+    title: 'Sweet Baklava',
+    desc: 'Dessert delight: Flaky pastry layers with nuts and syrup.',
+    img: '/temporary/m1.png', // Temporary placeholder
     color: 'white',
   },
 ];
