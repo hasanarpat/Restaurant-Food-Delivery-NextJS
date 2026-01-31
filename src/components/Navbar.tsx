@@ -35,7 +35,7 @@ const Navbar = () => {
             <div className='hidden md:flex items-center gap-4 text-white text-sm'>
               <div className='flex items-center gap-2'>
                 <Image alt='phone' src='/phone.png' width={16} height={16} />
-                <span className='font-ui'>📞 555 55 55</span>
+                <span className='font-ui'>0 555 55 55</span>
               </div>
             </div>
             <div className='flex items-center gap-4 text-white text-sm font-ui'>

@@ -38,8 +38,16 @@ const Slider = () => {
     return () => clearInterval(interval);
   }, []);
 
+  const nextSlide = () => {
+    setSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
+  };
+
+  const prevSlide = () => {
+    setSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
+  };
+
   return (
-    <div className='relative flex flex-col lg:flex-row h-[calc(100vh-6rem)] md:h-[calc(100vh-9rem)] mt-16 md:mt-24 overflow-hidden'>
+    <div className='relative flex flex-col lg:flex-row h-[70vh] mt-16 md:mt-24 overflow-hidden rounded-3xl mx-4 md:mx-8 lg:mx-16 shadow-soft'>
       <AnimatePresence mode='wait'>
         <motion.div
           key={slide}
@@ -64,7 +72,7 @@ const Slider = () => {
               transition={{ delay: 0.2, duration: 0.6 }}
               className='z-10'
             >
-              <h1 className='text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-heading font-bold text-gradient leading-tight max-w-3xl'>
+              <h1 className='text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-heading font-bold text-gradient leading-tight max-w-2xl'>
                 {slides[slide].title}
               </h1>
             </motion.div>
@@ -73,7 +81,7 @@ const Slider = () => {
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.4, duration: 0.6 }}
-              className='text-lg md:text-xl text-gray-600 font-body max-w-xl z-10'
+              className='text-base md:text-lg text-gray-600 font-body max-w-lg z-10'
             >
               {slides[slide].description}
             </motion.p>
@@ -128,6 +136,47 @@ const Slider = () => {
           </div>
         </motion.div>
       </AnimatePresence>
+
+      {/* Navigation Arrows */}
+      <button
+        onClick={prevSlide}
+        className='absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white/90 hover:bg-white shadow-lg hover:shadow-xl flex items-center justify-center transition-all duration-300 hover:scale-110 group'
+        aria-label='Previous slide'
+      >
+        <svg
+          className='w-6 h-6 text-gray-800 group-hover:text-primary-600 transition-colors'
+          fill='none'
+          stroke='currentColor'
+          viewBox='0 0 24 24'
+        >
+          <path
+            strokeLinecap='round'
+            strokeLinejoin='round'
+            strokeWidth={2}
+            d='M15 19l-7-7 7-7'
+          />
+        </svg>
+      </button>
+
+      <button
+        onClick={nextSlide}
+        className='absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white/90 hover:bg-white shadow-lg hover:shadow-xl flex items-center justify-center transition-all duration-300 hover:scale-110 group'
+        aria-label='Next slide'
+      >
+        <svg
+          className='w-6 h-6 text-gray-800 group-hover:text-primary-600 transition-colors'
+          fill='none'
+          stroke='currentColor'
+          viewBox='0 0 24 24'
+        >
+          <path
+            strokeLinecap='round'
+            strokeLinejoin='round'
+            strokeWidth={2}
+            d='M9 5l7 7-7 7'
+          />
+        </svg>
+      </button>
     </div>
   );
 };

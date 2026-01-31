@@ -1,5 +1,6 @@
-"use client";
-import React, { useEffect, useState } from "react";
+'use client';
+import React, { useEffect, useState } from 'react';
+import Button from './ui/Button';
 
 type Props = {
   price: number;
@@ -14,48 +15,75 @@ const Price = ({ price, id, options }: Props) => {
 
   useEffect(() => {
     setTotal(
-      quantity * (options ? price + options[selected].additionalPrice : price)
+      quantity * (options ? price + options[selected].additionalPrice : price),
     );
   }, [quantity, selected, options, price]);
 
   return (
-    <div className="flex flex-col gap-4">
-      <h2 className="text-2xl font-bold">${total.toFixed(2)}</h2>
-      <div className="flex gap-4">
-        {options?.map((option, index) => (
-          <button
-            key={option.title}
-            className="w-1/3 md:w-max p-2 ring-1 ring-green-400 rounded-md"
-            style={{
-              background: selected === index ? "#22C55E" : "white",
-              color: selected === index ? "white" : "#22C55E",
-            }}
-            onClick={() => setSelected(index)}
-          >
-            {option.title}
-          </button>
-        ))}
+    <div className='flex flex-col gap-6'>
+      <div className='flex items-baseline gap-3'>
+        <h2 className='text-4xl font-heading font-bold text-gradient'>
+          ${total.toFixed(2)}
+        </h2>
+        {options && options[selected].additionalPrice > 0 && (
+          <span className='font-ui text-sm text-gray-500'>
+            (+${options[selected].additionalPrice.toFixed(2)})
+          </span>
+        )}
       </div>
-      <div className="flex items-center justify-between">
-        <div className="flex items-center justify-between w-full ring-1 ring-green-500 h-full px-4">
-          <span>Quantity</span>
-          <div className="flex items-center gap-1">
+
+      {/* Size Options */}
+      {options && (
+        <div className='flex flex-col gap-3'>
+          <label className='font-ui text-sm font-semibold text-gray-700'>
+            Choose Size:
+          </label>
+          <div className='flex gap-3 flex-wrap'>
+            {options.map((option, index) => (
+              <button
+                key={option.title}
+                className={`px-6 py-3 rounded-lg font-ui font-semibold transition-all duration-300 ${
+                  selected === index
+                    ? 'bg-gradient-button text-white shadow-md'
+                    : 'bg-white border-2 border-gray-200 text-gray-700 hover:border-primary-400'
+                }`}
+                onClick={() => setSelected(index)}
+              >
+                {option.title}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Quantity and Add to Cart */}
+      <div className='flex flex-col sm:flex-row items-stretch gap-4'>
+        {/* Quantity Selector */}
+        <div className='flex items-center justify-between sm:justify-start gap-4 bg-white border-2 border-gray-200 rounded-lg px-6 py-3'>
+          <span className='font-ui font-semibold text-gray-700'>Quantity:</span>
+          <div className='flex items-center gap-4'>
             <button
               onClick={() => setQuantity((prev) => (prev === 1 ? 1 : prev - 1))}
+              className='w-8 h-8 flex items-center justify-center bg-gray-100 hover:bg-primary-100 rounded-md transition-colors font-bold text-gray-700'
             >
-              {"<"}
+              −
             </button>
-            <span className="font-bold text-lg select-none">{quantity}</span>
+            <span className='font-heading font-bold text-xl text-gray-900 min-w-[2rem] text-center select-none'>
+              {quantity}
+            </span>
             <button
               onClick={() => setQuantity((prev) => (prev === 9 ? 9 : prev + 1))}
+              className='w-8 h-8 flex items-center justify-center bg-gray-100 hover:bg-primary-100 rounded-md transition-colors font-bold text-gray-700'
             >
-              {">"}
+              +
             </button>
           </div>
         </div>
-        <button className="bg-green-500 text-white ring-1 ring-green-500 w-56 p-3 uppercase">
-          Add to Cart
-        </button>
+
+        {/* Add to Cart Button */}
+        <Button variant='primary' size='lg' className='flex-1'>
+          Add to Cart 🛒
+        </Button>
       </div>
     </div>
   );
