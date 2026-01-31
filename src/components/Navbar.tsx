@@ -26,9 +26,9 @@ const Navbar = () => {
           : 'bg-transparent'
       }`}
     >
-      {/* Top bar with gradient background */}
+      {/* Top bar with solid red background */}
       <div
-        className={`bg-gradient-hero transition-all duration-300 ${scrolled ? 'h-1' : 'h-12 md:h-16'}`}
+        className={`bg-primary-500 transition-all duration-300 ${scrolled ? 'h-1' : 'h-12 md:h-16'}`}
       >
         {!scrolled && (
           <div className='h-full flex items-center justify-between px-4 lg:px-20 xl:px-40'>

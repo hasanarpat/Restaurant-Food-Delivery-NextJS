@@ -15,7 +15,7 @@ const AppDownload = () => {
   ];
 
   return (
-    <section className='py-16 md:py-24 bg-gradient-to-br from-primary-50 via-white to-cream relative overflow-hidden'>
+    <section className='py-16 md:py-24 bg-cream relative overflow-hidden'>
       {/* Animated background elements */}
       <motion.div
         animate={{
@@ -48,9 +48,9 @@ const AppDownload = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className='inline-block px-4 py-2 bg-gradient-to-r from-primary-100 to-secondary-100 rounded-full mb-6'
+              className='inline-block px-4 py-2 bg-primary-100 rounded-full mb-6'
             >
-              <span className='font-ui text-sm font-semibold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent'>
+              <span className='font-ui text-sm font-semibold text-primary-600'>
                 📱 Download Our App
               </span>
             </motion.div>
@@ -86,7 +86,7 @@ const AppDownload = () => {
                 href='#'
                 whileHover={{ scale: 1.05, y: -5 }}
                 whileTap={{ scale: 0.95 }}
-                className='group flex items-center gap-3 px-6 py-4 bg-gradient-to-r from-gray-900 to-gray-800 text-white rounded-2xl shadow-lg hover:shadow-2xl transition-all relative overflow-hidden'
+                className='group flex items-center gap-3 px-6 py-4 bg-gray-900 hover:bg-gray-800 text-white rounded-2xl shadow-lg hover:shadow-2xl transition-all relative overflow-hidden'
               >
                 <motion.div
                   className='absolute inset-0 bg-gradient-to-r from-primary-500/20 to-secondary-500/20'
@@ -111,7 +111,7 @@ const AppDownload = () => {
                 href='#'
                 whileHover={{ scale: 1.05, y: -5 }}
                 whileTap={{ scale: 0.95 }}
-                className='group flex items-center gap-3 px-6 py-4 bg-gradient-to-r from-gray-900 to-gray-800 text-white rounded-2xl shadow-lg hover:shadow-2xl transition-all relative overflow-hidden'
+                className='group flex items-center gap-3 px-6 py-4 bg-gray-900 hover:bg-gray-800 text-white rounded-2xl shadow-lg hover:shadow-2xl transition-all relative overflow-hidden'
               >
                 <motion.div
                   className='absolute inset-0 bg-gradient-to-r from-primary-500/20 to-secondary-500/20'

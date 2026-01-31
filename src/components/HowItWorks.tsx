@@ -25,7 +25,7 @@ const HowItWorks = () => {
           />
         </svg>
       ),
-      color: 'from-blue-500 to-cyan-500',
+      color: 'bg-blue-500',
       emoji: '🔍',
     },
     {
@@ -48,7 +48,7 @@ const HowItWorks = () => {
           />
         </svg>
       ),
-      color: 'from-purple-500 to-pink-500',
+      color: 'bg-purple-500',
       emoji: '🛒',
     },
     {
@@ -71,7 +71,7 @@ const HowItWorks = () => {
           />
         </svg>
       ),
-      color: 'from-green-500 to-emerald-500',
+      color: 'bg-success-500',
       emoji: '📍',
     },
     {
@@ -94,13 +94,13 @@ const HowItWorks = () => {
           />
         </svg>
       ),
-      color: 'from-orange-500 to-red-500',
+      color: 'bg-primary-500',
       emoji: '🎉',
     },
   ];
 
   return (
-    <section className='py-16 md:py-24 bg-gradient-to-br from-cream via-white to-primary-50 relative overflow-hidden'>
+    <section className='py-16 md:py-24 bg-cream relative overflow-hidden'>
       {/* Animated background circles */}
       <motion.div
         animate={{
@@ -133,7 +133,7 @@ const HowItWorks = () => {
             transition={{ type: 'spring', stiffness: 200, delay: 0.2 }}
             className='inline-block px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full mb-4 shadow-md'
           >
-            <span className='font-ui text-sm font-semibold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent'>
+            <span className='font-ui text-sm font-semibold text-primary-600'>
               🚀 Simple Process
             </span>
           </motion.div>
@@ -151,7 +151,7 @@ const HowItWorks = () => {
           <div className='hidden lg:block absolute top-1/2 left-0 right-0 h-2 -translate-y-1/2'>
             <div className='relative w-full h-full bg-gray-200 rounded-full overflow-hidden'>
               <motion.div
-                className='absolute inset-0 bg-gradient-to-r from-primary-500 via-secondary-500 to-primary-500'
+                className='absolute inset-0 bg-primary-500'
                 animate={{
                   x: ['-100%', '100%'],
                 }}
@@ -175,29 +175,8 @@ const HowItWorks = () => {
                 whileHover={{ scale: 1.05, y: -10 }}
                 className='relative group'
               >
-                {/* Glow effect */}
-                <motion.div
-                  className={`absolute -inset-2 bg-gradient-to-r ${step.color} rounded-3xl blur-xl opacity-0 group-hover:opacity-40 transition-opacity duration-500`}
-                />
-
                 {/* Card */}
                 <div className='relative bg-white rounded-2xl p-6 shadow-soft hover:shadow-2xl transition-all duration-300 overflow-hidden'>
-                  {/* Animated background */}
-                  <motion.div
-                    className='absolute inset-0 bg-gradient-to-br from-gray-50 to-white'
-                    animate={{
-                      background: [
-                        'linear-gradient(135deg, #f9fafb 0%, #ffffff 100%)',
-                        'linear-gradient(135deg, #ffffff 0%, #f9fafb 100%)',
-                      ],
-                    }}
-                    transition={{
-                      duration: 3,
-                      repeat: Infinity,
-                      repeatType: 'reverse',
-                    }}
-                  />
-
                   {/* Step number with 3D effect */}
                   <motion.div
                     whileHover={{ rotateY: 180, scale: 1.1 }}
@@ -205,7 +184,7 @@ const HowItWorks = () => {
                     className='absolute -top-6 -left-2 w-16 h-16 perspective-1000'
                   >
                     <div
-                      className={`w-full h-full bg-gradient-to-br ${step.color} rounded-2xl flex items-center justify-center shadow-xl transform-gpu preserve-3d`}
+                      className={`w-full h-full ${step.color} rounded-2xl flex items-center justify-center shadow-xl transform-gpu preserve-3d`}
                     >
                       <span className='font-heading text-2xl font-bold text-white'>
                         {step.number}
@@ -233,7 +212,7 @@ const HowItWorks = () => {
                   <motion.div
                     whileHover={{ rotate: 360 }}
                     transition={{ duration: 0.8 }}
-                    className={`relative w-16 h-16 bg-gradient-to-br ${step.color} rounded-xl flex items-center justify-center text-white mb-4 mt-8 ml-auto mr-0 shadow-lg`}
+                    className={`relative w-16 h-16 ${step.color} rounded-xl flex items-center justify-center text-white mb-4 mt-8 ml-auto mr-0 shadow-lg`}
                   >
                     {step.icon}
                   </motion.div>
@@ -253,7 +232,7 @@ const HowItWorks = () => {
                       opacity: [1, 0.5, 1],
                     }}
                     transition={{ duration: 2, repeat: Infinity }}
-                    className={`absolute bottom-4 right-4 w-3 h-3 bg-gradient-to-br ${step.color} rounded-full shadow-lg`}
+                    className={`absolute bottom-4 right-4 w-3 h-3 ${step.color} rounded-full shadow-lg`}
                   />
                 </div>
 
@@ -268,7 +247,7 @@ const HowItWorks = () => {
                     <motion.svg
                       animate={{ x: [0, 5, 0] }}
                       transition={{ duration: 1.5, repeat: Infinity }}
-                      className={`text-primary-500`}
+                      className='text-primary-500'
                       fill='currentColor'
                       viewBox='0 0 20 20'
                     >

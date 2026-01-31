@@ -16,28 +16,40 @@ module.exports = {
     extend: {
       colors: {
         primary: {
-          50: '#fffbeb',
-          100: '#fef3c7',
-          200: '#fde68a',
-          300: '#fcd34d',
-          400: '#fbbf24',
-          500: '#f59e0b',
-          600: '#d97706',
-          700: '#b45309',
-          800: '#92400e',
-          900: '#78350f',
+          50: '#fff1f2',
+          100: '#ffe4e6',
+          200: '#fecdd3',
+          300: '#fda4af',
+          400: '#fb7185',
+          500: '#DA291C', // Pantone Red 032 C (McDonald's red)
+          600: '#c41e1a',
+          700: '#a81917',
+          800: '#8a1614',
+          900: '#6b1311',
+        },
+        secondary: {
+          50: '#fff7ed',
+          100: '#ffedd5',
+          200: '#fed7aa',
+          300: '#fdba74',
+          400: '#fb923c',
+          500: '#FF6900', // Pantone 1585 C (vibrant orange)
+          600: '#ea580c',
+          700: '#c2410c',
+          800: '#9a3412',
+          900: '#7c2d12',
         },
         accent: {
-          50: '#fef2f2',
-          100: '#fee2e2',
-          200: '#fecaca',
-          300: '#fca5a5',
-          400: '#f87171',
-          500: '#ef4444',
-          600: '#dc2626',
-          700: '#b91c1c',
-          800: '#991b1b',
-          900: '#7f1d1d',
+          50: '#fefce8',
+          100: '#fef9c3',
+          200: '#fef08a',
+          300: '#fde047',
+          400: '#facc15',
+          500: '#FFD100', // Pantone Yellow (bright yellow)
+          600: '#ca8a04',
+          700: '#a16207',
+          800: '#854d0e',
+          900: '#713f12',
         },
         success: {
           50: '#f0fdf4',
@@ -45,17 +57,17 @@ module.exports = {
           200: '#bbf7d0',
           300: '#86efac',
           400: '#4ade80',
-          500: '#10b981',
-          600: '#059669',
-          700: '#047857',
-          800: '#065f46',
-          900: '#064e3b',
+          500: '#22c55e',
+          600: '#16a34a',
+          700: '#15803d',
+          800: '#166534',
+          900: '#14532d',
         },
-        cream: '#faf8f5',
+        cream: '#fff5f0', // Warmer cream for food brand
         dark: {
-          bg: '#0f0f0f',
-          card: '#1a1a1a',
-          border: '#2a2a2a',
+          bg: '#1a0f0a',
+          card: '#2d1810',
+          border: '#3d2418',
         },
       },
       fontFamily: {
@@ -87,18 +99,20 @@ module.exports = {
       boxShadow: {
         soft: '0 2px 15px 0 rgba(0, 0, 0, 0.08)',
         'soft-lg': '0 10px 40px 0 rgba(0, 0, 0, 0.1)',
-        glow: '0 0 20px rgba(251, 191, 36, 0.5)',
-        'glow-lg': '0 0 30px rgba(251, 191, 36, 0.6)',
+        glow: '0 0 20px rgba(218, 41, 28, 0.4)', // Red glow
+        'glow-lg': '0 0 30px rgba(218, 41, 28, 0.5)', // Stronger red glow
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
         'gradient-hero':
-          'linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%)',
+          'linear-gradient(135deg, #DA291C 0%, #FF6900 50%, #FFD100 100%)', // Red to Orange to Yellow
         'gradient-hero-dark':
-          'linear-gradient(135deg, #78350f 0%, #92400e 50%, #1f1f1f 100%)',
-        'gradient-button': 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+          'linear-gradient(135deg, #6b1311 0%, #7c2d12 50%, #1a0f0a 100%)',
+        'gradient-button': 'linear-gradient(135deg, #DA291C 0%, #FF6900 100%)', // Red to Orange
+        'gradient-button-hover':
+          'linear-gradient(135deg, #c41e1a 0%, #ea580c 100%)', // Darker on hover
       },
       animation: {
         float: 'float 3s ease-in-out infinite',

@@ -24,7 +24,8 @@ const BenefitsShowcase = () => {
       title: 'Thousands of Restaurants',
       description:
         'Choose from thousands of restaurants serving delicious meals, delivered hot and fresh to your door.',
-      color: 'from-orange-500 to-red-500',
+      color: 'bg-orange-500',
+      textColor: 'text-orange-500',
       emoji: '🏪',
     },
     {
@@ -46,7 +47,8 @@ const BenefitsShowcase = () => {
       title: 'Flash Deals',
       description:
         'Get exclusive flash discounts and special offers every time you open the app.',
-      color: 'from-yellow-500 to-orange-500',
+      color: 'bg-accent-500',
+      textColor: 'text-accent-500',
       emoji: '⚡',
     },
     {
@@ -68,7 +70,8 @@ const BenefitsShowcase = () => {
       title: "Neighborhood's Best",
       description:
         'Discover highly-rated restaurants loved by customers for their speed, quality, and service.',
-      color: 'from-purple-500 to-pink-500',
+      color: 'bg-purple-500',
+      textColor: 'text-purple-500',
       emoji: '⭐',
     },
     {
@@ -96,7 +99,8 @@ const BenefitsShowcase = () => {
       title: 'Live Tracking',
       description:
         'Track your order in real-time on the map and know exactly when it will arrive.',
-      color: 'from-green-500 to-emerald-500',
+      color: 'bg-success-500',
+      textColor: 'text-success-500',
       emoji: '📍',
     },
     {
@@ -118,7 +122,8 @@ const BenefitsShowcase = () => {
       title: 'Earn Discount Coupons',
       description:
         'The more you order, the more coupons you earn. Save on every order with accumulated rewards.',
-      color: 'from-blue-500 to-cyan-500',
+      color: 'bg-blue-500',
+      textColor: 'text-blue-500',
       emoji: '🎟️',
     },
     {
@@ -140,7 +145,8 @@ const BenefitsShowcase = () => {
       title: 'Meal Card Payments',
       description:
         'Pay with meal cards at eligible restaurants and enjoy seamless online transactions.',
-      color: 'from-indigo-500 to-purple-500',
+      color: 'bg-secondary-500',
+      textColor: 'text-secondary-500',
       emoji: '💳',
     },
   ];
@@ -169,9 +175,9 @@ const BenefitsShowcase = () => {
             whileInView={{ scale: 1 }}
             viewport={{ once: true }}
             transition={{ type: 'spring', stiffness: 200, delay: 0.2 }}
-            className='inline-block px-4 py-2 bg-gradient-to-r from-primary-100 to-secondary-100 rounded-full mb-4'
+            className='inline-block px-4 py-2 bg-primary-100 rounded-full mb-4'
           >
-            <span className='font-ui text-sm font-semibold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent'>
+            <span className='font-ui text-sm font-semibold text-primary-600'>
               ✨ Our Features
             </span>
           </motion.div>
@@ -203,18 +209,8 @@ const BenefitsShowcase = () => {
               }}
               className='group relative'
             >
-              {/* Glow effect */}
-              <motion.div
-                className={`absolute -inset-1 bg-gradient-to-r ${benefit.color} rounded-2xl blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500`}
-              />
-
               {/* Card */}
-              <div className='relative bg-white p-6 rounded-2xl shadow-soft hover:shadow-soft-lg transition-all duration-300 border border-gray-100 group-hover:border-transparent overflow-hidden'>
-                {/* Animated background gradient */}
-                <motion.div
-                  className={`absolute inset-0 bg-gradient-to-br ${benefit.color} opacity-0 group-hover:opacity-5 transition-opacity duration-500`}
-                />
-
+              <div className='relative bg-white p-6 rounded-2xl shadow-soft hover:shadow-soft-lg transition-all duration-300 border border-gray-100 group-hover:border-gray-200 overflow-hidden'>
                 {/* Emoji floating */}
                 <motion.div
                   animate={{
@@ -235,7 +231,7 @@ const BenefitsShowcase = () => {
                 <motion.div
                   whileHover={{ rotate: 360, scale: 1.1 }}
                   transition={{ duration: 0.6 }}
-                  className={`w-16 h-16 bg-gradient-to-br ${benefit.color} rounded-2xl flex items-center justify-center text-white mb-4 shadow-lg relative z-10`}
+                  className={`w-16 h-16 ${benefit.color} rounded-2xl flex items-center justify-center text-white mb-4 shadow-lg relative z-10`}
                 >
                   {benefit.icon}
                 </motion.div>
@@ -251,7 +247,7 @@ const BenefitsShowcase = () => {
                 {/* Decorative elements */}
                 <div className='absolute top-0 right-0 w-24 h-24 transform translate-x-8 -translate-y-8'>
                   <div
-                    className={`w-full h-full bg-gradient-to-br ${benefit.color} rounded-full opacity-10 group-hover:scale-150 transition-transform duration-700`}
+                    className={`w-full h-full ${benefit.color} opacity-10 rounded-full group-hover:scale-150 transition-transform duration-700`}
                   />
                 </div>
 
@@ -259,7 +255,7 @@ const BenefitsShowcase = () => {
                 <motion.div
                   initial={{ scale: 0 }}
                   whileHover={{ scale: 1 }}
-                  className={`absolute bottom-4 right-4 w-3 h-3 bg-gradient-to-br ${benefit.color} rounded-full shadow-lg`}
+                  className={`absolute bottom-4 right-4 w-3 h-3 ${benefit.color} rounded-full shadow-lg`}
                 />
               </div>
             </motion.div>

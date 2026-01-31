@@ -86,7 +86,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href='/'
+                  href='/about'
                   className='text-gray-300 hover:text-primary-400 transition-colors'
                 >
                   About Us
@@ -94,7 +94,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href='/'
+                  href='/contact'
                   className='text-gray-300 hover:text-primary-400 transition-colors'
                 >
                   Contact

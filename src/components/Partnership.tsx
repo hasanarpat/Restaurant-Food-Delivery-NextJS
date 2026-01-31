@@ -9,7 +9,7 @@ const Partnership = () => {
     {
       title: 'Restaurant Partnership',
       description:
-        'Join our platform and reach thousands of hungry customers. Grow your business with us.',
+        'Join our platform and reach thousands of hungry customers. Grow your business with use.',
       icon: (
         <svg
           className='w-12 h-12'
@@ -31,7 +31,7 @@ const Partnership = () => {
         'Reach 500K+ customers',
         'Easy management dashboard',
       ],
-      gradient: 'from-orange-500 to-red-500',
+      color: 'bg-primary-500',
       emoji: '🏪',
     },
     {
@@ -59,13 +59,13 @@ const Partnership = () => {
         'Weekly instant payments',
         'Be your own boss',
       ],
-      gradient: 'from-blue-500 to-purple-500',
+      color: 'bg-secondary-500',
       emoji: '🚴',
     },
   ];
 
   return (
-    <section className='py-16 md:py-24 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden'>
+    <section className='py-16 md:py-24 bg-gray-900 relative overflow-hidden'>
       {/* Animated background effects */}
       <motion.div
         animate={{
@@ -139,22 +139,8 @@ const Partnership = () => {
               whileHover={{ y: -15, scale: 1.02 }}
               className='group relative'
             >
-              {/* Mega glow effect */}
-              <motion.div
-                className={`absolute -inset-4 bg-gradient-to-r ${partnership.gradient} rounded-3xl blur-2xl opacity-0 group-hover:opacity-50 transition-all duration-500`}
-                animate={{
-                  scale: [1, 1.1, 1],
-                }}
-                transition={{ duration: 3, repeat: Infinity }}
-              />
-
               {/* Card */}
               <div className='relative bg-white rounded-3xl p-8 lg:p-10 shadow-2xl overflow-hidden'>
-                {/* Animated background gradient */}
-                <motion.div
-                  className={`absolute inset-0 bg-gradient-to-br ${partnership.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-500`}
-                />
-
                 {/* Floating emoji */}
                 <motion.div
                   animate={{
@@ -175,7 +161,7 @@ const Partnership = () => {
                 <motion.div
                   whileHover={{ rotateY: 360, scale: 1.2 }}
                   transition={{ duration: 0.8 }}
-                  className={`w-20 h-20 bg-gradient-to-br ${partnership.gradient} rounded-2xl flex items-center justify-center text-white mb-6 shadow-2xl relative z-10`}
+                  className={`w-20 h-20 ${partnership.color} rounded-2xl flex items-center justify-center text-white mb-6 shadow-2xl relative z-10`}
                 >
                   {partnership.icon}
                 </motion.div>
@@ -226,13 +212,13 @@ const Partnership = () => {
                   ))}
                 </ul>
 
-                {/* CTA Button with shine effect */}
+                {/* CTA Button */}
                 <motion.div
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
                   <button
-                    className={`relative w-full px-8 py-4 bg-gradient-to-r ${partnership.gradient} text-white font-heading font-semibold rounded-xl shadow-lg overflow-hidden group/btn`}
+                    className={`relative w-full px-8 py-4 ${partnership.color} hover:opacity-90 text-white font-heading font-semibold rounded-xl shadow-lg overflow-hidden group/btn`}
                   >
                     <motion.div
                       className='absolute inset-0 bg-white'
@@ -253,7 +239,7 @@ const Partnership = () => {
                       repeat: Infinity,
                       ease: 'linear',
                     }}
-                    className={`w-full h-full bg-gradient-to-br ${partnership.gradient} rounded-full opacity-10`}
+                    className={`w-full h-full ${partnership.color} rounded-full opacity-10`}
                   />
                 </div>
               </div>
