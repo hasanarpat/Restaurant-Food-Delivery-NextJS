@@ -1,40 +1,61 @@
-import { featuredProducts } from "@/data";
-import Image from "next/image";
-import React from "react";
+'use client';
+import { featuredProducts } from '@/data';
+import React from 'react';
+import Container from './ui/Container';
+import ProductCard from './ProductCard';
+import { motion } from 'framer-motion';
 
 const Featured = () => {
+  // Assign badges to some products for demo
+  const productsWithBadges = featuredProducts.map((product, index) => ({
+    ...product,
+    badge:
+      index === 0
+        ? ('new' as const)
+        : index === 1
+          ? ('bestseller' as const)
+          : index === 4
+            ? ('hot' as const)
+            : undefined,
+    rating: 4.5 + Math.random() * 0.5, // Random rating between 4.5-5.0
+  }));
+
   return (
-    <div className="w-screen overflow-x-scroll text-green-500 no-scrollbar">
-      <div className="w-max flex">
-        {featuredProducts.map((product) => (
-          <div
-            className="w-screen h-[60vh] xl:h-[90vh] md:w-[50vw] xl:w-[33vw] flex flex-col items-center justify-around p-4 hover:bg-fuchsia-50 transition-all duration-300"
-            key={product.id}
-          >
-            <div className="relative flex-1 w-full hover:rotate-[60deg] transition-all duration-300">
-              {product.img && (
-                <Image
-                  alt="product"
-                  src={product.img}
-                  fill
-                  className="object-contain"
-                />
-              )}
-            </div>
-            <div className="flex-1 flex flex-col p-4 gap-4 items-center justify-center">
-              <h1 className="text-xl font-bold uppercase xl:text-2xl 2xl:text-3xl">
-                {product.title}
-              </h1>
-              <p className="p-4 text-center 2xl:p-8">{product.desc}</p>
-              <span>${product.price}</span>
-              <button className="cursor-pointer bg-green-500 rounded-md text-white py-3 px-6 hover:bg-white hover:text-green-500 hover:border-green-500 hover:border-2">
-                Add to cart
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
+    <section className='py-16 md:py-24 bg-white'>
+      <Container>
+        {/* Section Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className='text-center mb-12'
+        >
+          <h2 className='text-4xl md:text-5xl font-heading font-bold text-gradient mb-4'>
+            Featured Products
+          </h2>
+          <p className='text-lg text-gray-600 font-body max-w-2xl mx-auto'>
+            Discover our most popular and delicious items, crafted with passion
+            and the finest ingredients
+          </p>
+        </motion.div>
+
+        {/* Products Grid */}
+        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'>
+          {productsWithBadges.map((product) => (
+            <ProductCard
+              key={product.id}
+              id={product.id}
+              title={product.title}
+              desc={product.desc}
+              img={product.img}
+              price={product.price}
+              badge={product.badge}
+              rating={product.rating}
+            />
+          ))}
+        </div>
+      </Container>
+    </section>
   );
 };
 
