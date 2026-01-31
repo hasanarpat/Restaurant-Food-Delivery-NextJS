@@ -126,7 +126,7 @@ const Navbar = () => {
         >
           <div className='relative w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden shadow-sm'>
             <Image
-              src='/antepli_logo_solid.png'
+              src='/images/logo_orange.png'
               alt='Antepli Pizza'
               fill
               className='object-cover'

@@ -205,7 +205,7 @@ export const lahmacun: Products = [
     id: 61,
     title: 'Classic Lahmacun',
     desc: 'Crispy thin dough topped with minced meat, fresh herbs, and spices. Served with lemon and parsley.',
-    img: '/temporary/p1.png',
+    img: '/images/product_lahmacun_classic.png',
     price: 8.9,
     options: [
       { title: 'Small', additionalPrice: 0 },
@@ -216,7 +216,7 @@ export const lahmacun: Products = [
     id: 62,
     title: 'Spicy Lahmacun',
     desc: 'Our classic lahmacun with an extra kick of hot peppers and spicy tomato paste.',
-    img: '/temporary/p1.png',
+    img: '/images/product_lahmacun_classic.png',
     price: 9.9,
     options: [
       { title: 'Small', additionalPrice: 0 },
@@ -227,7 +227,7 @@ export const lahmacun: Products = [
     id: 63,
     title: 'Cheese Lahmacun',
     desc: 'A twist on the classic, topped with a blend of melted cheeses for a savory delight.',
-    img: '/temporary/p1.png',
+    img: '/images/product_lahmacun_cheese.png',
     price: 10.9,
     options: [
       { title: 'Small', additionalPrice: 0 },
@@ -241,7 +241,7 @@ export const baklava: Products = [
     id: 81,
     title: 'Pistachio Baklava',
     desc: 'Layers of phyllo pastry filled with chopped pistachios and sweetened with syrup.',
-    img: '/temporary/p1.png',
+    img: '/images/product_baklava_pistachio.png',
     price: 15.9,
     options: [
       { title: 'Small', additionalPrice: 0 },
@@ -252,7 +252,7 @@ export const baklava: Products = [
     id: 82,
     title: 'Walnut Baklava',
     desc: 'Traditional baklava filled with crushed walnuts and soaked in honey syrup.',
-    img: '/temporary/p1.png',
+    img: '/images/product_baklava_pistachio.png', // Reusing pistachio for walnut for now as they look similar
     price: 14.9,
     options: [
       { title: 'Small', additionalPrice: 0 },
@@ -263,7 +263,7 @@ export const baklava: Products = [
     id: 83,
     title: 'Chocolate Baklava',
     desc: 'A modern twist with rich chocolate filling and glaze.',
-    img: '/temporary/p1.png',
+    img: '/images/product_baklava_chocolate.png',
     price: 16.9,
     options: [
       { title: 'Small', additionalPrice: 0 },
@@ -301,7 +301,7 @@ export const menu: Menu = [
     slug: 'pastas',
     title: 'Italian Pastas',
     desc: 'Savor the taste of perfection with our exquisite Italian handmade pasta menu.',
-    img: '/temporary/m1.png',
+    img: '/images/category_pasta.png',
     color: 'white',
   },
   {
@@ -309,7 +309,7 @@ export const menu: Menu = [
     slug: 'burgers',
     title: 'Juicy Burgers',
     desc: 'Burger Bliss: Juicy patties, bold flavors, and gourmet toppings galore.',
-    img: '/temporary/m2.png',
+    img: '/images/category_burger.png',
     color: 'black',
   },
   {
@@ -317,7 +317,7 @@ export const menu: Menu = [
     slug: 'pizzas',
     title: 'Cheesy Pizzas',
     desc: 'Pizza Paradise: Irresistible slices, mouthwatering toppings, and cheesy perfection.',
-    img: '/temporary/m3.png',
+    img: '/images/category_pizza.png',
     color: 'white',
   },
   {
@@ -325,7 +325,7 @@ export const menu: Menu = [
     slug: 'lahmacun',
     title: 'Crispy Lahmacun',
     desc: 'Traditional taste: Thin, crispy dough with seasoned minced meat.',
-    img: '/temporary/m3.png', // Temporary placeholder
+    img: '/images/category_lahmacun.png',
     color: 'black',
   },
   {
@@ -333,7 +333,7 @@ export const menu: Menu = [
     slug: 'baklava',
     title: 'Sweet Baklava',
     desc: 'Dessert delight: Flaky pastry layers with nuts and syrup.',
-    img: '/temporary/m1.png', // Temporary placeholder
+    img: '/images/category_baklava.png',
     color: 'white',
   },
 ];

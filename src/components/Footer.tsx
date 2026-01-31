@@ -26,7 +26,7 @@ const Footer = () => {
             <div className='flex flex-col gap-4'>
               <div className='relative w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-gray-800'>
                 <Image
-                  src='/antepli_logo_solid.png'
+                  src='/images/logo_orange.png'
                   alt='Antepli Pizza'
                   fill
                   className='object-cover'

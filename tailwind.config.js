@@ -16,40 +16,40 @@ module.exports = {
     extend: {
       colors: {
         primary: {
-          50: '#faf5ff',
-          100: '#f3e8ff',
-          200: '#e9d5ff',
-          300: '#d8b4fe',
-          400: '#c084fc',
-          500: '#7C3AED', // Darker Vibrant Violet (was 600)
-          600: '#6d28d9',
-          700: '#5b21b6',
-          800: '#4c1d95',
-          900: '#3b0764',
+          50: '#fff7ed',
+          100: '#ffedd5',
+          200: '#fed7aa',
+          300: '#fdba74',
+          400: '#fb923c',
+          500: '#f97316', // Vibrant Orange
+          600: '#ea580c',
+          700: '#c2410c',
+          800: '#9a3412',
+          900: '#7c2d12',
         },
         secondary: {
-          50: '#f5f3ff',
-          100: '#ede9fe',
-          200: '#ddd6fe',
-          300: '#c4b5fd',
-          400: '#a78bfa',
-          500: '#5B48D4', // Darker Ultra Violet (was 600)
-          600: '#4c3fb8',
-          700: '#3d3494',
-          800: '#2e2870',
-          900: '#1e1a4d',
+          50: '#fef2f2',
+          100: '#fee2e2',
+          200: '#fecaca',
+          300: '#fca5a5',
+          400: '#f87171',
+          500: '#ef4444', // Red
+          600: '#dc2626',
+          700: '#b91c1c',
+          800: '#991b1b',
+          900: '#7f1d1d',
         },
         accent: {
-          50: '#eef2ff',
-          100: '#e0e7ff',
-          200: '#c7d2fe',
-          300: '#a5b4fc',
-          400: '#818cf8',
-          500: '#4338CA', // Darker Indigo (was 600)
-          600: '#3730a3',
-          700: '#312e81',
-          800: '#1e1b4b',
-          900: '#0f0d2e',
+          50: '#fffbeb',
+          100: '#fef3c7',
+          200: '#fde68a',
+          300: '#fcd34d',
+          400: '#fbbf24',
+          500: '#f59e0b', // Amber
+          600: '#d97706',
+          700: '#b45309',
+          800: '#92400e',
+          900: '#78350f',
         },
         success: {
           50: '#f0fdf4',
@@ -63,11 +63,11 @@ module.exports = {
           800: '#166534',
           900: '#14532d',
         },
-        cream: '#FDFAFF', // Slightly lavender tinted cream
+        cream: '#FFFDF5', // Warm cream
         dark: {
-          bg: '#1e1b4b', // Deep Indigo
-          card: '#2e2870', // Dark Violet
-          border: '#3d3494',
+          bg: '#1f1f1f',
+          card: '#2a2a2a',
+          border: '#333333',
         },
       },
       fontFamily: {
@@ -97,22 +97,22 @@ module.exports = {
         '4xl': '2rem',
       },
       boxShadow: {
-        soft: '0 2px 15px 0 rgba(0, 0, 0, 0.08)',
-        'soft-lg': '0 10px 40px 0 rgba(0, 0, 0, 0.1)',
-        glow: '0 0 20px rgba(124, 58, 237, 0.4)', // Violet glow
-        'glow-lg': '0 0 30px rgba(124, 58, 237, 0.5)', // Stronger violet glow
+        soft: '0 2px 15px 0 rgba(0, 0, 0, 0.05)',
+        'soft-lg': '0 10px 40px 0 rgba(0, 0, 0, 0.08)',
+        glow: '0 0 20px rgba(249, 115, 22, 0.4)', // Orange glow
+        'glow-lg': '0 0 30px rgba(249, 115, 22, 0.5)',
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
         'gradient-hero':
-          'linear-gradient(135deg, #7C3AED 0%, #5B48D4 50%, #4338CA 100%)', // Panteone Purple Gradient
+          'linear-gradient(135deg, #f97316 0%, #ea580c 50%, #c2410c 100%)', // Orange Gradient
         'gradient-hero-dark':
-          'linear-gradient(135deg, #3b0764 0%, #2e2870 50%, #1e1b4b 100%)',
-        'gradient-button': 'linear-gradient(135deg, #7C3AED 0%, #5B48D4 100%)', // Violet to Ultra Violet
+          'linear-gradient(135deg, #431407 0%, #2e2870 50%, #1e1b4b 100%)', // Adjusted dark
+        'gradient-button': 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)', // Orange to Dark Orange
         'gradient-button-hover':
-          'linear-gradient(135deg, #6d28d9 0%, #4c3fb8 100%)', // Darker on hover
+          'linear-gradient(135deg, #ea580c 0%, #c2410c 100%)', // Darker on hover
       },
       animation: {
         float: 'float 3s ease-in-out infinite',

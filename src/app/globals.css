@@ -4,31 +4,31 @@
 
 /* CSS Variables */
 :root {
-  /* Gradients - Pantone Purple/Violet Colors */
+  /* Gradients - Orange/Red Colors */
   --gradient-hero: linear-gradient(
     135deg,
-    #7c3aed 0%,
-    #5b48d4 50%,
-    #4338ca 100%
+    #f97316 0%,
+    #ea580c 50%,
+    #c2410c 100%
   );
   --gradient-hero-dark: linear-gradient(
     135deg,
-    #3b0764 0%,
-    #2e2870 50%,
-    #1e1b4b 100%
+    #7c2d12 0%,
+    #431407 50%,
+    #2a0a03 100%
   );
   --gradient-card: linear-gradient(
     180deg,
     rgba(255, 255, 255, 0) 0%,
-    rgba(124, 58, 237, 0.08) 100%
+    rgba(249, 115, 22, 0.08) 100%
   );
   --gradient-overlay: linear-gradient(
     180deg,
     rgba(0, 0, 0, 0) 0%,
     rgba(0, 0, 0, 0.7) 100%
   );
-  --gradient-button: linear-gradient(135deg, #7c3aed 0%, #5b48d4 100%);
-  --gradient-button-hover: linear-gradient(135deg, #6d28d9 0%, #4c3fb8 100%);
+  --gradient-button: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  --gradient-button-hover: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
 }
 
 /* Base Styles */
@@ -42,12 +42,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Hide scrollbar for Chrome, Safari and Opera */
+/* ... (hidden scrollbar utils) ... */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
 
-/* Hide scrollbar for IE, Edge and Firefox */
 .no-scrollbar {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
@@ -55,7 +54,7 @@ body {
 
 /* Focus Visible Utility */
 .focus-visible:focus {
-  outline: 2px solid #7c3aed;
+  outline: 2px solid #f97316;
   outline-offset: 2px;
 }
 
