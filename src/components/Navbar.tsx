@@ -31,7 +31,7 @@ const Navbar = () => {
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
           ? 'glass shadow-lg border-b border-gray-200/20'
-          : 'bg-transparent'
+          : 'bg-white/60 backdrop-blur-md border-b border-white/20'
       }`}
     >
       {/* Top bar with solid red background - enhanced content */}
@@ -62,7 +62,7 @@ const Navbar = () => {
                   <path d='M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z' />
                 </svg>
                 <span className='font-ui font-medium'>
-                  info@kopernikpizza.com
+                  info@anteplipizza.com
                 </span>
               </div>
             </div>
@@ -127,13 +127,22 @@ const Navbar = () => {
         </div>
 
         {/* Center - Logo with animation */}
-        <Link href='/' className='flex-1 md:text-center group'>
-          <motion.h1
-            whileHover={{ scale: 1.05 }}
-            className='text-2xl md:text-3xl lg:text-4xl font-heading font-bold text-gradient cursor-pointer'
-          >
-            Kopernik Pizza
-          </motion.h1>
+        <Link
+          href='/'
+          className='flex-1 md:text-center group flex justify-center items-center gap-3'
+        >
+          <div className='relative w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden shadow-sm'>
+            <Image
+              src='/antepli_logo_solid.png'
+              alt='Antepli Pizza'
+              fill
+              className='object-cover'
+              priority
+            />
+          </div>
+          <span className='font-heading text-xl md:text-2xl font-bold text-gray-800 tracking-tight'>
+            Antepli Pizza
+          </span>
         </Link>
 
         {/* Mobile Menu Button */}

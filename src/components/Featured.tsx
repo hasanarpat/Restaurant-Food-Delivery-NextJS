@@ -17,7 +17,7 @@ const Featured = () => {
           : index === 4
             ? ('hot' as const)
             : undefined,
-    rating: 4.5 + Math.random() * 0.5, // Random rating between 4.5-5.0
+    rating: 4.5 + (product.id % 5) * 0.1, // Deterministic rating based on ID
   }));
 
   return (

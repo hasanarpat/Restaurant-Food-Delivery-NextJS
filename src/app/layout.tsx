@@ -28,9 +28,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Kopernik Pizza - Delicious Food Delivery',
+  title: 'Antepli Pizza - Delicious Food Delivery',
   description:
-    'Order delicious pizzas, burgers, and pasta from Kopernik Pizza. Fresh ingredients, fast delivery, amazing taste!',
+    'Order delicious pizzas, burgers, and pasta from Antepli Pizza. Fresh ingredients, fast delivery, amazing taste!',
 };
 
 export default function RootLayout({

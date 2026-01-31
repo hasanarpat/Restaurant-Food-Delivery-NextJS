@@ -130,7 +130,7 @@ const SingleCategory = () => {
                 badge={
                   index === 0 ? 'bestseller' : index === 2 ? 'hot' : undefined
                 }
-                rating={4.5 + Math.random() * 0.5}
+                rating={4.5 + ((item.id + index) % 5) * 0.1}
               />
             </motion.div>
           ))}

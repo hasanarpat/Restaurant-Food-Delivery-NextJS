@@ -8,21 +8,29 @@ const slides = [
   {
     id: 1,
     slide: '/slide1.png',
-    title: 'The best pizzas in all the galaxies...',
+    title: 'Authentic Antep Stone Oven Pizza',
     description:
-      'Delicious handcrafted pizzas made with love and fresh ingredients',
+      'Crispy crust, rich toppings, and the traditional taste you crave.',
   },
   {
     id: 2,
-    slide: '/slide2.png',
-    title: 'Try our new Mexican Burger: Red Hot Chilli Peppers 🌶️🔥',
-    description: 'Spicy, juicy, and absolutely irresistible',
+    slide: '/slider_lahmacun.png',
+    title: 'Traditional Crispy Lahmacun',
+    description:
+      'Freshly ground meat, herbs, and spices on thin dough. Served with fresh lemon and parsley.',
   },
   {
     id: 3,
-    slide: '/slide3.jpg',
-    title: 'Hot and Cheesy food with freezing cokes',
-    description: 'The perfect combination for a great meal',
+    slide: '/slide2.png',
+    title: 'Gourmet Burgers with a Local Twist',
+    description: 'Juicy 100% beef patties seasoned with special Antep spices.',
+  },
+  {
+    id: 4,
+    slide: '/slider_baklava.png',
+    title: 'Premium Pistachio Baklava',
+    description:
+      'The perfect sweet ending. 40 layers of phyllo with the finest Antep pistachios.',
   },
 ];
 

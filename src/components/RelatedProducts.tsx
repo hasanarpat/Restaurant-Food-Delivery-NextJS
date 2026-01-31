@@ -7,7 +7,7 @@ const RelatedProducts = ({ currentId }: { currentId: number }) => {
   // Filter out the current product and take top 3
   const related = featuredProducts
     .filter((item) => item.id !== currentId)
-    .slice(0, 3);
+    .slice(0, 7);
 
   const scrollRef = React.useRef<HTMLDivElement>(null);
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import Container from './ui/Container';
 
 const Footer = () => {
@@ -12,9 +13,20 @@ const Footer = () => {
         <div className='py-12 md:py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12'>
           {/* Brand Section */}
           <div className='space-y-4'>
-            <h2 className='text-2xl lg:text-3xl font-heading font-bold text-gradient-to-r from-primary-400 to-primary-500'>
-              Kopernik Pizza
-            </h2>
+            <div className='flex flex-col gap-4'>
+              <div className='relative w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-gray-800'>
+                <Image
+                  src='/antepli_logo_solid.png'
+                  alt='Antepli Pizza'
+                  fill
+                  className='object-cover'
+                  priority
+                />
+              </div>
+              <h2 className='text-2xl lg:text-3xl font-heading font-bold text-gradient-to-r from-primary-400 to-primary-500'>
+                Antepli Pizza
+              </h2>
+            </div>
             <p className='font-body text-gray-300 text-sm leading-relaxed'>
               Delicious handcrafted pizzas, burgers, and pasta made with love
               and the finest ingredients. Fast delivery, amazing taste!
@@ -133,10 +145,10 @@ const Footer = () => {
               <li className='flex items-center gap-2'>
                 <span>✉️</span>
                 <Link
-                  href='mailto:info@kopernikpizza.com'
+                  href='mailto:info@anteplipizza.com'
                   className='hover:text-primary-400 transition-colors'
                 >
-                  info@kopernikpizza.com
+                  info@anteplipizza.com
                 </Link>
               </li>
               <li className='flex items-center gap-2'>
@@ -176,7 +188,7 @@ const Footer = () => {
         <Container>
           <div className='py-6 flex flex-col md:flex-row justify-between items-center gap-4'>
             <p className='font-ui text-sm text-gray-400 text-center md:text-left'>
-              © {currentYear} Kopernik Pizza. All rights reserved.
+              © {currentYear} Antepli Pizza. All rights reserved.
             </p>
             <div className='flex gap-6 font-ui text-sm'>
               <Link
