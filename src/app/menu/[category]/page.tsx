@@ -1,15 +1,18 @@
 'use client';
 import { pizzas, burgers, pastas } from '@/data';
 import { usePathname } from 'next/navigation';
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import Container from '@/components/ui/Container';
 import ProductCard from '@/components/ProductCard';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 
+type SortOption = 'popular' | 'price-low' | 'price-high' | 'newest';
+
 const SingleCategory = () => {
   const pathname = usePathname();
   const category = pathname.split('/')[2];
+  const [sortBy, setSortBy] = useState<SortOption>('popular');
 
   // Capitalize first letter
   const categoryName = category
@@ -31,6 +34,30 @@ const SingleCategory = () => {
   };
 
   const products = getProducts();
+
+  // Sort products based on selected option
+  const sortedProducts = useMemo(() => {
+    const productsCopy = [...products];
+
+    switch (sortBy) {
+      case 'popular':
+        return productsCopy.sort(
+          (a, b) => (b.popularity || 50) - (a.popularity || 50),
+        );
+      case 'price-low':
+        return productsCopy.sort((a, b) => a.price - b.price);
+      case 'price-high':
+        return productsCopy.sort((a, b) => b.price - a.price);
+      case 'newest':
+        return productsCopy.sort((a, b) => {
+          const dateA = new Date(a.createdAt || '2024-01-01').getTime();
+          const dateB = new Date(b.createdAt || '2024-01-01').getTime();
+          return dateB - dateA;
+        });
+      default:
+        return productsCopy;
+    }
+  }, [products, sortBy]);
 
   return (
     <div className='min-h-screen bg-gradient-to-br from-cream via-white to-primary-50 py-16 md:py-24'>
@@ -80,25 +107,29 @@ const SingleCategory = () => {
         >
           <div className='flex items-center gap-2 font-ui text-sm text-gray-600'>
             <span className='font-semibold text-gray-900'>
-              {products.length}
+              {sortedProducts.length}
             </span>{' '}
             products found
           </div>
 
           <div className='flex items-center gap-4'>
             <label className='font-ui text-sm text-gray-600'>Sort by:</label>
-            <select className='px-4 py-2 rounded-lg border border-gray-200 font-ui text-sm focus:outline-none focus:border-primary-500 transition-colors'>
-              <option>Most Popular</option>
-              <option>Price: Low to High</option>
-              <option>Price: High to Low</option>
-              <option>Newest</option>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as SortOption)}
+              className='px-4 py-2 rounded-lg border border-gray-200 font-ui text-sm focus:outline-none focus:border-primary-500 transition-colors cursor-pointer'
+            >
+              <option value='popular'>Most Popular</option>
+              <option value='price-low'>Price: Low to High</option>
+              <option value='price-high'>Price: High to Low</option>
+              <option value='newest'>Newest</option>
             </select>
           </div>
         </motion.div>
 
         {/* Products Grid */}
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'>
-          {products.map((item, index) => (
+          {sortedProducts.map((item, index) => (
             <motion.div
               key={item.id}
               initial={{ opacity: 0, y: 20 }}

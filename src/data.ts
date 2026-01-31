@@ -5,6 +5,8 @@ type Product = {
   img?: string;
   price: number;
   options?: { title: string; additionalPrice: number }[];
+  popularity?: number; // 1-100 score for sorting
+  createdAt?: string; // ISO date string for "newest" sorting
 };
 
 type Products = Product[];
