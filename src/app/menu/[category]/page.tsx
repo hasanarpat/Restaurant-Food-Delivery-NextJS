@@ -1,5 +1,5 @@
 'use client';
-import { pizzas } from '@/data';
+import { pizzas, burgers, pastas } from '@/data';
 import { usePathname } from 'next/navigation';
 import React from 'react';
 import Container from '@/components/ui/Container';
@@ -15,6 +15,22 @@ const SingleCategory = () => {
   const categoryName = category
     ? category.charAt(0).toUpperCase() + category.slice(1)
     : 'Products';
+
+  // Get correct products based on category
+  const getProducts = () => {
+    switch (category) {
+      case 'pizzas':
+        return pizzas;
+      case 'burgers':
+        return burgers;
+      case 'pastas':
+        return pastas;
+      default:
+        return pizzas;
+    }
+  };
+
+  const products = getProducts();
 
   return (
     <div className='min-h-screen bg-gradient-to-br from-cream via-white to-primary-50 py-16 md:py-24'>
@@ -63,7 +79,9 @@ const SingleCategory = () => {
           className='mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 p-6 bg-white rounded-2xl shadow-soft'
         >
           <div className='flex items-center gap-2 font-ui text-sm text-gray-600'>
-            <span className='font-semibold text-gray-900'>{pizzas.length}</span>{' '}
+            <span className='font-semibold text-gray-900'>
+              {products.length}
+            </span>{' '}
             products found
           </div>
 
@@ -80,7 +98,7 @@ const SingleCategory = () => {
 
         {/* Products Grid */}
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'>
-          {pizzas.map((item, index) => (
+          {products.map((item, index) => (
             <motion.div
               key={item.id}
               initial={{ opacity: 0, y: 20 }}

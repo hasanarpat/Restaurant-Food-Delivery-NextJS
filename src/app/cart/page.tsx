@@ -1,91 +1,56 @@
 'use client';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React from 'react';
 import Container from '@/components/ui/Container';
 import PageHeader from '@/components/ui/PageHeader';
 import Button from '@/components/ui/Button';
 import { motion } from 'framer-motion';
-
-// Temporary cart data
-const initialCartItems = [
-  {
-    id: 1,
-    name: 'Sicilian Pizza',
-    size: 'Large',
-    price: 24.9,
-    quantity: 2,
-    image: '/temporary/p1.png',
-  },
-  {
-    id: 2,
-    name: 'Bella Napoli',
-    size: 'Medium',
-    price: 19.9,
-    quantity: 1,
-    image: '/temporary/p2.png',
-  },
-  {
-    id: 3,
-    name: 'Spicy Arrabbiata',
-    size: 'Large',
-    price: 26.9,
-    quantity: 1,
-    image: '/temporary/p3.png',
-  },
-];
+import { useCart } from '@/context/CartContext';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const CartPage = () => {
-  const [cartItems, setCartItems] = useState(initialCartItems);
+  const { cart, updateQuantity, removeFromCart, totalPrice } = useCart();
+  const router = useRouter();
 
-  const updateQuantity = (id: number, newQuantity: number) => {
-    if (newQuantity < 1) return;
-    setCartItems((items) =>
-      items.map((item) =>
-        item.id === id ? { ...item, quantity: newQuantity } : item,
-      ),
-    );
-  };
-
-  const removeItem = (id: number) => {
-    setCartItems((items) => items.filter((item) => item.id !== id));
-  };
-
-  const subtotal = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0,
-  );
   const serviceCost = 0;
-  const deliveryCost = subtotal > 50 ? 0 : 4.99;
-  const total = subtotal + serviceCost + deliveryCost;
+  const deliveryCost = totalPrice > 50 ? 0 : 4.99;
+  const total = totalPrice + serviceCost + deliveryCost;
+
+  const handleCheckout = () => {
+    router.push('/checkout');
+  };
 
   return (
     <div className='min-h-screen bg-gradient-to-br from-cream via-white to-primary-50 py-16 md:py-24'>
       <Container>
         <PageHeader
           title='Shopping Cart'
-          description={`${cartItems.length} ${cartItems.length === 1 ? 'item' : 'items'} in your cart`}
+          description={`${cart.length} ${cart.length === 1 ? 'item' : 'items'} in your cart`}
           breadcrumbs={[
             { label: 'Home', href: '/' },
             { label: 'Cart', href: '/cart' },
           ]}
         />
 
-        {cartItems.length === 0 ? (
+        {cart.length === 0 ? (
           <div className='text-center py-16'>
             <p className='text-2xl font-heading font-semibold text-gray-400 mb-4'>
               Your cart is empty
             </p>
-            <Button variant='primary' size='lg'>
-              Browse Menu
-            </Button>
+            <Link href='/menu'>
+              <Button variant='primary' size='lg'>
+                Browse Menu
+              </Button>
+            </Link>
           </div>
         ) : (
           <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
             {/* Cart Items */}
             <div className='lg:col-span-2 space-y-4'>
-              {cartItems.map((item, index) => (
+              {cart.map((item, index) => (
                 <motion.div
-                  key={item.id}
+                  key={`${item.id}-${item.size}`}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
@@ -94,8 +59,8 @@ const CartPage = () => {
                   {/* Product Image */}
                   <div className='relative w-24 h-24 flex-shrink-0 bg-cream rounded-xl overflow-hidden'>
                     <Image
-                      src={item.image}
-                      alt={item.name}
+                      src={item.image || '/temporary/p1.png'}
+                      alt={item.title}
                       fill
                       className='object-cover hover:scale-110 transition-transform duration-300'
                     />
@@ -104,7 +69,7 @@ const CartPage = () => {
                   {/* Product Info */}
                   <div className='flex-1'>
                     <h3 className='font-heading text-lg font-bold text-gray-900'>
-                      {item.name}
+                      {item.title}
                     </h3>
                     <p className='font-ui text-sm text-gray-600'>{item.size}</p>
                     <p className='font-heading text-lg font-bold text-primary-600 mt-1'>
@@ -115,7 +80,9 @@ const CartPage = () => {
                   {/* Quantity Controls */}
                   <div className='flex items-center gap-3 bg-gray-100 rounded-lg px-3 py-2'>
                     <button
-                      onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                      onClick={() =>
+                        updateQuantity(item.id, item.quantity - 1, item.size)
+                      }
                       className='w-6 h-6 flex items-center justify-center hover:bg-gray-200 rounded transition-colors font-bold'
                     >
                       −
@@ -124,7 +91,9 @@ const CartPage = () => {
                       {item.quantity}
                     </span>
                     <button
-                      onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                      onClick={() =>
+                        updateQuantity(item.id, item.quantity + 1, item.size)
+                      }
                       className='w-6 h-6 flex items-center justify-center hover:bg-gray-200 rounded transition-colors font-bold'
                     >
                       +
@@ -133,7 +102,7 @@ const CartPage = () => {
 
                   {/* Remove Button */}
                   <button
-                    onClick={() => removeItem(item.id)}
+                    onClick={() => removeFromCart(item.id, item.size)}
                     className='w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors'
                     aria-label='Remove item'
                   >
@@ -169,9 +138,9 @@ const CartPage = () => {
 
                 <div className='space-y-4 font-body'>
                   <div className='flex justify-between text-gray-700'>
-                    <span>Subtotal ({cartItems.length} items)</span>
+                    <span>Subtotal ({cart.length} items)</span>
                     <span className='font-semibold'>
-                      ${subtotal.toFixed(2)}
+                      ${totalPrice.toFixed(2)}
                     </span>
                   </div>
                   <div className='flex justify-between text-gray-700'>
@@ -205,13 +174,18 @@ const CartPage = () => {
                   </div>
                 </div>
 
-                <Button variant='primary' size='lg' className='w-full mt-6'>
+                <Button
+                  variant='primary'
+                  size='lg'
+                  className='w-full mt-6'
+                  onClick={handleCheckout}
+                >
                   Proceed to Checkout 🛒
                 </Button>
 
-                {subtotal < 50 && (
+                {totalPrice < 50 && (
                   <p className='text-xs text-center text-gray-500 mt-3'>
-                    Add ${(50 - subtotal).toFixed(2)} more for free delivery!
+                    Add ${(50 - totalPrice).toFixed(2)} more for free delivery!
                   </p>
                 )}
               </div>

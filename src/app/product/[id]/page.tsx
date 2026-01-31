@@ -66,8 +66,10 @@ const SingleProductPage = () => {
 
             <div className='border-t border-gray-200 pt-6'>
               <Price
-                price={singleProduct.price}
                 id={singleProduct.id}
+                title={singleProduct.title}
+                price={singleProduct.price}
+                image={singleProduct.img}
                 options={singleProduct.options}
               />
             </div>

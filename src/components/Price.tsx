@@ -1,90 +1,134 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Button from './ui/Button';
+import { useCart } from '@/context/CartContext';
 
 type Props = {
-  price: number;
   id: number;
+  title: string;
+  price: number;
+  image?: string;
   options?: { title: string; additionalPrice: number }[];
 };
 
-const Price = ({ price, id, options }: Props) => {
-  const [total, setTotal] = useState(price);
-  const [quantity, setQuantity] = useState(1);
+const Price = ({ id, title, price, image, options }: Props) => {
   const [selected, setSelected] = useState(0);
+  const [quantity, setQuantity] = useState(1);
+  const { addToCart } = useCart();
+  const [isAdded, setIsAdded] = useState(false);
 
-  useEffect(() => {
-    setTotal(
-      quantity * (options ? price + options[selected].additionalPrice : price),
-    );
-  }, [quantity, selected, options, price]);
+  const handleAddToCart = () => {
+    const selectedOption = options?.[selected];
+    const finalPrice = price + (selectedOption?.additionalPrice || 0);
+
+    for (let i = 0; i < quantity; i++) {
+      addToCart({
+        id,
+        title,
+        price: finalPrice,
+        size: selectedOption?.title || 'Regular',
+        image: image || '/temporary/p1.png',
+      });
+    }
+
+    // Show success feedback
+    setIsAdded(true);
+    setQuantity(1); // Reset quantity
+    setTimeout(() => setIsAdded(false), 2000);
+  };
 
   return (
     <div className='flex flex-col gap-6'>
-      <div className='flex items-baseline gap-3'>
-        <h2 className='text-4xl font-heading font-bold text-gradient'>
-          ${total.toFixed(2)}
-        </h2>
-        {options && options[selected].additionalPrice > 0 && (
-          <span className='font-ui text-sm text-gray-500'>
-            (+${options[selected].additionalPrice.toFixed(2)})
-          </span>
-        )}
-      </div>
+      {/* Price */}
+      <h2 className='font-heading text-3xl font-bold text-gradient'>
+        ${(price + (options?.[selected]?.additionalPrice || 0)).toFixed(2)}
+      </h2>
 
       {/* Size Options */}
-      {options && (
-        <div className='flex flex-col gap-3'>
-          <label className='font-ui text-sm font-semibold text-gray-700'>
-            Choose Size:
-          </label>
-          <div className='flex gap-3 flex-wrap'>
+      {options && options.length > 0 && (
+        <div>
+          <h3 className='font-heading text-sm font-semibold text-gray-700 mb-3'>
+            Choose Size
+          </h3>
+          <div className='flex gap-3'>
             {options.map((option, index) => (
               <button
                 key={option.title}
-                className={`px-6 py-3 rounded-lg font-ui font-semibold transition-all duration-300 ${
+                onClick={() => setSelected(index)}
+                className={`px-6 py-3 rounded-lg font-ui text-sm font-semibold transition-all ${
                   selected === index
                     ? 'bg-gradient-button text-white shadow-md'
-                    : 'bg-white border-2 border-gray-200 text-gray-700 hover:border-primary-400'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
-                onClick={() => setSelected(index)}
               >
                 {option.title}
+                {option.additionalPrice > 0 && (
+                  <span className='ml-1 text-xs'>
+                    +${option.additionalPrice}
+                  </span>
+                )}
               </button>
             ))}
           </div>
         </div>
       )}
 
-      {/* Quantity and Add to Cart */}
-      <div className='flex flex-col sm:flex-row items-stretch gap-4'>
-        {/* Quantity Selector */}
-        <div className='flex items-center justify-between sm:justify-start gap-4 bg-white border-2 border-gray-200 rounded-lg px-6 py-3'>
-          <span className='font-ui font-semibold text-gray-700'>Quantity:</span>
-          <div className='flex items-center gap-4'>
-            <button
-              onClick={() => setQuantity((prev) => (prev === 1 ? 1 : prev - 1))}
-              className='w-8 h-8 flex items-center justify-center bg-gray-100 hover:bg-primary-100 rounded-md transition-colors font-bold text-gray-700'
-            >
-              −
-            </button>
-            <span className='font-heading font-bold text-xl text-gray-900 min-w-[2rem] text-center select-none'>
-              {quantity}
-            </span>
-            <button
-              onClick={() => setQuantity((prev) => (prev === 9 ? 9 : prev + 1))}
-              className='w-8 h-8 flex items-center justify-center bg-gray-100 hover:bg-primary-100 rounded-md transition-colors font-bold text-gray-700'
-            >
-              +
-            </button>
-          </div>
+      {/* Quantity Selector */}
+      <div>
+        <h3 className='font-heading text-sm font-semibold text-gray-700 mb-3'>
+          Quantity
+        </h3>
+        <div className='flex items-center gap-4 bg-gray-100 rounded-lg px-4 py-2 w-fit'>
+          <button
+            onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+            className='w-8 h-8 flex items-center justify-center hover:bg-gray-200 rounded transition-colors font-bold text-lg'
+          >
+            −
+          </button>
+          <span className='font-heading font-bold text-lg text-gray-900 min-w-[2rem] text-center'>
+            {quantity}
+          </span>
+          <button
+            onClick={() => setQuantity((q) => q + 1)}
+            className='w-8 h-8 flex items-center justify-center hover:bg-gray-200 rounded transition-colors font-bold text-lg'
+          >
+            +
+          </button>
         </div>
-
-        {/* Add to Cart Button */}
-        <Button variant='primary' size='lg' className='flex-1'>
-          Add to Cart 🛒
-        </Button>
       </div>
+
+      {/* Add to Cart Button */}
+      <Button
+        variant='primary'
+        size='lg'
+        onClick={handleAddToCart}
+        className='w-full md:w-auto'
+      >
+        {isAdded ? (
+          <>
+            <svg
+              className='w-5 h-5 mr-2 inline'
+              fill='currentColor'
+              viewBox='0 0 20 20'
+            >
+              <path
+                fillRule='evenodd'
+                d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
+                clipRule='evenodd'
+              />
+            </svg>
+            Added to Cart!
+          </>
+        ) : (
+          <>Add {quantity > 1 && `${quantity} `}to Cart 🛒</>
+        )}
+      </Button>
+
+      {isAdded && (
+        <p className='font-ui text-sm text-green-600'>
+          Item added successfully! Check your cart to continue.
+        </p>
+      )}
     </div>
   );
 };
