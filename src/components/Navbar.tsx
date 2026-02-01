@@ -50,14 +50,28 @@ const Navbar = () => {
   };
 
   const navLinks = [
-    { href: '/', label: 'Home', icon: <Home className='w-5 h-5' /> },
+    { href: '/', label: 'Ana Sayfa', icon: <Home className='w-5 h-5' /> },
     {
       href: '/menu',
-      label: 'Menu',
+      label: 'Menü',
       icon: <Pizza className='w-5 h-5' />,
     },
-    { href: '/about', label: 'About', icon: <BookOpen className='w-5 h-5' /> },
-    { href: '/contact', label: 'Contact', icon: <Phone className='w-5 h-5' /> },
+    {
+      href: '/branches',
+      label: 'Şubeler',
+      icon: <MapPin className='w-5 h-5' />,
+    },
+    { href: '/blog', label: 'Blog', icon: <BookOpen className='w-5 h-5' /> },
+    {
+      href: '/about',
+      label: 'Hakkımızda',
+      icon: <Phone className='w-5 h-5' />,
+    },
+    {
+      href: '/contact',
+      label: 'İletişim',
+      icon: <Phone className='w-5 h-5' />,
+    },
   ];
 
   return (
