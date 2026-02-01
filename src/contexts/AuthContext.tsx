@@ -18,6 +18,13 @@ interface User {
     avatar?: string;
   };
   phone?: string;
+  addresses?: {
+    _id: string;
+    title: string;
+    line1: string;
+    city: string;
+    zip: string;
+  }[];
 }
 
 interface AuthContextType {

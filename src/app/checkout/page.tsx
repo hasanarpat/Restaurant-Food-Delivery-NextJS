@@ -230,6 +230,48 @@ const CheckoutPage = () => {
               <h2 className='font-heading text-2xl font-bold text-gray-900 mb-6'>
                 Delivery Address
               </h2>
+
+              {/* Saved Addresses Selection */}
+              {user?.addresses && user.addresses.length > 0 && (
+                <div className='mb-6 grid gap-3'>
+                  <p className='font-ui text-sm font-semibold text-gray-700'>
+                    Select a Saved Address:
+                  </p>
+                  {user.addresses.map((addr: any) => (
+                    <label
+                      key={addr._id}
+                      className='flex items-start gap-3 p-3 border rounded-xl cursor-pointer hover:bg-gray-50 transition-colors'
+                    >
+                      <input
+                        type='radio'
+                        name='selectedAddress'
+                        className='mt-1'
+                        onChange={() => {
+                          setFormData((prev) => ({
+                            ...prev,
+                            address: addr.line1,
+                            city: addr.city,
+                            zipCode: addr.zip,
+                          }));
+                        }}
+                      />
+                      <div>
+                        <span className='font-bold text-gray-900 block'>
+                          {addr.title}
+                        </span>
+                        <span className='text-sm text-gray-600 block'>
+                          {addr.line1}, {addr.city} {addr.zip}
+                        </span>
+                      </div>
+                    </label>
+                  ))}
+                  <div className='border-t my-2'></div>
+                  <p className='font-ui text-xs text-gray-500 italic'>
+                    Or fill in manually below:
+                  </p>
+                </div>
+              )}
+
               <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
                 <div className='md:col-span-2'>
                   <label className='font-ui text-sm font-semibold text-gray-700 mb-2 block'>

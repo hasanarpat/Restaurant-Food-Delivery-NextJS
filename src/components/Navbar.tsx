@@ -46,6 +46,7 @@ const Navbar = () => {
     await logout();
     setShowUserMenu(false);
     router.push('/');
+    router.refresh();
   };
 
   const navLinks = [

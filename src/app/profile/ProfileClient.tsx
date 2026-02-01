@@ -176,6 +176,138 @@ const ProfileClient = () => {
               )}
             </div>
 
+            {/* Address Management */}
+            <div className='bg-white p-8 rounded-2xl shadow-soft mt-6'>
+              <div className='flex items-center justify-between mb-6'>
+                <h3 className='font-heading text-2xl font-bold text-gray-900'>
+                  Saved Addresses
+                </h3>
+              </div>
+
+              {/* Address List */}
+              <div className='space-y-4 mb-8'>
+                {user?.addresses && user.addresses.length > 0 ? (
+                  user.addresses.map((address: any) => (
+                    <div
+                      key={address._id}
+                      className='flex items-start justify-between p-4 border rounded-xl hover:border-primary-200 transition-colors'
+                    >
+                      <div>
+                        <h4 className='font-bold text-gray-900'>
+                          {address.title}
+                        </h4>
+                        <p className='text-gray-600 text-sm'>{address.line1}</p>
+                        <p className='text-gray-500 text-xs'>
+                          {address.city}, {address.zip}
+                        </p>
+                      </div>
+                      <button
+                        onClick={async () => {
+                          if (
+                            !confirm(
+                              'Are you sure you want to delete this address?',
+                            )
+                          )
+                            return;
+                          try {
+                            await apiClient.delete(
+                              `/users/address/${address._id}`,
+                            );
+                            await refetch();
+                            success('Address deleted successfully');
+                          } catch (e: any) {
+                            error(e.message || 'Failed to delete');
+                          }
+                        }}
+                        className='text-red-500 hover:text-red-700 text-sm font-medium'
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  ))
+                ) : (
+                  <p className='text-gray-500 italic'>
+                    No addresses saved yet.
+                  </p>
+                )}
+              </div>
+
+              {/* Add Address Form */}
+              <div className='border-t pt-6'>
+                <h4 className='font-heading text-lg font-semibold mb-4'>
+                  Add New Address
+                </h4>
+                <form
+                  onSubmit={async (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(e.currentTarget);
+                    const data = {
+                      title: formData.get('title'),
+                      line1: formData.get('line1'),
+                      city: formData.get('city'),
+                      zip: formData.get('zip'),
+                    };
+
+                    // Optimistic check
+                    if (user?.addresses && user.addresses.length >= 10) {
+                      error(
+                        'Limit reached. Please delete one of your unused addresses.',
+                      );
+                      return;
+                    }
+
+                    try {
+                      await apiClient.post('/users/address', data);
+                      await refetch();
+                      success('Address added successfully');
+                      (e.target as HTMLFormElement).reset();
+                    } catch (e: any) {
+                      error(e.message || 'Failed to add address');
+                    }
+                  }}
+                  className='grid grid-cols-1 md:grid-cols-2 gap-4'
+                >
+                  <input
+                    name='title'
+                    required
+                    placeholder='Address Title (e.g. Home)'
+                    className='px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-primary-500'
+                  />
+                  <input
+                    name='city'
+                    required
+                    placeholder='City'
+                    className='px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-primary-500'
+                  />
+                  <input
+                    name='line1'
+                    required
+                    placeholder='Full Address'
+                    className='hidden md:block col-span-2 px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-primary-500'
+                  />
+                  {/* Mobile duplicated input for layout simplicity or conditional rendering, but simply: */}
+                  <input
+                    name='line1'
+                    required
+                    placeholder='Full Address'
+                    className='md:hidden px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-primary-500'
+                  />
+
+                  <input
+                    name='zip'
+                    required
+                    placeholder='ZIP Code'
+                    className='px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-primary-500'
+                  />
+                  <div className='flex items-center'>
+                    <Button type='submit' variant='primary' size='md'>
+                      Add Address
+                    </Button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
             {/* Recent Activity / Stats (Placeholder) */}
             <div className='bg-primary-500 p-8 rounded-2xl shadow-soft text-white flex justify-between items-center'>
               <div>
