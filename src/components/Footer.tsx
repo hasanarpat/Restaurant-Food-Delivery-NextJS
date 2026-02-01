@@ -89,6 +89,42 @@ const Footer = () => {
               </li>
               <li>
                 <Link
+                  href='/careers'
+                  className='hover:text-primary-400 transition-colors flex items-center gap-2 group'
+                >
+                  <ArrowRight className='w-4 h-4 text-primary-500 group-hover:translate-x-1 transition-transform' />
+                  Careers
+                </Link>
+              </li>{' '}
+              <li>
+                <Link
+                  href='/partnership'
+                  className='hover:text-primary-400 transition-colors flex items-center gap-2 group'
+                >
+                  <ArrowRight className='w-4 h-4 text-primary-500 group-hover:translate-x-1 transition-transform' />
+                  Partnership
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href='/gallery'
+                  className='hover:text-primary-400 transition-colors flex items-center gap-2 group'
+                >
+                  <ArrowRight className='w-4 h-4 text-primary-500 group-hover:translate-x-1 transition-transform' />
+                  Gallery
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href='/blog'
+                  className='hover:text-primary-400 transition-colors flex items-center gap-2 group'
+                >
+                  <ArrowRight className='w-4 h-4 text-primary-500 group-hover:translate-x-1 transition-transform' />
+                  Blog
+                </Link>
+              </li>
+              <li>
+                <Link
                   href='/about'
                   className='hover:text-primary-400 transition-colors flex items-center gap-2 group'
                 >
