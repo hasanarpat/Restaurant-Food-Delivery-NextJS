@@ -12,7 +12,7 @@ export class ProductService {
     if (query.catSlug) {
       const category = await categoryRepository.findBySlug(query.catSlug);
       if (category) {
-        filter.category = category._id; // Ensure logic handles ObjectID
+        filter.categoryId = category._id; // Ensure logic handles ObjectID
       }
     }
 
@@ -31,9 +31,12 @@ export class ProductService {
     return product;
   }
 
-  async createProduct(data: Partial<IProduct>) {
-    // Validate Category if provided
-    // Assuming data.category is ID string from FE
+  async createProduct(data: any) {
+    // Map 'category' (from FE/Zod) to 'categoryId' (DB Schema)
+    if (data.category) {
+      data.categoryId = data.category;
+      delete data.category;
+    }
     return productRepository.create(data);
   }
 

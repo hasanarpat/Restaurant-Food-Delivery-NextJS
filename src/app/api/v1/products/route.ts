@@ -12,7 +12,7 @@ const createProductSchema = z.object({
   price: z.number().min(0),
   isFeatured: z.boolean().optional(),
   isAvailable: z.boolean().optional(),
-  category: z.string().optional(), // Category ID
+  category: z.string().min(1), // Category ID required
   options: z
     .array(
       z.object({

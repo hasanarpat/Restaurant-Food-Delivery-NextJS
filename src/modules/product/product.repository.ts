@@ -4,12 +4,12 @@ import mongoose from 'mongoose';
 export class ProductRepository {
   async findAll(filter: any = {}): Promise<IProduct[]> {
     return Product.find({ ...filter, isAvailable: true })
-      .populate('category')
+      .populate('categoryId')
       .sort({ createdAt: -1 });
   }
 
   async findById(id: string): Promise<IProduct | null> {
-    return Product.findById(id).populate('category');
+    return Product.findById(id).populate('categoryId');
   }
 
   async create(data: Partial<IProduct>): Promise<IProduct> {

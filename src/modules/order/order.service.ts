@@ -43,14 +43,16 @@ export class OrderService {
       orderItems.push({
         productId: product._id,
         title: product.title, // Snapshot title
-        price: itemPrice, // Snapshot price
+        price: Number(itemPrice.toFixed(2)), // Snapshot price
         quantity: item.quantity,
         selectedOptions: item.selectedOptions || [],
       });
     }
 
+    subTotal = Number(subTotal.toFixed(2));
     const deliveryFee = subTotal > 30 ? 0 : 5; // Free delivery over $30
-    const total = subTotal + deliveryFee;
+    // Total is subTotal + deliveryFee. Floating point addition again.
+    const total = Number((subTotal + deliveryFee).toFixed(2));
 
     const orderData: Partial<IOrder> = {
       userId: data.userId as any, // Cast to ObjectID
