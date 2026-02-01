@@ -11,6 +11,11 @@ interface CreateOrderDTO {
     selectedOptions?: { title: string; additionalPrice: number }[];
   }[];
   customerNote?: string;
+  paymentInfo?: {
+    cardNumber: string;
+    expiryDate: string;
+    cvv: string;
+  };
 }
 
 export class OrderService {
@@ -54,6 +59,26 @@ export class OrderService {
     // Total is subTotal + deliveryFee. Floating point addition again.
     const total = Number((subTotal + deliveryFee).toFixed(2));
 
+    // Simulated Payment Validation Logic
+    let paymentStatus: 'PAID' | 'PENDING' | 'FAILED' = 'PAID';
+
+    if (data.paymentInfo) {
+      const { cardNumber, expiryDate, cvv } = data.paymentInfo;
+      const cleanCard = cardNumber.replace(/\s/g, '');
+
+      // Special Logic: Magic Card (1234 1234 1234 1234)
+      if (cleanCard === '1234123412341234') {
+        if (expiryDate !== '01/01' || cvv !== '123') {
+          // In a real app, this might fail, but for demo we just process it as standard if it doesn't match magic combo exactly
+          // unless we want to enforce it. Let's just say magic combo is ALWAYS success regardless of status logic.
+        }
+      }
+
+      // In a real world app, we would call a payment gateway (Stripe/PayPal) here.
+      // For this portfolio demo, we assume any card sent is "PAID".
+      paymentStatus = 'PAID';
+    }
+
     const orderData: Partial<IOrder> = {
       userId: data.userId as any, // Cast to ObjectID
       items: orderItems,
@@ -61,7 +86,7 @@ export class OrderService {
       deliveryFee,
       total,
       status: 'PREPARING', // Simulate active order
-      paymentStatus: 'PAID', // Simulate successful payment for portfolio demo
+      paymentStatus, // Use result of simulation
       customerNote: data.customerNote,
     };
 

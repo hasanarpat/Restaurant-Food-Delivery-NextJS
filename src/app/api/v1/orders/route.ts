@@ -23,6 +23,13 @@ const createOrderSchema = z.object({
     )
     .min(1),
   customerNote: z.string().optional(),
+  paymentInfo: z
+    .object({
+      cardNumber: z.string(),
+      expiryDate: z.string(),
+      cvv: z.string(),
+    })
+    .optional(),
 });
 
 export async function GET(req: NextRequest) {
@@ -64,6 +71,7 @@ export async function POST(req: NextRequest) {
       userId: user.userId,
       items: validatedData.items,
       customerNote: validatedData.customerNote,
+      paymentInfo: validatedData.paymentInfo,
     });
 
     return sendSuccess(order, 201);

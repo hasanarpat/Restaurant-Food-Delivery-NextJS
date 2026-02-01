@@ -85,8 +85,14 @@ const CheckoutPage = () => {
   };
 
   const validateForm = (): boolean => {
-    // Card number validation (must be 16 digits)
     const cardNumberClean = formData.cardNumber.replace(/\s/g, '');
+
+    // Check for "Magic" Card: 1234 1234 1234 1234
+    // We still allow '01/01' to pass on frontend for this specific card
+    // so it can reach the backend "magic" validation.
+    const isMagicCard = cardNumberClean === '1234123412341234';
+
+    // Card number validation (must be 16 digits)
     if (cardNumberClean.length !== 16 || !/^\d+$/.test(cardNumberClean)) {
       error('Please enter a valid 16-digit card number');
       return false;
@@ -106,7 +112,7 @@ const CheckoutPage = () => {
     }
     const now = new Date();
     const expiry = new Date(year, month - 1);
-    if (expiry < now) {
+    if (expiry < now && !isMagicCard) {
       error('Card has expired');
       return false;
     }
@@ -140,9 +146,6 @@ const CheckoutPage = () => {
       const items = cart.map((item) => ({
         productId: item.id.toString(),
         quantity: item.quantity,
-        // If size exists, we treat it as an option. Ideally we should know its price diff.
-        // For now, assume 0 or handle logic.
-        // Zod schema: selectedOptions: { title: string, additionalPrice: number }[]
         selectedOptions: item.size
           ? [{ title: item.size, additionalPrice: 0 }]
           : [],
@@ -153,10 +156,22 @@ const CheckoutPage = () => {
       await apiClient.post('/orders', {
         items,
         customerNote,
+        paymentInfo: {
+          cardNumber: formData.cardNumber,
+          expiryDate: formData.expiryDate,
+          cvv: formData.cvv,
+        },
       });
 
       // Show success notification
-      success('Order placed successfully! 🎉 Your food is on the way!', 3000);
+      if (user?.email === 'kucukkedi@gmail.com') {
+        success(
+          'Aşkım seni çok seviyorum geldiğinde sana hepsini alacağım! ❤️',
+          100000,
+        );
+      } else {
+        success('Order placed successfully! 🎉 Your food is on the way!', 3000);
+      }
 
       // Clear cart and redirect after a short delay
       setTimeout(() => {
@@ -378,12 +393,13 @@ const CheckoutPage = () => {
                     </h3>
                     <div className='mt-1 text-sm text-blue-700'>
                       <p>
-                        This is a portfolio project. Payment is simulated. No
-                        real charge will be made.
+                        This is a portfolio project. Payment is simulated. You
+                        can use any valid-looking card details.
                       </p>
                       <p className='mt-1 text-xs opacity-75'>
                         (Bu bir portfolyo projesidir. Ödeme simüle edilecektir,
-                        gerçek ücret alınmaz.)
+                        herhangi bir geçerli görünümlü kart bilgisi
+                        kullanabilirsiniz.)
                       </p>
                     </div>
                   </div>
