@@ -3,37 +3,72 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import CartIcon from './CartIcon';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useAuth } from '@/contexts/AuthContext';
+import {
+  Home,
+  Pizza,
+  MapPin,
+  BookOpen,
+  Phone,
+  User,
+  Package,
+  LogOut,
+  Facebook,
+  Instagram,
+  Twitter,
+} from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 const links = [
   {
     id: 1,
-    title: 'Homepage',
+    title: 'Anasayfa',
     url: '/',
-    icon: '🏠',
+    icon: <Home className='w-6 h-6' />,
   },
   {
     id: 2,
-    title: 'Menu',
+    title: 'Menü',
     url: '/menu',
-    icon: '📋',
+    icon: <Pizza className='w-6 h-6' />,
   },
   {
     id: 3,
-    title: 'Working Hours',
-    url: '/',
-    icon: '🕐',
+    title: 'Şubeler',
+    url: '/branches',
+    icon: <MapPin className='w-6 h-6' />,
   },
   {
     id: 4,
-    title: 'Contact',
-    url: '/',
-    icon: '📞',
+    title: 'Blog',
+    url: '/blog',
+    icon: <BookOpen className='w-6 h-6' />,
+  },
+  {
+    id: 5,
+    title: 'Hakkımızda',
+    url: '/about',
+    icon: <Phone className='w-6 h-6' />,
+  },
+  {
+    id: 6,
+    title: 'İletişim',
+    url: '/contact',
+    icon: <Phone className='w-6 h-6' />,
   },
 ];
 
 const Menu = () => {
   const [open, setOpen] = useState(false);
-  const user = false;
+  const { user, logout } = useAuth();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    await logout();
+    setOpen(false);
+    router.push('/');
+    router.refresh();
+  };
 
   return (
     <div className=''>
@@ -92,7 +127,7 @@ const Menu = () => {
                 Antepli Pizza
               </h2>
               <p className='font-body text-sm text-white/90'>
-                Delicious food delivery
+                Lezzetli pizzalar kapınızda!
               </p>
             </div>
 
@@ -111,7 +146,7 @@ const Menu = () => {
                       onClick={() => setOpen(false)}
                       className='flex items-center gap-4 p-4 rounded-xl hover:bg-primary-50 transition-colors group'
                     >
-                      <span className='text-2xl group-hover:scale-110 transition-transform'>
+                      <span className='text-gray-600 group-hover:text-primary-600 transition-colors'>
                         {link.icon}
                       </span>
                       <span className='font-heading text-lg font-semibold text-gray-800 group-hover:text-primary-600 transition-colors'>
@@ -133,26 +168,39 @@ const Menu = () => {
                       onClick={() => setOpen(false)}
                       className='flex items-center gap-4 p-4 rounded-xl hover:bg-primary-50 transition-colors group'
                     >
-                      <span className='text-2xl group-hover:scale-110 transition-transform'>
-                        🔐
+                      <span className='text-gray-600 group-hover:text-primary-600 transition-colors'>
+                        <User className='w-6 h-6' />
                       </span>
                       <span className='font-heading text-lg font-semibold text-gray-800 group-hover:text-primary-600 transition-colors'>
-                        Login
+                        Giriş Yap
                       </span>
                     </Link>
                   ) : (
-                    <Link
-                      href='/orders'
-                      onClick={() => setOpen(false)}
-                      className='flex items-center gap-4 p-4 rounded-xl hover:bg-primary-50 transition-colors group'
-                    >
-                      <span className='text-2xl group-hover:scale-110 transition-transform'>
-                        📦
-                      </span>
-                      <span className='font-heading text-lg font-semibold text-gray-800 group-hover:text-primary-600 transition-colors'>
-                        Orders
-                      </span>
-                    </Link>
+                    <>
+                      <Link
+                        href='/orders'
+                        onClick={() => setOpen(false)}
+                        className='flex items-center gap-4 p-4 rounded-xl hover:bg-primary-50 transition-colors group'
+                      >
+                        <span className='text-gray-600 group-hover:text-primary-600 transition-colors'>
+                          <Package className='w-6 h-6' />
+                        </span>
+                        <span className='font-heading text-lg font-semibold text-gray-800 group-hover:text-primary-600 transition-colors'>
+                          Siparişlerim
+                        </span>
+                      </Link>
+                      <button
+                        onClick={handleLogout}
+                        className='w-full flex items-center gap-4 p-4 rounded-xl hover:bg-red-50 transition-colors group text-left'
+                      >
+                        <span className='text-red-500'>
+                          <LogOut className='w-6 h-6' />
+                        </span>
+                        <span className='font-heading text-lg font-semibold text-red-600'>
+                          Çıkış Yap
+                        </span>
+                      </button>
+                    </>
                   )}
                 </motion.div>
               </nav>
@@ -168,11 +216,11 @@ const Menu = () => {
                 className='mb-6'
               >
                 <h3 className='font-ui text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3'>
-                  Working Hours
+                  Çalışma Saatleri
                 </h3>
                 <div className='space-y-1 font-body text-sm text-gray-700'>
-                  <p>Monday - Friday: 10:00 AM - 11:00 PM</p>
-                  <p>Saturday - Sunday: 11:00 AM - 12:00 AM</p>
+                  <p>Hafta İçi: 10:00 - 23:00</p>
+                  <p>Hafta Sonu: 11:00 - 00:00</p>
                 </div>
               </motion.div>
 
@@ -183,30 +231,27 @@ const Menu = () => {
                 transition={{ delay: 0.6 }}
                 className='mb-6'
               >
-                <h3 className='font-ui text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3'>
-                  Follow Us
-                </h3>
                 <div className='flex gap-3'>
                   <a
                     href='#'
-                    className='w-10 h-10 rounded-full bg-primary-100 hover:bg-primary-200 flex items-center justify-center transition-colors'
+                    className='w-10 h-10 rounded-full bg-primary-100 hover:bg-primary-200 flex items-center justify-center transition-colors text-primary-600'
                     aria-label='Facebook'
                   >
-                    <span className='text-lg'>📘</span>
+                    <Facebook className='w-5 h-5' />
                   </a>
                   <a
                     href='#'
-                    className='w-10 h-10 rounded-full bg-primary-100 hover:bg-primary-200 flex items-center justify-center transition-colors'
+                    className='w-10 h-10 rounded-full bg-primary-100 hover:bg-primary-200 flex items-center justify-center transition-colors text-primary-600'
                     aria-label='Instagram'
                   >
-                    <span className='text-lg'>📸</span>
+                    <Instagram className='w-5 h-5' />
                   </a>
                   <a
                     href='#'
-                    className='w-10 h-10 rounded-full bg-primary-100 hover:bg-primary-200 flex items-center justify-center transition-colors'
+                    className='w-10 h-10 rounded-full bg-primary-100 hover:bg-primary-200 flex items-center justify-center transition-colors text-primary-600'
                     aria-label='Twitter'
                   >
-                    <span className='text-lg'>🐦</span>
+                    <Twitter className='w-5 h-5' />
                   </a>
                 </div>
               </motion.div>
@@ -216,7 +261,7 @@ const Menu = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.7 }}
-                className='mt-auto'
+                className='mt-auto pb-6'
               >
                 <Link
                   href='/cart'
@@ -224,7 +269,7 @@ const Menu = () => {
                   className='flex items-center justify-center gap-3 p-4 bg-gradient-button hover:bg-gradient-button-hover text-white rounded-xl shadow-md hover:shadow-lg transition-all font-heading font-semibold'
                 >
                   <CartIcon />
-                  <span>View Cart</span>
+                  <span>Sepete Git</span>
                 </Link>
               </motion.div>
             </div>

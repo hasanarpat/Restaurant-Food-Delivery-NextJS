@@ -1,11 +1,17 @@
 import { MetadataRoute } from 'next';
-import { pizzas, burgers, pastas, lahmacun, baklava, menu } from '@/data';
-import { BLOG_POSTS } from '@/data/blog';
+import { productService } from '@/modules/product/product.service';
+import { blogService } from '@/modules/blog/blog.service';
+import { categoryService } from '@/modules/category/category.service';
+import { branchService } from '@/modules/branch/branch.service';
+import { careerService } from '@/modules/career/career.service';
+import dbConnect from '@/lib/mongodb';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  await dbConnect();
+
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
 
-  // Static routes
+  // 1. Static Routes
   const routes = [
     '',
     '/menu',
@@ -22,41 +28,62 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date(),
-    changeFrequency: 'weekly' as const,
+    changeFrequency: 'daily' as const,
     priority: route === '' ? 1 : 0.8,
   }));
 
-  // Dynamic Product routes
-  const allProducts = [
-    ...pizzas,
-    ...burgers,
-    ...pastas,
-    ...lahmacun,
-    ...baklava,
-  ];
-
-  const productRoutes = allProducts.map((product) => ({
-    url: `${baseUrl}/product/${product.id}`,
-    lastModified: new Date(product.createdAt || new Date()),
-    changeFrequency: 'weekly' as const,
-    priority: 0.7,
-  }));
-
-  // Dynamic Category routes
-  const categoryRoutes = menu.map((category) => ({
-    url: `${baseUrl}/menu/${category.slug}`,
-    lastModified: new Date(),
+  // 2. Dynamic Categories
+  const categories = await categoryService.getAllCategories();
+  const categoryRoutes = categories.map((cat) => ({
+    url: `${baseUrl}/menu/${cat.slug}`,
+    lastModified: cat.updatedAt || new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.9,
   }));
 
-  // Dynamic Blog routes
-  const blogRoutes = BLOG_POSTS.map((post) => ({
+  // 3. Dynamic Products
+  // productService.getAllProducts returns IProduct[] directly (from repo)
+  const products = await productService.getAllProducts({});
+  const productRoutes = products.map((product: any) => ({
+    url: `${baseUrl}/product/${product._id}`,
+    lastModified: product.updatedAt || new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.8,
+  }));
+
+  // 4. Dynamic Blogs
+  const blogs = await blogService.getAllPosts();
+  const blogRoutes = blogs.map((post) => ({
     url: `${baseUrl}/blog/${post.slug}`,
-    lastModified: new Date(),
+    lastModified: post.updatedAt || new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.7,
   }));
 
-  return [...routes, ...categoryRoutes, ...productRoutes, ...blogRoutes];
+  // 5. Dynamic Branches
+  const branches = await branchService.getAllBranches();
+  const branchRoutes = branches.map((branch) => ({
+    url: `${baseUrl}/branches/${branch._id}`,
+    lastModified: branch.updatedAt || new Date(),
+    changeFrequency: 'monthly' as const,
+    priority: 0.6,
+  }));
+
+  // 6. Dynamic Careers
+  const careers = await careerService.getAllCareers();
+  const careerRoutes = careers.map((career) => ({
+    url: `${baseUrl}/careers/${career._id}`,
+    lastModified: career.updatedAt || new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.6,
+  }));
+
+  return [
+    ...routes,
+    ...categoryRoutes,
+    ...productRoutes,
+    ...blogRoutes,
+    ...branchRoutes,
+    ...careerRoutes,
+  ];
 }

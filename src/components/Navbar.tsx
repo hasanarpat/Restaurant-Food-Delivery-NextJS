@@ -50,7 +50,7 @@ const Navbar = () => {
   };
 
   const navLinks = [
-    { href: '/', label: 'Ana Sayfa', icon: <Home className='w-5 h-5' /> },
+    { href: '/', label: 'Anasayfa', icon: <Home className='w-5 h-5' /> },
     {
       href: '/menu',
       label: 'Menü',
@@ -84,16 +84,16 @@ const Navbar = () => {
     >
       {/* Top bar with solid red background - enhanced content */}
       <div
-        className={`bg-primary-500 transition-all duration-300 ${scrolled ? 'h-1' : 'h-12 md:h-16'}`}
+        className={`bg-primary-500 transition-all duration-300 ${scrolled ? 'h-1' : 'h-12 lg:h-16'}`}
       >
         {!scrolled && (
           <div className='h-full flex items-center justify-between px-4 lg:px-20 xl:px-40'>
-            <div className='hidden md:flex items-center gap-6 text-white text-sm'>
+            <div className='hidden lg:flex items-center gap-6 text-white text-sm'>
               <div className='flex items-center gap-2 hover:opacity-80 transition-opacity cursor-pointer'>
                 <Phone className='w-4 h-4' />
                 <span className='font-ui font-medium'>0 555 444 33 22</span>
               </div>
-              <div className='hidden lg:flex items-center gap-2'>
+              <div className='hidden xl:flex items-center gap-2'>
                 <Mail className='w-4 h-4' />
                 <span className='font-ui font-medium'>
                   info@anteplipizza.com
@@ -103,7 +103,7 @@ const Navbar = () => {
 
             {/* Right - Promo & Social */}
             <div className='flex items-center gap-6 text-white text-sm font-ui'>
-              <div className='hidden lg:flex items-center gap-4'>
+              <div className='hidden xl:flex items-center gap-4'>
                 <a
                   href='#'
                   className='hover:opacity-80 transition-opacity'
@@ -129,19 +129,19 @@ const Navbar = () => {
       </div>
 
       {/* Main navbar */}
-      <div className='flex items-center justify-between px-4 lg:px-20 xl:px-40 h-16 md:h-20'>
+      <div className='flex items-center justify-between px-4 lg:px-20 xl:px-40 h-16 lg:h-20'>
         {/* Left - Desktop Links with icons */}
-        <div className='hidden md:flex gap-2 flex-1'>
+        <div className='hidden lg:flex gap-2 flex-1'>
           {navLinks.map((link, index) => (
             <Link
               key={index}
               href={link.href}
-              className='group flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-primary-50 transition-all duration-200'
+              className='group flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-primary-50 transition-all duration-200'
             >
               <span className='text-gray-500 group-hover:text-primary-600 transition-colors'>
                 {link.icon}
               </span>
-              <span className='font-ui font-medium text-gray-700 group-hover:text-primary-600 transition-colors'>
+              <span className='font-ui font-medium text-gray-700 group-hover:text-primary-600 transition-colors whitespace-nowrap'>
                 {link.label}
               </span>
             </Link>
@@ -153,7 +153,7 @@ const Navbar = () => {
           href='/'
           className='flex-1 md:text-center group flex justify-center items-center gap-3'
         >
-          <div className='relative w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden shadow-sm'>
+          <div className='relative w-14 h-14 lg:w-20 lg:h-20 rounded-full overflow-hidden shadow-sm'>
             <Image
               src='/images/logo_orange.png'
               alt='Antepli Pizza'
@@ -162,18 +162,18 @@ const Navbar = () => {
               priority
             />
           </div>
-          <span className='font-heading text-xl md:text-2xl font-bold text-gray-800 tracking-tight'>
+          <span className='font-heading text-lg lg:text-2xl font-bold text-gray-800 tracking-tight whitespace-nowrap'>
             Antepli Pizza
           </span>
         </Link>
 
         {/* Mobile Menu Button */}
-        <div className='md:hidden'>
+        <div className='lg:hidden'>
           <Menu />
         </div>
 
         {/* Right - Desktop Actions with enhanced styling */}
-        <div className='hidden md:flex flex-1 items-center justify-end gap-3'>
+        <div className='hidden lg:flex flex-1 items-center justify-end gap-3'>
           {/* Search Button */}
           <motion.button
             whileHover={{ scale: 1.1 }}
@@ -187,7 +187,7 @@ const Navbar = () => {
           {/* Track Order */}
           <Link
             href='/orders'
-            className='hidden lg:flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-primary-50 transition-colors group'
+            className='hidden xl:flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-primary-50 transition-colors group'
           >
             <Truck className='w-5 h-5 text-gray-600 group-hover:text-primary-600 transition-colors' />
             <span className='font-ui font-medium text-gray-700 group-hover:text-primary-600 transition-colors text-sm'>
