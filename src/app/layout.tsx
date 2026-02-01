@@ -6,6 +6,7 @@ import Footer from '@/components/Footer';
 import Notifications from '@/components/Notifications';
 import { CartProvider } from '@/context/CartContext';
 import { NotificationProvider } from '@/components/Notifications';
+import { AuthProvider } from '@/contexts/AuthContext';
 
 const outfit = Outfit({
   subsets: ['latin'],
@@ -72,12 +73,14 @@ export default function RootLayout({
     >
       <body className={`${inter.className} bg-cream text-gray-900`}>
         <NotificationProvider>
-          <CartProvider>
-            <Navbar />
-            <Notifications />
-            {children}
-            <Footer />
-          </CartProvider>
+          <AuthProvider>
+            <CartProvider>
+              <Navbar />
+              <Notifications />
+              {children}
+              <Footer />
+            </CartProvider>
+          </AuthProvider>
         </NotificationProvider>
       </body>
     </html>

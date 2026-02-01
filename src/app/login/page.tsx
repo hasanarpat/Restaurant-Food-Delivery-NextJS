@@ -1,85 +1,90 @@
 'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNotification } from '@/components/Notifications';
 import { useRouter } from 'next/navigation';
-import { div } from 'framer-motion/client';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import apiClient from '@/lib/axios';
+import { useAuth } from '@/contexts/AuthContext';
+
+// Zod Schemas matching Backend (loosely for frontend validation)
+const loginSchema = z.object({
+  email: z.string().email('Invalid email address'),
+  password: z.string().min(1, 'Password is required'),
+});
+
+const signupSchema = z
+  .object({
+    fullName: z.string().min(2, 'Full name must be at least 2 characters'),
+    email: z.string().email('Invalid email address'),
+    password: z.string().min(6, 'Password must be at least 6 characters'),
+    confirmPassword: z.string(),
+    phone: z.string().min(10, 'Phone number is required'),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ['confirmPassword'],
+  });
+
+type LoginFormValues = z.infer<typeof loginSchema>;
+type SignupFormValues = z.infer<typeof signupSchema>;
 
 type Tab = 'login' | 'signup';
 
 const LoginPage = () => {
   const [activeTab, setActiveTab] = useState<Tab>('login');
-  const [showVerification, setShowVerification] = useState(false);
-  const { success, error } = useNotification();
+  const [isLoading, setIsLoading] = useState(false);
+  const { success, error: showError } = useNotification();
+  const { refetch } = useAuth();
   const router = useRouter();
 
-  const [loginData, setLoginData] = useState({
-    email: '',
-    password: '',
+  // Login Form
+  const loginForm = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
   });
 
-  const [signupData, setSignupData] = useState({
-    fullName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    verificationCode: '',
+  // Signup Form
+  const signupForm = useForm<SignupFormValues>({
+    resolver: zodResolver(signupSchema),
   });
 
-  const handleLoginSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    // Basic validation
-    if (!loginData.email || !loginData.password) {
-      error('Please fill in all fields');
-      return;
+  const onLoginSubmit = async (data: LoginFormValues) => {
+    setIsLoading(true);
+    try {
+      await apiClient.post('/auth/login', data);
+      await refetch(); // Fetch user data
+      success('Login successful! Welcome back! 🎉');
+      // Force refresh to update auth state (middleware/cookies)
+      router.refresh();
+      setTimeout(() => router.push('/'), 1000);
+    } catch (err: any) {
+      showError(err.message || 'Login failed');
+    } finally {
+      setIsLoading(false);
     }
-
-    // Simulate login
-    success('Login successful! Welcome back! 🎉');
-    setTimeout(() => router.push('/'), 1500);
   };
 
-  const handleSignupSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSignupSubmit = async (data: SignupFormValues) => {
+    setIsLoading(true);
+    try {
+      // Backend expects: email, password, fullName, phone
+      const { confirmPassword, ...registerData } = data;
 
-    // Validation
-    if (!signupData.fullName || !signupData.email || !signupData.password) {
-      error('Please fill in all fields');
-      return;
+      await apiClient.post('/auth/register', registerData);
+      await refetch(); // Fetch user data
+      success('Account created successfully! Welcome! 🎉');
+      router.refresh();
+      setTimeout(() => router.push('/'), 1000);
+    } catch (err: any) {
+      showError(err.message || 'Signup failed');
+    } finally {
+      setIsLoading(false);
     }
-
-    if (signupData.password !== signupData.confirmPassword) {
-      error('Passwords do not match');
-      return;
-    }
-
-    if (signupData.password.length < 6) {
-      error('Password must be at least 6 characters');
-      return;
-    }
-
-    if (!showVerification) {
-      // Request verification code
-      setShowVerification(true);
-      success('Verification code sent to your email! 📧');
-      return;
-    }
-
-    // Verify code
-    if (
-      !signupData.verificationCode ||
-      signupData.verificationCode.length !== 6
-    ) {
-      error('Please enter the 6-digit verification code');
-      return;
-    }
-
-    // Simulate successful signup
-    success('Account created successfully! Welcome! 🎉');
-    setTimeout(() => router.push('/'), 1500);
   };
 
   return (
@@ -117,10 +122,7 @@ const LoginPage = () => {
             {/* Tabs */}
             <div className='flex gap-4 mb-8 border-b border-gray-200'>
               <button
-                onClick={() => {
-                  setActiveTab('login');
-                  setShowVerification(false);
-                }}
+                onClick={() => setActiveTab('login')}
                 className={`font-heading text-lg font-semibold pb-3 px-2 transition-all ${
                   activeTab === 'login'
                     ? 'text-primary-600 border-b-2 border-primary-600'
@@ -130,10 +132,7 @@ const LoginPage = () => {
                 Sign In
               </button>
               <button
-                onClick={() => {
-                  setActiveTab('signup');
-                  setShowVerification(false);
-                }}
+                onClick={() => setActiveTab('signup')}
                 className={`font-heading text-lg font-semibold pb-3 px-2 transition-all ${
                   activeTab === 'signup'
                     ? 'text-primary-600 border-b-2 border-primary-600'
@@ -150,7 +149,7 @@ const LoginPage = () => {
                 key='login'
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                onSubmit={handleLoginSubmit}
+                onSubmit={loginForm.handleSubmit(onLoginSubmit)}
                 className='space-y-6'
               >
                 <div>
@@ -158,15 +157,20 @@ const LoginPage = () => {
                     Email Address
                   </label>
                   <input
+                    {...loginForm.register('email')}
                     type='email'
-                    value={loginData.email}
-                    onChange={(e) =>
-                      setLoginData({ ...loginData, email: e.target.value })
-                    }
-                    required
-                    className='w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:outline-none focus:border-primary-500 transition-colors font-body'
+                    className={`w-full px-4 py-3 rounded-xl border-2 ${
+                      loginForm.formState.errors.email
+                        ? 'border-red-500'
+                        : 'border-gray-200'
+                    } focus:outline-none focus:border-primary-500 transition-colors font-body`}
                     placeholder='your@email.com'
                   />
+                  {loginForm.formState.errors.email && (
+                    <p className='text-red-500 text-xs mt-1'>
+                      {loginForm.formState.errors.email.message}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -174,22 +178,28 @@ const LoginPage = () => {
                     Password
                   </label>
                   <input
+                    {...loginForm.register('password')}
                     type='password'
-                    value={loginData.password}
-                    onChange={(e) =>
-                      setLoginData({ ...loginData, password: e.target.value })
-                    }
-                    required
-                    className='w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:outline-none focus:border-primary-500 transition-colors font-body'
+                    className={`w-full px-4 py-3 rounded-xl border-2 ${
+                      loginForm.formState.errors.password
+                        ? 'border-red-500'
+                        : 'border-gray-200'
+                    } focus:outline-none focus:border-primary-500 transition-colors font-body`}
                     placeholder='••••••••'
                   />
+                  {loginForm.formState.errors.password && (
+                    <p className='text-red-500 text-xs mt-1'>
+                      {loginForm.formState.errors.password.message}
+                    </p>
+                  )}
                 </div>
 
                 <button
                   type='submit'
-                  className='w-full bg-gradient-button hover:bg-gradient-button-hover text-white font-heading font-semibold py-4 rounded-xl transition-all shadow-md hover:shadow-lg'
+                  disabled={isLoading}
+                  className='w-full bg-gradient-button hover:bg-gradient-button-hover text-white font-heading font-semibold py-4 rounded-xl transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed'
                 >
-                  Sign In
+                  {isLoading ? 'Signing In...' : 'Sign In'}
                 </button>
 
                 <div className='relative'>
@@ -242,162 +252,121 @@ const LoginPage = () => {
                 key='signup'
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
-                onSubmit={handleSignupSubmit}
+                onSubmit={signupForm.handleSubmit(onSignupSubmit)}
                 className='space-y-5'
               >
-                {!showVerification ? (
-                  <>
-                    <div>
-                      <label className='font-ui text-sm font-semibold text-gray-700 mb-2 block'>
-                        Full Name
-                      </label>
-                      <input
-                        type='text'
-                        value={signupData.fullName}
-                        onChange={(e) =>
-                          setSignupData({
-                            ...signupData,
-                            fullName: e.target.value,
-                          })
-                        }
-                        required
-                        className='w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:outline-none focus:border-primary-500 transition-colors font-body'
-                        placeholder='John Doe'
-                      />
-                    </div>
+                <div>
+                  <label className='font-ui text-sm font-semibold text-gray-700 mb-2 block'>
+                    Full Name
+                  </label>
+                  <input
+                    {...signupForm.register('fullName')}
+                    type='text'
+                    className={`w-full px-4 py-3 rounded-xl border-2 ${
+                      signupForm.formState.errors.fullName
+                        ? 'border-red-500'
+                        : 'border-gray-200'
+                    } focus:outline-none focus:border-primary-500 transition-colors font-body`}
+                    placeholder='John Doe'
+                  />
+                  {signupForm.formState.errors.fullName && (
+                    <p className='text-red-500 text-xs mt-1'>
+                      {signupForm.formState.errors.fullName.message}
+                    </p>
+                  )}
+                </div>
 
-                    <div>
-                      <label className='font-ui text-sm font-semibold text-gray-700 mb-2 block'>
-                        Email Address
-                      </label>
-                      <input
-                        type='email'
-                        value={signupData.email}
-                        onChange={(e) =>
-                          setSignupData({
-                            ...signupData,
-                            email: e.target.value,
-                          })
-                        }
-                        required
-                        className='w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:outline-none focus:border-primary-500 transition-colors font-body'
-                        placeholder='your@email.com'
-                      />
-                    </div>
+                <div>
+                  <label className='font-ui text-sm font-semibold text-gray-700 mb-2 block'>
+                    Email Address
+                  </label>
+                  <input
+                    {...signupForm.register('email')}
+                    type='email'
+                    className={`w-full px-4 py-3 rounded-xl border-2 ${
+                      signupForm.formState.errors.email
+                        ? 'border-red-500'
+                        : 'border-gray-200'
+                    } focus:outline-none focus:border-primary-500 transition-colors font-body`}
+                    placeholder='your@email.com'
+                  />
+                  {signupForm.formState.errors.email && (
+                    <p className='text-red-500 text-xs mt-1'>
+                      {signupForm.formState.errors.email.message}
+                    </p>
+                  )}
+                </div>
 
-                    <div>
-                      <label className='font-ui text-sm font-semibold text-gray-700 mb-2 block'>
-                        Password
-                      </label>
-                      <input
-                        type='password'
-                        value={signupData.password}
-                        onChange={(e) =>
-                          setSignupData({
-                            ...signupData,
-                            password: e.target.value,
-                          })
-                        }
-                        required
-                        className='w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:outline-none focus:border-primary-500 transition-colors font-body'
-                        placeholder='••••••••'
-                      />
-                    </div>
+                <div>
+                  <label className='font-ui text-sm font-semibold text-gray-700 mb-2 block'>
+                    Phone Number
+                  </label>
+                  <input
+                    {...signupForm.register('phone')}
+                    type='tel'
+                    className={`w-full px-4 py-3 rounded-xl border-2 ${
+                      signupForm.formState.errors.phone
+                        ? 'border-red-500'
+                        : 'border-gray-200'
+                    } focus:outline-none focus:border-primary-500 transition-colors font-body`}
+                    placeholder='5551234567'
+                  />
+                  {signupForm.formState.errors.phone && (
+                    <p className='text-red-500 text-xs mt-1'>
+                      {signupForm.formState.errors.phone.message}
+                    </p>
+                  )}
+                </div>
 
-                    <div>
-                      <label className='font-ui text-sm font-semibold text-gray-700 mb-2 block'>
-                        Confirm Password
-                      </label>
-                      <input
-                        type='password'
-                        value={signupData.confirmPassword}
-                        onChange={(e) =>
-                          setSignupData({
-                            ...signupData,
-                            confirmPassword: e.target.value,
-                          })
-                        }
-                        required
-                        className='w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:outline-none focus:border-primary-500 transition-colors font-body'
-                        placeholder='••••••••'
-                      />
-                    </div>
+                <div>
+                  <label className='font-ui text-sm font-semibold text-gray-700 mb-2 block'>
+                    Password
+                  </label>
+                  <input
+                    {...signupForm.register('password')}
+                    type='password'
+                    className={`w-full px-4 py-3 rounded-xl border-2 ${
+                      signupForm.formState.errors.password
+                        ? 'border-red-500'
+                        : 'border-gray-200'
+                    } focus:outline-none focus:border-primary-500 transition-colors font-body`}
+                    placeholder='••••••••'
+                  />
+                  {signupForm.formState.errors.password && (
+                    <p className='text-red-500 text-xs mt-1'>
+                      {signupForm.formState.errors.password.message}
+                    </p>
+                  )}
+                </div>
 
-                    <button
-                      type='submit'
-                      className='w-full bg-gradient-button hover:bg-gradient-button-hover text-white font-heading font-semibold py-4 rounded-xl transition-all shadow-md hover:shadow-lg'
-                    >
-                      Continue
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <div className='text-center mb-6'>
-                      <div className='w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4'>
-                        <svg
-                          className='w-8 h-8 text-primary-600'
-                          fill='none'
-                          stroke='currentColor'
-                          viewBox='0 0 24 24'
-                        >
-                          <path
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
-                            strokeWidth={2}
-                            d='M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z'
-                          />
-                        </svg>
-                      </div>
-                      <h3 className='font-heading text-xl font-bold text-gray-900 mb-2'>
-                        Check Your Email
-                      </h3>
-                      <p className='font-body text-sm text-gray-600'>
-                        We've sent a 6-digit verification code to
-                        <br />
-                        <span className='font-semibold text-primary-600'>
-                          {signupData.email}
-                        </span>
-                      </p>
-                    </div>
+                <div>
+                  <label className='font-ui text-sm font-semibold text-gray-700 mb-2 block'>
+                    Confirm Password
+                  </label>
+                  <input
+                    {...signupForm.register('confirmPassword')}
+                    type='password'
+                    className={`w-full px-4 py-3 rounded-xl border-2 ${
+                      signupForm.formState.errors.confirmPassword
+                        ? 'border-red-500'
+                        : 'border-gray-200'
+                    } focus:outline-none focus:border-primary-500 transition-colors font-body`}
+                    placeholder='••••••••'
+                  />
+                  {signupForm.formState.errors.confirmPassword && (
+                    <p className='text-red-500 text-xs mt-1'>
+                      {signupForm.formState.errors.confirmPassword.message}
+                    </p>
+                  )}
+                </div>
 
-                    <div>
-                      <label className='font-ui text-sm font-semibold text-gray-700 mb-2 block text-center'>
-                        Verification Code
-                      </label>
-                      <input
-                        type='text'
-                        value={signupData.verificationCode}
-                        onChange={(e) =>
-                          setSignupData({
-                            ...signupData,
-                            verificationCode: e.target.value.replace(/\D/g, ''),
-                          })
-                        }
-                        maxLength={6}
-                        required
-                        className='w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:outline-none focus:border-primary-500 transition-colors font-mono text-center text-2xl tracking-widest'
-                        placeholder='000000'
-                      />
-                    </div>
-
-                    <button
-                      type='submit'
-                      className='w-full bg-gradient-button hover:bg-gradient-button-hover text-white font-heading font-semibold py-4 rounded-xl transition-all shadow-md hover:shadow-lg'
-                    >
-                      Verify & Create Account
-                    </button>
-
-                    <button
-                      type='button'
-                      onClick={() => {
-                        success('Verification code resent! 📧');
-                      }}
-                      className='w-full text-primary-600 hover:text-primary-700 font-ui text-sm font-semibold'
-                    >
-                      Resend Code
-                    </button>
-                  </>
-                )}
+                <button
+                  type='submit'
+                  disabled={isLoading}
+                  className='w-full bg-gradient-button hover:bg-gradient-button-hover text-white font-heading font-semibold py-4 rounded-xl transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed'
+                >
+                  {isLoading ? 'Creating Account...' : 'Create Account'}
+                </button>
               </motion.form>
             )}
 

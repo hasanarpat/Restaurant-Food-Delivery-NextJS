@@ -19,11 +19,19 @@ import {
   MapPin,
   Clock,
   Mail,
+  LogOut,
+  Settings,
+  Package,
+  ChevronDown,
 } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { useRouter } from 'next/navigation';
 
 const Navbar = () => {
-  const user = false;
+  const { user, logout } = useAuth();
   const [scrolled, setScrolled] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,6 +41,12 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleLogout = async () => {
+    await logout();
+    setShowUserMenu(false);
+    router.push('/');
+  };
 
   const navLinks = [
     { href: '/', label: 'Home', icon: <Home className='w-5 h-5' /> },
@@ -166,16 +180,80 @@ const Navbar = () => {
             </span>
           </Link>
 
-          {/* Login/Orders Button */}
-          <Link
-            href={user ? '/orders' : '/login'}
-            className='flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-primary-50 transition-colors group'
-          >
-            <User className='w-5 h-5 text-gray-600 group-hover:text-primary-600 transition-colors' />
-            <span className='font-ui font-medium text-gray-700 group-hover:text-primary-600 transition-colors'>
-              {user ? 'Orders' : 'Login'}
-            </span>
-          </Link>
+          {/* User Menu or Login */}
+          {user ? (
+            <div className='relative'>
+              <button
+                onClick={() => setShowUserMenu(!showUserMenu)}
+                className='flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-primary-50 transition-colors group'
+              >
+                <div className='w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center'>
+                  <User className='w-5 h-5 text-primary-600' />
+                </div>
+                <span className='font-ui font-medium text-gray-700 group-hover:text-primary-600 transition-colors'>
+                  {user.profile.fullName.split(' ')[0]}
+                </span>
+                <ChevronDown className='w-4 h-4 text-gray-600 group-hover:text-primary-600 transition-colors' />
+              </button>
+
+              {showUserMenu && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className='absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50'
+                >
+                  <div className='px-4 py-3 border-b border-gray-100'>
+                    <p className='font-ui font-semibold text-gray-900'>
+                      {user.profile.fullName}
+                    </p>
+                    <p className='font-ui text-xs text-gray-500'>
+                      {user.email}
+                    </p>
+                  </div>
+
+                  <Link
+                    href='/orders'
+                    onClick={() => setShowUserMenu(false)}
+                    className='flex items-center gap-3 px-4 py-2.5 hover:bg-primary-50 transition-colors'
+                  >
+                    <Package className='w-5 h-5 text-gray-600' />
+                    <span className='font-ui text-sm text-gray-700'>
+                      My Orders
+                    </span>
+                  </Link>
+
+                  <Link
+                    href='/profile'
+                    onClick={() => setShowUserMenu(false)}
+                    className='flex items-center gap-3 px-4 py-2.5 hover:bg-primary-50 transition-colors'
+                  >
+                    <Settings className='w-5 h-5 text-gray-600' />
+                    <span className='font-ui text-sm text-gray-700'>
+                      Settings
+                    </span>
+                  </Link>
+
+                  <button
+                    onClick={handleLogout}
+                    className='w-full flex items-center gap-3 px-4 py-2.5 hover:bg-red-50 transition-colors border-t border-gray-100 mt-1'
+                  >
+                    <LogOut className='w-5 h-5 text-red-600' />
+                    <span className='font-ui text-sm text-red-600'>Logout</span>
+                  </button>
+                </motion.div>
+              )}
+            </div>
+          ) : (
+            <Link
+              href='/login'
+              className='flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-primary-50 transition-colors group'
+            >
+              <User className='w-5 h-5 text-gray-600 group-hover:text-primary-600 transition-colors' />
+              <span className='font-ui font-medium text-gray-700 group-hover:text-primary-600 transition-colors'>
+                Login
+              </span>
+            </Link>
+          )}
 
           {/* Cart with animation */}
           <Link href='/cart'>
