@@ -15,57 +15,6 @@ interface GalleryImage {
   category: 'products' | 'team' | 'ambiance' | 'customers';
 }
 
-const GALLERY_IMAGES: GalleryImage[] = [
-  {
-    id: '1',
-    src: '/artifacts/gallery_team_cooking_1769958603028.png',
-    alt: 'Mutfak Ekibimiz',
-    description:
-      'Ekibimiz bir aile gibi! Her gün aşkla, özenle hazırlıyoruz lezzetlerimizi. 👨‍🍳❤️',
-    category: 'team',
-  },
-  {
-    id: '2',
-    src: '/artifacts/gallery_lahmacun_prep_1769958617413.png',
-    alt: 'Lahmacun Hazırlığı',
-    description:
-      'El emeği göz nuru... Hamurdan hazır lezzetlere kadar her aşama özenle hazırlanıyor. 🥖',
-    category: 'products',
-  },
-  {
-    id: '3',
-    src: '/artifacts/gallery_customers_happy_1769958633312.png',
-    alt: 'Mutlu Müşterilerimiz',
-    description:
-      'Sizin mutluluğunuz bizim en büyük ödülümüz! Ailecek, arkadaşça güzel anlar. 🤗',
-    category: 'customers',
-  },
-  {
-    id: '4',
-    src: '/artifacts/gallery_baklava_display_1769958660988.png',
-    alt: 'Tatlı Vitrini',
-    description:
-      'Geleneksel Türk tatlılarımız... Fıstık, ceviz, bal ile hazırlanan şaheserlerin vitrini. 🍯',
-    category: 'products',
-  },
-  {
-    id: '5',
-    src: '/artifacts/gallery_restaurant_ambiance_1769958675436.png',
-    alt: 'Restoranımızın Atmosferi',
-    description:
-      'Sıcak, samimi ve geleneksel... Kendinizi evinizde gibi hissedebileceğiniz bir atmosfer. 🏮',
-    category: 'ambiance',
-  },
-  {
-    id: '6',
-    src: '/artifacts/gallery_kebab_grill_1769958689535.png',
-    alt: 'Kebap Izgara',
-    description:
-      'Közde pişen kebaplarımız... Ateş üzerinde ustalıkla hazırlanan geleneksel lezzetler. 🔥',
-    category: 'products',
-  },
-];
-
 const CATEGORIES = [
   { id: 'all', label: 'Tümü', icon: <Camera size={18} /> },
   { id: 'products', label: 'Ürünlerimiz', icon: <Heart size={18} /> },
@@ -74,15 +23,29 @@ const CATEGORIES = [
   { id: 'customers', label: 'Müşterilerimiz', icon: <Heart size={18} /> },
 ];
 
-const GalleryClient = () => {
+interface GalleryClientProps {
+  initialImages: any[]; // Ideally IGallery[]
+}
+
+const GalleryClient: React.FC<GalleryClientProps> = ({
+  initialImages = [],
+}) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [viewerOpen, setViewerOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
+  const formattedImages: GalleryImage[] = initialImages.map((img) => ({
+    id: img._id,
+    src: img.imageUrl,
+    alt: img.title,
+    description: img.description || '',
+    category: img.category.toLowerCase() as any, // 'products' | 'team' etc
+  }));
+
   const filteredImages =
     selectedCategory === 'all'
-      ? GALLERY_IMAGES
-      : GALLERY_IMAGES.filter((img) => img.category === selectedCategory);
+      ? formattedImages
+      : formattedImages.filter((img) => img.category === selectedCategory);
 
   const openViewer = (index: number) => {
     setCurrentImageIndex(index);

@@ -149,26 +149,40 @@ const PartnershipClient = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
-    setIsSubmitting(false);
-    setIsSuccess(true);
-
-    // Reset after 3 seconds
-    setTimeout(() => {
-      setIsModalOpen(false);
-      setIsSuccess(false);
-      setFormData({
-        fullName: '',
-        email: '',
-        phone: '',
-        company: '',
-        investment: '',
-        location: '',
-        message: '',
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
+      const res = await fetch(`${apiUrl}/api/v1/partnership`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
       });
-    }, 3000);
+
+      if (res.ok) {
+        setIsSuccess(true);
+        setTimeout(() => {
+          setIsModalOpen(false);
+          setIsSuccess(false);
+          setFormData({
+            fullName: '',
+            email: '',
+            phone: '',
+            company: '',
+            investment: '',
+            location: '',
+            message: '',
+          });
+        }, 3000);
+      } else {
+        alert('Bir hata oluştu. Lütfen tekrar deneyiniz.');
+      }
+    } catch (error) {
+      console.error('Submission error:', error);
+      alert('Bir hata oluştu. Lütfen tekrar deneyiniz.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

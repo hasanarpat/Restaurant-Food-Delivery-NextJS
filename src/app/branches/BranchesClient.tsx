@@ -5,7 +5,6 @@ import { motion } from 'framer-motion';
 import Container from '@/components/ui/Container';
 
 import Button from '@/components/ui/Button';
-import { BRANCHES } from '@/data/branches';
 import {
   MapPin,
   Phone,
@@ -17,14 +16,38 @@ import {
   Star,
 } from 'lucide-react';
 
-const BranchesClient = () => {
+interface BranchesClientProps {
+  initialBranches: any[]; // Ideally IBranch[]
+}
+
+const BranchesClient: React.FC<BranchesClientProps> = ({
+  initialBranches = [],
+}) => {
   const [selectedCity, setSelectedCity] = useState<string>('all');
 
-  const cities = ['all', ...Array.from(new Set(BRANCHES.map((b) => b.city)))];
+  const branches = initialBranches.map((b) => ({
+    id: b._id,
+    name: b.name,
+    address: b.address,
+    city: b.city,
+    district: b.district,
+    phone: b.phone,
+    workingHours: {
+      weekday: b.workingHours, // Schema has single string, client has object.
+      weekend: b.workingHours, // Using same for now or need schema update.
+    },
+    coordinates: b.coordinates,
+    manager: 'Şube Müdürü', // Schema doesn't have manager
+    rating: 4.8, // Mock rating or seed it
+    reviews: [] as any[], // Mock reviews
+  }));
+
+  const cities = ['all', ...Array.from(new Set(branches.map((b) => b.city)))];
+
   const filteredBranches =
     selectedCity === 'all'
-      ? BRANCHES
-      : BRANCHES.filter((b) => b.city === selectedCity);
+      ? branches
+      : branches.filter((b) => b.city === selectedCity);
 
   const handleGetDirections = (lat: number, lng: number) => {
     window.open(

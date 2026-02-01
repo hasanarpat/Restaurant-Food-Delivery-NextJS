@@ -401,7 +401,7 @@ const branchesData = [
 const galleryData = [
   {
     title: 'Cozy Interior',
-    imageUrl: '/images/gallery/interior-1.jpg',
+    imageUrl: '/images/gallery/interior-1.png',
     category: 'Interior',
     description: 'Our main dining area',
     isFeatured: true,
@@ -409,7 +409,7 @@ const galleryData = [
   },
   {
     title: 'Signature Pizza',
-    imageUrl: '/images/gallery/food-1.jpg',
+    imageUrl: '/images/gallery/food-1.png',
     category: 'Food',
     description: 'Freshly baked pizza',
     isFeatured: true,
@@ -417,7 +417,7 @@ const galleryData = [
   },
   {
     title: 'Summer Event',
-    imageUrl: '/images/gallery/event-1.jpg',
+    imageUrl: '/images/gallery/event-1.png',
     category: 'Events',
     description: 'Live music night',
     isFeatured: false,
@@ -432,7 +432,7 @@ const blogData = [
     slug: 'secret-perfect-dough',
     excerpt: 'Discover why our pizza dough is so light and crispy.',
     content: '<p>It all starts with the right flour and patience...</p>',
-    coverImage: '/images/blog/dough.jpg',
+    coverImage: '/images/blog/dough.png',
     author: 'Chef Mario',
     tags: ['Recipes', 'Secrets', 'Pizza'],
     isPublished: true,
@@ -444,7 +444,7 @@ const blogData = [
     slug: 'westside-grand-opening',
     excerpt: 'We are thrilled to announce our new location in Brooklyn!',
     content: '<p>Join us this Friday for the grand opening...</p>',
-    coverImage: '/images/blog/opening.jpg',
+    coverImage: '/images/blog/opening.png',
     author: 'Admin',
     tags: ['News', 'Events'],
     isPublished: true,

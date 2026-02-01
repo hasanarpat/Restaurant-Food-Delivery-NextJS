@@ -34,107 +34,35 @@ interface JobPosting {
   icon: React.ReactNode;
 }
 
-const JOBS: JobPosting[] = [
-  {
-    id: '1',
-    title: 'Baş Aşçı',
-    department: 'Mutfak',
-    location: 'Alsancak Şubesi',
-    type: 'Tam Zamanlı',
-    icon: <ChefHat size={32} />,
-    description:
-      'Mutfağımızın lider aşçısı olarak menü geliştirme, kalite kontrol ve ekip yönetiminden sorumlu olacaksınız.',
-    requirements: [
-      'En az 5 yıl deneyim',
-      'Türk mutfağı uzmanlığı',
-      'Liderlik yetenekleri',
-      'Sağlık sertifikası',
-    ],
-  },
-  {
-    id: '2',
-    title: 'Garson / Garson',
-    department: 'Servis',
-    location: 'Tüm Şubeler',
-    type: 'Tam Zamanlı',
-    icon: <Users size={32} />,
-    description:
-      'Misafirlerimize özenli hizmet sunarak unutulmaz bir deneyim yaşatacaksınız.',
-    requirements: [
-      'İletişim becerileri',
-      'Deneyim tercih edilir',
-      'Esnek çalışma saatleri',
-      'Takım çalışmasına yatkınlık',
-    ],
-  },
-  {
-    id: '3',
-    title: 'Kurye',
-    department: 'Teslimat',
-    location: 'Karşıyaka, Bornova',
-    type: 'Yarı Zamanlı',
-    icon: <Bike size={32} />,
-    description:
-      'Siparişleri zamanında ve güvenli bir şekilde müşterilerimize ulaştıracaksınız.',
-    requirements: [
-      'Sürücü belgesi (B sınıfı)',
-      'Motor/Araba sahibi olmak',
-      'Bölge bilgisi',
-      'Ekip çalışmasına uyum',
-    ],
-  },
-  {
-    id: '4',
-    title: 'Restoran Müdürü',
-    department: 'Yönetim',
-    location: 'Alsancak Şubesi',
-    type: 'Tam Zamanlı',
-    icon: <Briefcase size={32} />,
-    description:
-      'Şube operasyonlarını yönetecek, ekibi koordine edecek ve müşteri memnuniyetini sağlayacaksınız.',
-    requirements: [
-      'En az 3 yıl yöneticilik deneyimi',
-      'Restoran sektörü bilgisi',
-      'İnsan kaynakları yönetimi',
-      'Analitik düşünme',
-    ],
-  },
-  {
-    id: '5',
-    title: 'Aşçı Yardımcısı',
-    department: 'Mutfak',
-    location: 'Bornova Şubesi',
-    type: 'Tam Zamanlı',
-    icon: <ChefHat size={32} />,
-    description:
-      'Aşçılarımıza destek olarak mutfak operasyonlarının sorunsuz işlemesini sağlayacaksınız.',
-    requirements: [
-      'Mutfak deneyimi tercih edilir',
-      'Hızlı öğrenme yeteneği',
-      'Temizlik ve hijyen bilinci',
-      'Fiziksel olarak aktif',
-    ],
-  },
-  {
-    id: '6',
-    title: 'Stajyer (Mutfak/Servis)',
-    department: 'Tüm Departmanlar',
-    location: 'Tüm Şubeler',
-    type: 'Staj',
-    icon: <Star size={32} />,
-    description:
-      'Kariyer yolculuğunuza başlamanız için harika bir fırsat! Deneyimli ekibimizden öğrenin.',
-    requirements: [
-      'Üniversite öğrencisi',
-      'Hevesli ve öğrenmeye açık',
-      'İletişim becerileri',
-      'Esnek çalışma saatleri',
-    ],
-  },
-];
+interface CareersClientProps {
+  initialPositions: any[]; // Ideally ICareer[]
+}
 
-const CareersClient = () => {
+const CareersClient: React.FC<CareersClientProps> = ({
+  initialPositions = [],
+}) => {
   const [selectedJob, setSelectedJob] = useState<JobPosting | null>(null);
+
+  const jobs: JobPosting[] = initialPositions.map((pos) => ({
+    id: pos._id,
+    title: pos.title,
+    department: pos.department,
+    location: pos.location,
+    type: pos.type,
+    requirements: pos.requirements,
+    description: pos.description,
+    icon:
+      pos.department === 'Mutfak' ? (
+        <ChefHat size={32} />
+      ) : pos.department === 'Servis' ? (
+        <Users size={32} />
+      ) : pos.department === 'Teslimat' ? (
+        <Bike size={32} />
+      ) : (
+        <Briefcase size={32} />
+      ),
+  }));
+
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -210,7 +138,7 @@ const CareersClient = () => {
 
         {/* Job Listings Grid */}
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16'>
-          {JOBS.map((job, index) => (
+          {jobs.map((job, index) => (
             <motion.div
               key={job.id}
               initial={{ opacity: 0, y: 30 }}

@@ -27,13 +27,37 @@ const CATEGORIES = [
   { id: 'team', label: 'Ekibimiz', icon: <Heart size={18} /> },
 ] as const;
 
-const BlogClient = () => {
+interface BlogClientProps {
+  initialPosts: any[]; // Ideally IBlog[]
+}
+
+const BlogClient: React.FC<BlogClientProps> = ({ initialPosts = [] }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
+
+  const formattedPosts = initialPosts.map((post) => ({
+    id: post._id,
+    title: post.title,
+    excerpt: post.excerpt,
+    date: new Date(post.publishedAt || post.createdAt).toLocaleDateString(
+      'tr-TR',
+      {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      },
+    ),
+    readTime: `${post.readTime || 5} dk okuma`,
+    image: post.coverImage || '/images/blog/dough.jpg',
+    category: 'news', // Default or derived from tags
+    slug: post.slug,
+    author: post.author,
+    tags: post.tags || [],
+  }));
 
   const filteredPosts =
     selectedCategory === 'all'
-      ? BLOG_POSTS
-      : BLOG_POSTS.filter((post) => post.category === selectedCategory);
+      ? formattedPosts
+      : formattedPosts.filter((post) => post.category === selectedCategory);
 
   return (
     <div className='min-h-screen pt-28 md:pt-36 bg-cream'>
