@@ -36,12 +36,27 @@ export async function generateMetadata(props: {
 
 // Generate static params for all categories
 export async function generateStaticParams() {
-  await dbConnect();
-  const categories = await categoryService.getAllCategories();
+  try {
+    await dbConnect();
+    const categories = await categoryService.getAllCategories();
 
-  return categories.map((cat) => ({
-    category: cat.slug,
-  }));
+    return categories.map((cat) => ({
+      category: cat.slug,
+    }));
+  } catch (error) {
+    console.warn(
+      'Failed to fetch categories from database, using fallback data:',
+      error,
+    );
+    // Fallback to hardcoded categories if database connection fails (e.g., during build)
+    return [
+      { category: 'pizzas' },
+      { category: 'burgers' },
+      { category: 'pastas' },
+      { category: 'lahmacun' },
+      { category: 'baklava' },
+    ];
+  }
 }
 
 const SingleCategory = async (props: {

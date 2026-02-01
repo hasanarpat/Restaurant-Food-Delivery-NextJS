@@ -36,13 +36,23 @@ export async function generateMetadata(props: {
 
 // Generate static params for all products (or a subset for larger catalogs)
 export async function generateStaticParams() {
-  await dbConnect();
-  // Fetching all products might be heavy for huge catalogs, but fine for restaurant menu.
-  const allProducts = await productService.getAllProducts({});
+  try {
+    await dbConnect();
+    // Fetching all products might be heavy for huge catalogs, but fine for restaurant menu.
+    const allProducts = await productService.getAllProducts({});
 
-  return allProducts.map((p) => ({
-    id: p._id.toString(), // Ensure ID is string
-  }));
+    return allProducts.map((p) => ({
+      id: p._id.toString(), // Ensure ID is string
+    }));
+  } catch (error) {
+    console.warn(
+      'Failed to fetch products from database, returning empty array:',
+      error,
+    );
+    // Return empty array if database connection fails
+    // Pages will be generated on-demand when visited
+    return [];
+  }
 }
 
 const SingleProductPage = async (props: {
