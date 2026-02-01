@@ -11,6 +11,7 @@ import {
   Facebook,
   Instagram,
   Twitter,
+  Github,
   ArrowRight,
   Send,
   Loader2,
@@ -88,6 +89,7 @@ const Footer = () => {
                 { icon: Facebook, href: '#' },
                 { icon: Instagram, href: '#' },
                 { icon: Twitter, href: '#' },
+                { icon: Github, href: 'https://github.com/hasanarpat' },
               ].map((social, index) => (
                 <Link
                   key={index}
@@ -251,8 +253,15 @@ const Footer = () => {
         <Container>
           <div className='py-6 flex flex-col md:flex-row justify-between items-center gap-4'>
             <p className='font-ui text-xs text-gray-500 text-center md:text-left'>
-              © {currentYear} Antepli Pizza. All rights reserved. Made with ❤️
-              for food lovers.
+              © {currentYear} Antepli Pizza. All rights reserved. Developed by{' '}
+              <Link
+                href='https://github.com/hasanarpat'
+                target='_blank'
+                className='text-primary-400 hover:underline'
+              >
+                Lanetteke
+              </Link>{' '}
+              with ❤️ for food lovers.
             </p>
             <div className='flex gap-6 font-ui text-xs'>
               <Link
