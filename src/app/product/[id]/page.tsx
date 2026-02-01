@@ -4,8 +4,8 @@ import { Metadata } from 'next';
 import { productService } from '@/modules/product/product.service';
 import dbConnect from '@/lib/mongodb';
 
-// Revalidate every 60 seconds
-export const revalidate = 60;
+// Use dynamic rendering to avoid MongoDB connection during build
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata(props: {
   params: Promise<{ id: string }>;

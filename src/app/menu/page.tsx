@@ -6,7 +6,8 @@ import dbConnect from '@/lib/mongodb';
 import MenuGrid from '@/components/MenuGrid'; // New Client Component
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 
-export const revalidate = 60; // ISR: Revalidate every 60 seconds
+// Use dynamic rendering to avoid MongoDB connection during build
+export const dynamic = 'force-dynamic';
 
 const MenuPage = async () => {
   await dbConnect();
