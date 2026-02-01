@@ -41,7 +41,7 @@ const Featured = () => {
 
         {/* Products Grid */}
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'>
-          {productsWithBadges.map((product) => (
+          {productsWithBadges.map((product, index) => (
             <ProductCard
               key={product.id}
               id={product.id}
@@ -49,8 +49,10 @@ const Featured = () => {
               desc={product.desc}
               img={product.img}
               price={product.price}
-              badge={product.badge}
-              rating={product.rating}
+              badge={
+                index === 0 ? 'bestseller' : index === 2 ? 'hot' : undefined
+              }
+              rating={4.5}
             />
           ))}
         </div>

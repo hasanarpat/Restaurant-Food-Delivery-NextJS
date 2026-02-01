@@ -64,6 +64,7 @@ const RelatedProducts = ({ currentId }: { currentId: number }) => {
                 desc={item.desc}
                 img={item.img}
                 price={item.price}
+                rating={4.5}
               />
             </div>
           </motion.div>

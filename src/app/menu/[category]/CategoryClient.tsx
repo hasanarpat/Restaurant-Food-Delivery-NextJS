@@ -122,7 +122,7 @@ const CategoryClient: React.FC<CategoryClientProps> = ({
                 badge={
                   index === 0 ? 'bestseller' : index === 2 ? 'hot' : undefined
                 }
-                rating={4.5 + ((item.id + index) % 5) * 0.1}
+                rating={4.5}
               />
             </motion.div>
           ))}
