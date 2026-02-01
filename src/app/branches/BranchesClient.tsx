@@ -14,6 +14,7 @@ import {
   Navigation,
   Building2,
   Calendar,
+  Star,
 } from 'lucide-react';
 
 const BranchesClient = () => {
@@ -151,10 +152,21 @@ const BranchesClient = () => {
                       {/* Hover Info Card */}
                       <div className='absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-72 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-30'>
                         <div className='bg-white/98 backdrop-blur-md p-5 rounded-2xl shadow-2xl border border-gray-100'>
-                          <h3 className='font-heading text-lg font-bold text-gray-900 mb-3 flex items-center gap-2'>
-                            <Building2 size={20} className='text-primary-600' />
-                            {branch.name}
-                          </h3>
+                          <div className='flex items-start justify-between mb-3'>
+                            <h3 className='font-heading text-lg font-bold text-gray-900 flex items-center gap-2'>
+                              <Building2
+                                size={20}
+                                className='text-primary-600'
+                              />
+                              {branch.name}
+                            </h3>
+                            <div className='flex items-center gap-1 px-2 py-1 bg-yellow-400/20 text-yellow-700 rounded-full'>
+                              <Star size={14} fill='currentColor' />
+                              <span className='text-xs font-black'>
+                                {branch.rating}
+                              </span>
+                            </div>
+                          </div>
                           <div className='space-y-2 text-sm text-gray-600'>
                             <div className='flex items-start gap-2'>
                               <MapPin
@@ -296,6 +308,74 @@ const BranchesClient = () => {
                       Şube Müdürü:
                     </p>
                     <p className='text-gray-600'>{branch.manager}</p>
+                  </div>
+                </div>
+
+                {/* Rating */}
+                <div className='flex items-center justify-between pt-4 border-t border-gray-100'>
+                  <span className='font-semibold text-gray-900'>
+                    Müşteri Puanı:
+                  </span>
+                  <div className='flex items-center gap-2'>
+                    <div className='flex gap-0.5'>
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          size={16}
+                          fill={
+                            i < Math.floor(branch.rating) ? '#fbbf24' : 'none'
+                          }
+                          color={
+                            i < Math.floor(branch.rating)
+                              ? '#fbbf24'
+                              : '#e2e8f0'
+                          }
+                        />
+                      ))}
+                    </div>
+                    <span className='font-bold text-gray-900'>
+                      {branch.rating}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Reviews */}
+                <div className='pt-4 border-t border-gray-100'>
+                  <h4 className='font-semibold text-gray-900 mb-3 flex items-center gap-2'>
+                    <Star size={18} className='text-yellow-500' />
+                    Müşteri Yorumları ({branch.reviews.length})
+                  </h4>
+                  <div className='space-y-3 max-h-64 overflow-y-auto'>
+                    {branch.reviews.map((review) => (
+                      <div
+                        key={review.id}
+                        className='bg-gray-50 p-4 rounded-2xl border border-gray-100'
+                      >
+                        <div className='flex justify-between items-start mb-2'>
+                          <span className='font-bold text-sm text-gray-900'>
+                            {review.user}
+                          </span>
+                          <div className='flex gap-0.5'>
+                            {[...Array(5)].map((_, i) => (
+                              <Star
+                                key={i}
+                                size={12}
+                                fill={i < review.rating ? '#fbbf24' : 'none'}
+                                color={
+                                  i < review.rating ? '#fbbf24' : '#e2e8f0'
+                                }
+                              />
+                            ))}
+                          </div>
+                        </div>
+                        <p className='text-sm text-gray-600 italic leading-relaxed mb-2'>
+                          "{review.comment}"
+                        </p>
+                        <span className='text-xs text-gray-400'>
+                          {review.date}
+                        </span>
+                      </div>
+                    ))}
                   </div>
                 </div>
 

@@ -1,3 +1,11 @@
+export interface Review {
+  id: string;
+  user: string;
+  comment: string;
+  rating: number;
+  date: string;
+}
+
 export interface Branch {
   id: string;
   name: string;
@@ -14,6 +22,8 @@ export interface Branch {
     weekend: string;
   };
   manager: string;
+  rating: number;
+  reviews: Review[];
 }
 
 export const BRANCHES: Branch[] = [
@@ -33,6 +43,31 @@ export const BRANCHES: Branch[] = [
       weekend: '10:00 - 00:00',
     },
     manager: 'Ahmet Yılmaz',
+    rating: 4.9,
+    reviews: [
+      {
+        id: 'r1',
+        user: 'Zeynep K.',
+        comment:
+          'Lahmacunları harika, servis çok hızlı ve personel güler yüzlü!',
+        rating: 5,
+        date: '15 Ocak 2026',
+      },
+      {
+        id: 'r2',
+        user: 'Mehmet A.',
+        comment: 'Kebaplar lezzetli ama bazen biraz kalabalık oluyor.',
+        rating: 4,
+        date: '10 Ocak 2026',
+      },
+      {
+        id: 'r3',
+        user: 'Ayşe D.',
+        comment: 'Atmosfer çok güzel, ailemle sık sık geliyoruz.',
+        rating: 5,
+        date: '5 Ocak 2026',
+      },
+    ],
   },
   {
     id: '2',
@@ -50,6 +85,23 @@ export const BRANCHES: Branch[] = [
       weekend: '10:00 - 00:00',
     },
     manager: 'Mehmet Demir',
+    rating: 4.7,
+    reviews: [
+      {
+        id: 'r4',
+        user: 'Can B.',
+        comment: 'Sahil manzarası eşliğinde yemek yemek harika!',
+        rating: 5,
+        date: '20 Ocak 2026',
+      },
+      {
+        id: 'r5',
+        user: 'Elif T.',
+        comment: 'Porsiyonlar doyurucu ve fiyatlar uygun.',
+        rating: 4,
+        date: '18 Ocak 2026',
+      },
+    ],
   },
   {
     id: '3',
@@ -68,6 +120,30 @@ export const BRANCHES: Branch[] = [
       weekend: '10:00 - 00:00',
     },
     manager: 'Ayşe Kaya',
+    rating: 4.8,
+    reviews: [
+      {
+        id: 'r6',
+        user: 'Selin Y.',
+        comment: 'Öğrenci dostu fiyatlar ve lezzetli yemekler!',
+        rating: 5,
+        date: '22 Ocak 2026',
+      },
+      {
+        id: 'r7',
+        user: 'Burak K.',
+        comment: 'Kampüse çok yakın, her gün geliyorum.',
+        rating: 5,
+        date: '19 Ocak 2026',
+      },
+      {
+        id: 'r8',
+        user: 'Deniz M.',
+        comment: 'Çok güzel ama bazen bekleme süresi uzuyor.',
+        rating: 4,
+        date: '12 Ocak 2026',
+      },
+    ],
   },
   {
     id: '4',
@@ -85,6 +161,23 @@ export const BRANCHES: Branch[] = [
       weekend: '10:00 - 00:00',
     },
     manager: 'Fatma Özkan',
+    rating: 4.6,
+    reviews: [
+      {
+        id: 'r9',
+        user: 'Ali R.',
+        comment: 'Merkezi konumu çok iyi, işten çıkınca uğruyorum.',
+        rating: 5,
+        date: '25 Ocak 2026',
+      },
+      {
+        id: 'r10',
+        user: 'Merve S.',
+        comment: 'Lezzetler güzel ama otopark sorunu var.',
+        rating: 4,
+        date: '16 Ocak 2026',
+      },
+    ],
   },
   {
     id: '5',
@@ -102,5 +195,29 @@ export const BRANCHES: Branch[] = [
       weekend: '10:00 - 00:00',
     },
     manager: 'Mustafa Çelik',
+    rating: 4.9,
+    reviews: [
+      {
+        id: 'r11',
+        user: 'Cem T.',
+        comment: 'En iyi şube! Yemekler her zaman taze ve sıcak.',
+        rating: 5,
+        date: '28 Ocak 2026',
+      },
+      {
+        id: 'r12',
+        user: 'Gizem P.',
+        comment: 'Aile ortamı harika, çocuklarla rahat geliyoruz.',
+        rating: 5,
+        date: '23 Ocak 2026',
+      },
+      {
+        id: 'r13',
+        user: 'Kemal L.',
+        comment: 'Baklavaları muhteşem!',
+        rating: 5,
+        date: '14 Ocak 2026',
+      },
+    ],
   },
 ];
