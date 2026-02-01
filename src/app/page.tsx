@@ -10,11 +10,11 @@ export default function Home() {
   return (
     <main>
       <Slider />
-      <AppDownload />
-      <BenefitsShowcase />
       <Featured />
-      <HowItWorks />
       <Offer />
+      <BenefitsShowcase />
+      <HowItWorks />
+      <AppDownload />
       <Partnership />
     </main>
   );
