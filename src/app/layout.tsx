@@ -61,6 +61,8 @@ export const metadata: Metadata = {
   },
 };
 
+import BranchMap from '@/components/BranchMap';
+
 export default function RootLayout({
   children,
 }: {
@@ -78,6 +80,7 @@ export default function RootLayout({
               <Navbar />
               <Notifications />
               {children}
+              <BranchMap />
               <Footer />
             </CartProvider>
           </AuthProvider>
