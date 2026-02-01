@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 const getBranches = async () => {
   try {
     const baseUrl = await getBaseUrl();
-    const res = await fetch(`${baseUrl}/api/v1/branch`, {
+    const res = await fetch(`${baseUrl}/api/v1/branches`, {
       cache: 'no-store',
     });
     if (!res.ok) {

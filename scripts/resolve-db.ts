@@ -10,7 +10,6 @@ const HOST = 'antepli-pizza.on17ni5.mongodb.net';
 const SRV_ADDR = `_mongodb._tcp.${HOST}`;
 
 async function resolve() {
-  console.log(`Resolving ${HOST}...`);
   try {
     const addresses = await resolveSrvAsync(SRV_ADDR);
     console.log('SRV Records:', addresses);

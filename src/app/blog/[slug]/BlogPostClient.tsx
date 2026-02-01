@@ -6,10 +6,8 @@ import Container from '@/components/ui/Container';
 import Button from '@/components/ui/Button';
 import { Calendar, Clock, User, Tag, ArrowLeft, Share2 } from 'lucide-react';
 import Link from 'next/link';
-import { BlogPost } from '@/data/blog';
-
 interface BlogPostClientProps {
-  post: BlogPost;
+  post: any;
 }
 
 const BlogPostClient: React.FC<BlogPostClientProps> = ({ post }) => {
@@ -26,8 +24,18 @@ const BlogPostClient: React.FC<BlogPostClientProps> = ({ post }) => {
   return (
     <div className='min-h-screen bg-cream'>
       {/* Hero Header */}
-      <div className='bg-gradient-to-br from-primary-500 to-orange-500 py-20'>
-        <Container>
+      <div className='relative pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden'>
+        {/* Background Image */}
+        <div className='absolute inset-0 z-0'>
+          <img
+            src={post.coverImage || '/images/blog/dough.png'}
+            alt={post.title}
+            className='w-full h-full object-cover'
+          />
+          <div className='absolute inset-0 bg-black/60 backdrop-blur-[2px]' />
+        </div>
+
+        <Container className='relative z-10'>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -36,29 +44,39 @@ const BlogPostClient: React.FC<BlogPostClientProps> = ({ post }) => {
             <Link href='/blog'>
               <Button
                 variant='ghost'
-                className='text-white hover:bg-white/20 mb-6'
+                className='text-white hover:bg-white/20 mb-8'
               >
                 <ArrowLeft size={20} />
                 Blog'a Dön
               </Button>
             </Link>
 
-            <h1 className='font-heading text-3xl md:text-5xl font-extrabold text-white mb-6'>
+            <h1 className='font-heading text-3xl md:text-5xl lg:text-6xl font-extrabold text-white mb-8 leading-tight'>
               {post.title}
             </h1>
 
-            <div className='flex flex-wrap items-center gap-4 text-white/90 text-sm mb-6'>
-              <div className='flex items-center gap-2'>
-                <User size={16} />
-                {post.author}
+            <div className='flex flex-wrap items-center gap-6 text-white/90 text-sm md:text-base mb-8'>
+              <div className='flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full backdrop-blur-md'>
+                <User size={18} className='text-primary-400' />
+                <span className='font-medium'>{post.author}</span>
               </div>
-              <div className='flex items-center gap-2'>
-                <Calendar size={16} />
-                {post.date}
+              <div className='flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full backdrop-blur-md'>
+                <Calendar size={18} className='text-primary-400' />
+                <span className='font-medium'>
+                  {new Date(
+                    post.publishedAt || post.createdAt || Date.now(),
+                  ).toLocaleDateString('tr-TR', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </span>
               </div>
-              <div className='flex items-center gap-2'>
-                <Clock size={16} />
-                {post.readTime} okuma
+              <div className='flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full backdrop-blur-md'>
+                <Clock size={18} className='text-primary-400' />
+                <span className='font-medium'>
+                  {post.readTime || 5} dk okuma
+                </span>
               </div>
             </div>
 
@@ -78,35 +96,17 @@ const BlogPostClient: React.FC<BlogPostClientProps> = ({ post }) => {
           className='max-w-4xl mx-auto'
         >
           <div className='bg-white rounded-[2.5rem] p-8 md:p-12 shadow-lg mb-8'>
-            <div className='prose prose-lg max-w-none'>
-              {post.content.split('\n\n').map((paragraph, index) => {
-                if (paragraph.startsWith('**') && paragraph.endsWith('**')) {
-                  return (
-                    <h3
-                      key={index}
-                      className='font-heading text-2xl font-bold text-gray-900 mt-8 mb-4'
-                    >
-                      {paragraph.replace(/\*\*/g, '')}
-                    </h3>
-                  );
-                }
-                return (
-                  <p
-                    key={index}
-                    className='text-gray-700 leading-relaxed mb-4 whitespace-pre-line text-lg'
-                  >
-                    {paragraph}
-                  </p>
-                );
-              })}
-            </div>
+            <div
+              className='prose prose-lg max-w-none text-gray-700 prose-headings:font-heading prose-headings:font-bold prose-headings:text-gray-900 prose-p:leading-relaxed prose-p:text-lg prose-a:text-primary-600 hover:prose-a:text-primary-700'
+              dangerouslySetInnerHTML={{ __html: post.content }}
+            />
           </div>
 
           {/* Tags & Share */}
           <div className='bg-white rounded-[2.5rem] p-8 shadow-lg'>
             <div className='flex flex-wrap items-center justify-between gap-4'>
               <div className='flex flex-wrap gap-2'>
-                {post.tags.map((tag) => (
+                {post.tags.map((tag: string) => (
                   <span
                     key={tag}
                     className='px-4 py-2 bg-primary-50 text-primary-700 rounded-full text-sm font-semibold flex items-center gap-2'

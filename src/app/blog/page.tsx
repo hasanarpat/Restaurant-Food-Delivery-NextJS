@@ -13,7 +13,6 @@ export const metadata: Metadata = {
 const getBlogs = async () => {
   try {
     const baseUrl = await getBaseUrl();
-    console.log('Fetching blogs from:', `${baseUrl}/api/v1/blog`);
 
     const res = await fetch(`${baseUrl}/api/v1/blog`, {
       cache: 'no-store',
@@ -33,10 +32,7 @@ const getBlogs = async () => {
 
     const response = await res.json();
     const data = response.data || [];
-    console.log(
-      'Fetched blogs count:',
-      Array.isArray(data) ? data.length : 'Not an array',
-    );
+
     return data;
   } catch (error) {
     console.error('Error fetching blogs:', error);

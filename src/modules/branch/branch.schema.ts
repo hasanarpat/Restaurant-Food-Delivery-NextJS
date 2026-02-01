@@ -12,6 +12,14 @@ export interface IBranch extends Document {
     lng: number;
   };
   workingHours: string; // e.g. "09:00 - 23:00"
+  manager: string;
+  rating: number;
+  reviews: {
+    user: string;
+    comment: string;
+    rating: number;
+    date: string;
+  }[];
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -31,6 +39,16 @@ const BranchSchema = new Schema<IBranch>(
       lng: { type: Number },
     },
     workingHours: { type: String, required: true },
+    manager: { type: String, default: 'Şube Müdürü' },
+    rating: { type: Number, default: 5 },
+    reviews: [
+      {
+        user: { type: String },
+        comment: { type: String },
+        rating: { type: Number },
+        date: { type: String },
+      },
+    ],
     isActive: { type: Boolean, default: true },
     deletedAt: { type: Date },
   },

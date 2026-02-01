@@ -119,13 +119,16 @@ const BlogClient: React.FC<BlogClientProps> = ({ initialPosts = [] }) => {
                 whileHover={{ scale: 1.03, y: -5 }}
                 className='bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all cursor-pointer group h-full flex flex-col'
               >
-                {/* Image Placeholder */}
-                <div className='h-48 bg-gradient-to-br from-primary-400 to-orange-500 flex items-center justify-center relative overflow-hidden'>
-                  <div className='text-white text-6xl group-hover:scale-110 transition-transform duration-300'>
-                    {post.category === 'recipes' && '👨‍🍳'}
-                    {post.category === 'tips' && '💡'}
-                    {post.category === 'news' && '📰'}
-                    {post.category === 'team' && '❤️'}
+                {/* Image */}
+                <div className='h-48 bg-gray-200 relative overflow-hidden'>
+                  <img
+                    src={post.image}
+                    alt={post.title}
+                    className='w-full h-full object-cover group-hover:scale-110 transition-transform duration-500'
+                  />
+                  <div className='absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-primary-600 shadow-sm'>
+                    {CATEGORIES.find((c) => c.id === post.category)?.label ||
+                      'Haberler'}
                   </div>
                 </div>
 
@@ -166,7 +169,7 @@ const BlogClient: React.FC<BlogClientProps> = ({ initialPosts = [] }) => {
 
                     {/* Tags */}
                     <div className='flex flex-wrap gap-2'>
-                      {post.tags.slice(0, 2).map((tag) => (
+                      {post.tags.slice(0, 2).map((tag: string) => (
                         <span
                           key={tag}
                           className='px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-medium flex items-center gap-1'

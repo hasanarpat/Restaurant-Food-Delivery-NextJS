@@ -33,13 +33,13 @@ const BranchesClient: React.FC<BranchesClientProps> = ({
     district: b.district,
     phone: b.phone,
     workingHours: {
-      weekday: b.workingHours, // Schema has single string, client has object.
-      weekend: b.workingHours, // Using same for now or need schema update.
+      weekday: b.workingHours, // Using the string from DB
+      weekend: b.workingHours, // Using the string from DB
     },
     coordinates: b.coordinates,
-    manager: 'Şube Müdürü', // Schema doesn't have manager
-    rating: 4.8, // Mock rating or seed it
-    reviews: [] as any[], // Mock reviews
+    manager: b.manager || 'Şube Müdürü',
+    rating: b.rating || 5,
+    reviews: b.reviews || [],
   }));
 
   const cities = ['all', ...Array.from(new Set(branches.map((b) => b.city)))];
@@ -364,36 +364,44 @@ const BranchesClient: React.FC<BranchesClientProps> = ({
                     Müşteri Yorumları ({branch.reviews.length})
                   </h4>
                   <div className='space-y-3 max-h-64 overflow-y-auto'>
-                    {branch.reviews.map((review) => (
-                      <div
-                        key={review.id}
-                        className='bg-gray-50 p-4 rounded-2xl border border-gray-100'
-                      >
-                        <div className='flex justify-between items-start mb-2'>
-                          <span className='font-bold text-sm text-gray-900'>
-                            {review.user}
-                          </span>
-                          <div className='flex gap-0.5'>
-                            {[...Array(5)].map((_, i) => (
-                              <Star
-                                key={i}
-                                size={12}
-                                fill={i < review.rating ? '#fbbf24' : 'none'}
-                                color={
-                                  i < review.rating ? '#fbbf24' : '#e2e8f0'
-                                }
-                              />
-                            ))}
+                    {branch.reviews.map(
+                      (review: {
+                        id: string;
+                        user: string;
+                        comment: string;
+                        rating: number;
+                        date: string;
+                      }) => (
+                        <div
+                          key={review.id}
+                          className='bg-gray-50 p-4 rounded-2xl border border-gray-100'
+                        >
+                          <div className='flex justify-between items-start mb-2'>
+                            <span className='font-bold text-sm text-gray-900'>
+                              {review.user}
+                            </span>
+                            <div className='flex gap-0.5'>
+                              {[...Array(5)].map((_, i) => (
+                                <Star
+                                  key={i}
+                                  size={12}
+                                  fill={i < review.rating ? '#fbbf24' : 'none'}
+                                  color={
+                                    i < review.rating ? '#fbbf24' : '#e2e8f0'
+                                  }
+                                />
+                              ))}
+                            </div>
                           </div>
+                          <p className='text-sm text-gray-600 italic leading-relaxed mb-2'>
+                            "{review.comment}"
+                          </p>
+                          <span className='text-xs text-gray-400'>
+                            {review.date}
+                          </span>
                         </div>
-                        <p className='text-sm text-gray-600 italic leading-relaxed mb-2'>
-                          "{review.comment}"
-                        </p>
-                        <span className='text-xs text-gray-400'>
-                          {review.date}
-                        </span>
-                      </div>
-                    ))}
+                      ),
+                    )}
                   </div>
                 </div>
 

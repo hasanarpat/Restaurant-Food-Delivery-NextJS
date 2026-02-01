@@ -4,7 +4,15 @@ export interface ICareer extends Document {
   title: string;
   department: string;
   location: string;
-  type: 'Full-time' | 'Part-time' | 'Contract' | 'Internship';
+  type:
+    | 'Full-time'
+    | 'Part-time'
+    | 'Contract'
+    | 'Internship'
+    | 'Tam Zamanlı'
+    | 'Yarı Zamanlı'
+    | 'Sözleşmeli'
+    | 'Staj';
   description: string;
   requirements: string[];
   isActive: boolean;
@@ -20,7 +28,16 @@ const CareerSchema = new Schema<ICareer>(
     location: { type: String, required: true },
     type: {
       type: String,
-      enum: ['Full-time', 'Part-time', 'Contract', 'Internship'],
+      enum: [
+        'Full-time',
+        'Part-time',
+        'Contract',
+        'Internship',
+        'Tam Zamanlı',
+        'Yarı Zamanlı',
+        'Sözleşmeli',
+        'Staj',
+      ],
       required: true,
     },
     description: { type: String, required: true },
