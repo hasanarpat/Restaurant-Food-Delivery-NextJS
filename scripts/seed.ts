@@ -3,6 +3,11 @@ import dotenv from 'dotenv';
 import { setServers } from 'dns';
 import { Category } from '../src/modules/category/category.schema';
 import { Product } from '../src/modules/product/product.schema';
+import { Career } from '../src/modules/career/career.schema';
+import { Partnership } from '../src/modules/partnership/partnership.schema';
+import { Branch } from '../src/modules/branch/branch.schema';
+import { Gallery } from '../src/modules/gallery/gallery.schema';
+import { Blog } from '../src/modules/blog/blog.schema';
 
 // Force Google DNS to bypass local ISP filtering
 setServers(['8.8.8.8']);
@@ -323,6 +328,131 @@ const baklavaData = [
   },
 ];
 
+// Careers Data
+const careersData = [
+  {
+    title: 'Head Chef',
+    department: 'Kitchen',
+    location: 'Downtown Branch',
+    type: 'Full-time',
+    description:
+      'We are looking for an experienced Head Chef to lead our kitchen team.',
+    requirements: [
+      '5+ years experience',
+      'Leadership skills',
+      'Culinary degree',
+    ],
+    isActive: true,
+  },
+  {
+    title: 'Delivery Driver',
+    department: 'Delivery',
+    location: 'Westside Branch',
+    type: 'Part-time',
+    description: 'Seeking reliable delivery drivers for evening shifts.',
+    requirements: [
+      'Valid driver license',
+      'Knowledge of local area',
+      'Reliable vehicle',
+    ],
+    isActive: true,
+  },
+  {
+    title: 'Restaurant Manager',
+    department: 'Management',
+    location: 'North Branch',
+    type: 'Full-time',
+    description: 'Experienced manager needed to oversee daily operations.',
+    requirements: [
+      '3+ years management experience',
+      'Strong communication skills',
+    ],
+    isActive: true,
+  },
+];
+
+// Branches Data
+const branchesData = [
+  {
+    name: 'Downtown Main',
+    address: '123 Main Street',
+    city: 'New York',
+    district: 'Manhattan',
+    phone: '+1 212 555 0123',
+    email: 'downtown@antepli.com',
+    workingHours: '09:00 - 23:00',
+    coordinates: { lat: 40.7128, lng: -74.006 },
+    isActive: true,
+  },
+  {
+    name: 'Westside Spot',
+    address: '456 West Avenue',
+    city: 'New York',
+    district: 'Brooklyn',
+    phone: '+1 718 555 0123',
+    email: 'westside@antepli.com',
+    workingHours: '10:00 - 22:00',
+    coordinates: { lat: 40.6782, lng: -73.9442 },
+    isActive: true,
+  },
+];
+
+// Gallery Data
+const galleryData = [
+  {
+    title: 'Cozy Interior',
+    imageUrl: '/images/gallery/interior-1.jpg',
+    category: 'Interior',
+    description: 'Our main dining area',
+    isFeatured: true,
+    order: 1,
+  },
+  {
+    title: 'Signature Pizza',
+    imageUrl: '/images/gallery/food-1.jpg',
+    category: 'Food',
+    description: 'Freshly baked pizza',
+    isFeatured: true,
+    order: 2,
+  },
+  {
+    title: 'Summer Event',
+    imageUrl: '/images/gallery/event-1.jpg',
+    category: 'Events',
+    description: 'Live music night',
+    isFeatured: false,
+    order: 3,
+  },
+];
+
+// Blog Data
+const blogData = [
+  {
+    title: 'The Secret to Perfect Dough',
+    slug: 'secret-perfect-dough',
+    excerpt: 'Discover why our pizza dough is so light and crispy.',
+    content: '<p>It all starts with the right flour and patience...</p>',
+    coverImage: '/images/blog/dough.jpg',
+    author: 'Chef Mario',
+    tags: ['Recipes', 'Secrets', 'Pizza'],
+    isPublished: true,
+    publishedAt: new Date(),
+    readTime: 5,
+  },
+  {
+    title: 'Grand Opening of Westside Branch',
+    slug: 'westside-grand-opening',
+    excerpt: 'We are thrilled to announce our new location in Brooklyn!',
+    content: '<p>Join us this Friday for the grand opening...</p>',
+    coverImage: '/images/blog/opening.jpg',
+    author: 'Admin',
+    tags: ['News', 'Events'],
+    isPublished: true,
+    publishedAt: new Date(),
+    readTime: 3,
+  },
+];
+
 async function seed() {
   if (!uri) {
     console.error('❌ MONGODB_URI is missing in .env.local');
@@ -338,8 +468,15 @@ async function seed() {
 
     // Clear existing data
     console.log('🗑️  Clearing existing data...');
-    await Product.deleteMany({});
-    await Category.deleteMany({});
+    await Promise.all([
+      Product.deleteMany({}),
+      Category.deleteMany({}),
+      Career.deleteMany({}),
+      Branch.deleteMany({}),
+      Gallery.deleteMany({}),
+      Blog.deleteMany({}),
+      Partnership.deleteMany({}),
+    ]);
     console.log('✅ Existing data cleared\n');
 
     // Create categories
@@ -372,6 +509,15 @@ async function seed() {
         isAvailable: true,
         options: p.options,
         categoryId: pizzaCat._id,
+        excludableIngredients: [
+          'Onion',
+          'Olives',
+          'Mushrooms',
+          'Peppers',
+          'Garlic',
+        ],
+        rating: 4 + Math.random(),
+        numReviews: Math.floor(Math.random() * 200) + 10,
       })),
       ...burgersData.map((p) => ({
         title: p.title,
@@ -382,6 +528,15 @@ async function seed() {
         isAvailable: true,
         options: p.options,
         categoryId: burgerCat._id,
+        excludableIngredients: [
+          'Onion',
+          'Pickles',
+          'Lettuce',
+          'Tomato',
+          'Cheese',
+        ],
+        rating: 4 + Math.random(),
+        numReviews: Math.floor(Math.random() * 200) + 10,
       })),
       ...pastasData.map((p) => ({
         title: p.title,
@@ -392,6 +547,9 @@ async function seed() {
         isAvailable: true,
         options: p.options,
         categoryId: pastaCat._id,
+        excludableIngredients: ['Garlic', 'Basil', 'Parmesan', 'Chili Flakes'],
+        rating: 4 + Math.random(),
+        numReviews: Math.floor(Math.random() * 200) + 10,
       })),
       ...lahmacunData.map((p) => ({
         title: p.title,
@@ -402,6 +560,9 @@ async function seed() {
         isAvailable: true,
         options: p.options,
         categoryId: lahmacunCat._id,
+        excludableIngredients: ['Onion', 'Parsley', 'Lemon', 'Tomato'],
+        rating: 4 + Math.random(),
+        numReviews: Math.floor(Math.random() * 200) + 10,
       })),
       ...baklavaData.map((p) => ({
         title: p.title,
@@ -412,21 +573,44 @@ async function seed() {
         isAvailable: true,
         options: p.options,
         categoryId: baklavaCat._id,
+        excludableIngredients: [], // Usually no custom exclusions for baklava
+        rating: 4.5 + Math.random() * 0.5,
+        numReviews: Math.floor(Math.random() * 200) + 10,
       })),
     ];
 
     const createdProducts = await Product.insertMany(productsToCreate);
     console.log(`✅ Created ${createdProducts.length} products\n`);
 
+    // Creates Careers
+    console.log('💼 Creating careers...');
+    const createdCareers = await Career.insertMany(careersData);
+    console.log(`✅ Created ${createdCareers.length} careers\n`);
+
+    // Create Branches
+    console.log('🏢 Creating branches...');
+    const createdBranches = await Branch.insertMany(branchesData);
+    console.log(`✅ Created ${createdBranches.length} branches\n`);
+
+    // Create Gallery
+    console.log('🖼️ Creating gallery items...');
+    const createdGallery = await Gallery.insertMany(galleryData);
+    console.log(`✅ Created ${createdGallery.length} gallery items\n`);
+
+    // Create Blog
+    console.log('📝 Creating blog posts...');
+    const createdBlog = await Blog.insertMany(blogData);
+    console.log(`✅ Created ${createdBlog.length} blog posts\n`);
+
     // Summary
     console.log('📊 Seeding Summary:');
     console.log(`   • Categories: ${createdCategories.length}`);
     console.log(`   • Products: ${createdProducts.length}`);
-    console.log(`     - Pizzas: ${pizzasData.length}`);
-    console.log(`     - Burgers: ${burgersData.length}`);
-    console.log(`     - Pastas: ${pastasData.length}`);
-    console.log(`     - Lahmacun: ${lahmacunData.length}`);
-    console.log(`     - Baklava: ${baklavaData.length}`);
+    console.log(`   • Careers: ${createdCareers.length}`);
+    console.log(`   • Branches: ${createdBranches.length}`);
+    console.log(`   • Gallery Items: ${createdGallery.length}`);
+    console.log(`   • Blog Posts: ${createdBlog.length}`);
+
     console.log('\n✨ Database seeding completed successfully!\n');
 
     await mongoose.disconnect();

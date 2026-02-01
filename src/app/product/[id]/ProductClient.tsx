@@ -95,11 +95,18 @@ const ProductClient: React.FC<ProductClientProps> = ({ product }) => {
               <div className='flex items-center gap-2 mb-4'>
                 <div className='flex text-yellow-500'>
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className='w-5 h-5 fill-current' />
+                    <Star
+                      key={i}
+                      className={`w-5 h-5 ${
+                        i < Math.round(product.rating || 5)
+                          ? 'fill-current'
+                          : 'text-gray-300'
+                      }`}
+                    />
                   ))}
                 </div>
                 <span className='text-sm text-gray-500 font-semibold'>
-                  (128 reviews)
+                  ({product.numReviews || 0} reviews)
                 </span>
               </div>
 
@@ -150,6 +157,7 @@ const ProductClient: React.FC<ProductClientProps> = ({ product }) => {
                   price={product.price}
                   image={product.img}
                   options={product.options}
+                  excludableIngredients={product.excludableIngredients}
                 />
               </div>
             </div>

@@ -9,16 +9,22 @@ type Props = {
   price: number;
   image?: string;
   options?: { title: string; additionalPrice: number }[];
+  excludableIngredients?: string[];
 };
 
-const MOCK_INGREDIENTS = ['Onion', 'Garlic', 'Tomato', 'Lettuce', 'Pickles'];
-
-const Price = ({ id, title, price, image, options }: Props) => {
+const Price = ({
+  id,
+  title,
+  price,
+  image,
+  options,
+  excludableIngredients = [],
+}: Props) => {
   const { cart, addToCart, updateQuantity } = useCart();
   const [selected, setSelected] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [isAdded, setIsAdded] = useState(false);
-  const [excludedIngredients, setExcludedIngredients] = useState<string[]>([]);
+  const [excluded, setExcluded] = useState<string[]>([]);
 
   const selectedOption = options?.[selected];
   const currentSize = selectedOption?.title || 'Regular';
@@ -35,7 +41,7 @@ const Price = ({ id, title, price, image, options }: Props) => {
     (item) =>
       item.id === id &&
       item.size === currentSize &&
-      areIngredientsEqual(item.excludedIngredients || [], excludedIngredients),
+      areIngredientsEqual(item.excludedIngredients || [], excluded),
   );
 
   // Sync quantity with cart on mount or when selection/exclusions change
@@ -45,14 +51,14 @@ const Price = ({ id, title, price, image, options }: Props) => {
     } else {
       setQuantity(1);
     }
-  }, [cartItem, selected, excludedIngredients]);
+  }, [cartItem, selected, excluded]);
 
   const handleAddToCart = () => {
     const finalPrice = price + (selectedOption?.additionalPrice || 0);
 
     if (cartItem) {
       // Update existing item
-      updateQuantity(id, quantity, currentSize, excludedIngredients);
+      updateQuantity(id, quantity, currentSize, excluded);
       setIsAdded(true);
       setTimeout(() => setIsAdded(false), 2000);
     } else {
@@ -64,8 +70,7 @@ const Price = ({ id, title, price, image, options }: Props) => {
         size: currentSize,
         image: image || '/temporary/p1.png',
         quantity: quantity,
-        excludedIngredients:
-          excludedIngredients.length > 0 ? excludedIngredients : undefined,
+        excludedIngredients: excluded.length > 0 ? excluded : undefined,
       });
       setIsAdded(true);
       setTimeout(() => setIsAdded(false), 2000);
@@ -73,7 +78,7 @@ const Price = ({ id, title, price, image, options }: Props) => {
   };
 
   const toggleIngredient = (ing: string) => {
-    setExcludedIngredients((prev) =>
+    setExcluded((prev) =>
       prev.includes(ing) ? prev.filter((i) => i !== ing) : [...prev, ing],
     );
   };
@@ -115,29 +120,31 @@ const Price = ({ id, title, price, image, options }: Props) => {
       )}
 
       {/* Ingredients Exclusion */}
-      <div>
-        <h3 className='font-heading text-sm font-semibold text-gray-700 mb-3'>
-          Remove Ingredients
-        </h3>
-        <div className='flex flex-wrap gap-2'>
-          {MOCK_INGREDIENTS.map((ing) => {
-            const isExcluded = excludedIngredients.includes(ing);
-            return (
-              <button
-                key={ing}
-                onClick={() => toggleIngredient(ing)}
-                className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all border ${
-                  isExcluded
-                    ? 'bg-red-50 border-red-200 text-red-600 line-through ring-1 ring-red-200'
-                    : 'bg-white border-gray-200 text-gray-600 hover:border-primary-500'
-                }`}
-              >
-                {ing}
-              </button>
-            );
-          })}
+      {excludableIngredients && excludableIngredients.length > 0 && (
+        <div>
+          <h3 className='font-heading text-sm font-semibold text-gray-700 mb-3'>
+            Remove Ingredients
+          </h3>
+          <div className='flex flex-wrap gap-2'>
+            {excludableIngredients.map((ing) => {
+              const isExcluded = excluded.includes(ing);
+              return (
+                <button
+                  key={ing}
+                  onClick={() => toggleIngredient(ing)}
+                  className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all border ${
+                    isExcluded
+                      ? 'bg-red-50 border-red-200 text-red-600 line-through ring-1 ring-red-200'
+                      : 'bg-white border-gray-200 text-gray-600 hover:border-primary-500'
+                  }`}
+                >
+                  {ing}
+                </button>
+              );
+            })}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Quantity Selector */}
       <div>

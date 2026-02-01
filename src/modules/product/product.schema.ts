@@ -16,6 +16,9 @@ export interface IProduct extends Document {
   prepTime?: number;
   calories?: number;
   allergens?: string[];
+  excludableIngredients?: string[];
+  rating?: number;
+  numReviews?: number;
   options: IProductOption[];
   categoryId: mongoose.Types.ObjectId;
   createdAt: Date;
@@ -40,6 +43,9 @@ const ProductSchema = new Schema<IProduct>(
     prepTime: { type: Number }, // in minutes
     calories: { type: Number },
     allergens: [{ type: String }],
+    excludableIngredients: [{ type: String }],
+    rating: { type: Number, default: 0, min: 0, max: 5 },
+    numReviews: { type: Number, default: 0 },
     options: [ProductOptionSchema],
     categoryId: {
       type: Schema.Types.ObjectId,

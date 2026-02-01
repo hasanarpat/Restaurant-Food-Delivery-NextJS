@@ -120,9 +120,9 @@ const CategoryClient: React.FC<CategoryClientProps> = ({
                 img={item.img}
                 price={item.price}
                 badge={
-                  index === 0 ? 'bestseller' : index === 2 ? 'hot' : undefined
+                  item.isFeatured ? 'hot' : index < 3 ? 'bestseller' : undefined
                 }
-                rating={4.5}
+                rating={item.rating || 0}
               />
             </motion.div>
           ))}

@@ -52,7 +52,7 @@ const Featured = () => {
               badge={
                 index === 0 ? 'bestseller' : index === 2 ? 'hot' : undefined
               }
-              rating={4.5}
+              rating={product.rating}
             />
           ))}
         </div>
