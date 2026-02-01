@@ -1,29 +1,21 @@
 import React from 'react';
 import ProductClient from './ProductClient';
-import {
-  pizzas,
-  burgers,
-  pastas,
-  lahmacun,
-  baklava,
-  featuredProducts,
-} from '@/data';
 import { Metadata } from 'next';
+import { productService } from '@/modules/product/product.service';
+import dbConnect from '@/lib/mongodb';
 
-const allProducts = [
-  ...pizzas,
-  ...burgers,
-  ...pastas,
-  ...lahmacun,
-  ...baklava,
-  ...featuredProducts,
-];
+// Revalidate every 60 seconds
+export const revalidate = 60;
 
 export async function generateMetadata(props: {
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const params = await props.params;
-  const product = allProducts.find((p) => p.id === Number(params.id));
+  await dbConnect();
+  // Using catch to handle 404 cleanly in metadata
+  const product = await productService
+    .getProductById(params.id)
+    .catch(() => null);
 
   if (!product) {
     return {
@@ -42,22 +34,14 @@ export async function generateMetadata(props: {
   };
 }
 
-// Generate static params for all known products
+// Generate static params for all products (or a subset for larger catalogs)
 export async function generateStaticParams() {
-  const allProducts = [
-    ...pizzas,
-    ...burgers,
-    ...pastas,
-    ...lahmacun,
-    ...baklava,
-    ...featuredProducts,
-  ];
+  await dbConnect();
+  // Fetching all products might be heavy for huge catalogs, but fine for restaurant menu.
+  const allProducts = await productService.getAllProducts({});
 
-  // Remove duplicates based on ID
-  const uniqueIds = Array.from(new Set(allProducts.map((p) => p.id)));
-
-  return uniqueIds.map((id) => ({
-    id: id.toString(),
+  return allProducts.map((p) => ({
+    id: p._id.toString(), // Ensure ID is string
   }));
 }
 
@@ -65,7 +49,16 @@ const SingleProductPage = async (props: {
   params: Promise<{ id: string }>;
 }) => {
   const params = await props.params;
-  return <ProductClient id={Number(params.id)} />;
+  await dbConnect();
+
+  const product = await productService
+    .getProductById(params.id)
+    .catch(() => null);
+
+  // Serialize for Client Component
+  const parsedProduct = product ? JSON.parse(JSON.stringify(product)) : null;
+
+  return <ProductClient product={parsedProduct} />;
 };
 
 export default SingleProductPage;

@@ -1,13 +1,5 @@
 'use client';
 import Price from '@/components/Price';
-import {
-  pizzas,
-  burgers,
-  pastas,
-  lahmacun,
-  baklava,
-  featuredProducts,
-} from '@/data';
 import Image from 'next/image';
 import React from 'react';
 import Container from '@/components/ui/Container';
@@ -20,34 +12,35 @@ import RelatedProducts from '@/components/RelatedProducts';
 import { Flame, AlertTriangle, Star } from 'lucide-react';
 
 interface ProductClientProps {
-  id: number;
+  product: any; // Ideally IProduct
 }
 
-const ProductClient: React.FC<ProductClientProps> = ({ id }) => {
-  // Find product in all data sources
-  const product =
-    pizzas.find((p) => p.id === id) ||
-    burgers.find((p) => p.id === id) ||
-    pastas.find((p) => p.id === id) ||
-    lahmacun.find((p) => p.id === id) ||
-    baklava.find((p) => p.id === id) ||
-    featuredProducts.find((p) => p.id === id);
-
-  // Determine category for breadcrumb
-  let category = '';
-  if (pizzas.find((p) => p.id === id)) category = 'pizzas';
-  else if (burgers.find((p) => p.id === id)) category = 'burgers';
-  else if (pastas.find((p) => p.id === id)) category = 'pastas';
-  else if (lahmacun.find((p) => p.id === id)) category = 'lahmacun';
-  else if (baklava.find((p) => p.id === id)) category = 'baklava';
-
+const ProductClient: React.FC<ProductClientProps> = ({ product }) => {
+  // If no product is passed, show 404
   if (!product) {
     return notFound();
   }
 
+  // Use DB id
+  const id = product._id || product.id;
+
+  // No complex category lookup needed effectively,
+  // but if we want breadcrumbs we can use product.categoryId if populated, or just "Products"
+  // Assuming populated: product.categoryId.slug
+  // Or if not populated, just link to Menu.
+  let categorySlug = '';
+  let categoryTitle = '';
+
+  if (product.categoryId && typeof product.categoryId === 'object') {
+    categorySlug = product.categoryId.slug;
+    categoryTitle = product.categoryId.title;
+  }
+
   const breadcrumbItems = [
     { label: 'Menu', href: '/menu' },
-    ...(category ? [{ label: category, href: `/menu/${category}` }] : []),
+    ...(categorySlug
+      ? [{ label: categoryTitle, href: `/menu/${categorySlug}` }]
+      : []),
     { label: product.title },
   ];
 

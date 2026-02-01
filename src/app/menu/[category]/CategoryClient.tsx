@@ -1,5 +1,5 @@
 'use client';
-import { pizzas, burgers, pastas, lahmacun, baklava } from '@/data';
+import { pizzas, burgers, pastas, lahmacun, baklava } from '@/data'; // Keep only if used for fallback, otherwise remove
 import React, { useState, useMemo } from 'react';
 import Container from '@/components/ui/Container';
 import ProductCard from '@/components/ProductCard';
@@ -9,45 +9,33 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 type SortOption = 'popular' | 'price-low' | 'price-high' | 'newest';
 
 interface CategoryClientProps {
-  category: string;
+  category: any; // Ideally ICategory interface
+  products: any[]; // Ideally IProduct[]
+  slug: string;
 }
 
-const CategoryClient: React.FC<CategoryClientProps> = ({ category }) => {
+const CategoryClient: React.FC<CategoryClientProps> = ({
+  category,
+  products,
+  slug,
+}) => {
   const [sortBy, setSortBy] = useState<SortOption>('popular');
 
   // Capitalize first letter
-  const categoryName = category
-    ? category.charAt(0).toUpperCase() + category.slice(1)
-    : 'Products';
-
-  // Get correct products based on category
-  const getProducts = () => {
-    switch (category) {
-      case 'pizzas':
-        return pizzas;
-      case 'burgers':
-        return burgers;
-      case 'pastas':
-        return pastas;
-      case 'lahmacun':
-        return lahmacun;
-      case 'baklava':
-        return baklava;
-      default:
-        return pizzas;
-    }
-  };
-
-  const products = getProducts();
+  const categoryName =
+    category?.title || slug.charAt(0).toUpperCase() + slug.slice(1);
+  const categoryDesc = category?.desc || `Delicious ${categoryName}`;
 
   // Sort products based on selected option
   const sortedProducts = useMemo(() => {
-    const productsCopy = [...products];
+    // Determine popularity? DB has isFeatured, maybe use that or random.
+    // Price sort works. Newest works (createdAt).
+    const productsCopy = [...(products || [])];
 
     switch (sortBy) {
       case 'popular':
         return productsCopy.sort(
-          (a, b) => (b.popularity || 50) - (a.popularity || 50),
+          (a, b) => (b.isFeatured ? 1 : 0) - (a.isFeatured ? 1 : 0), // Featured first
         );
       case 'price-low':
         return productsCopy.sort((a, b) => a.price - b.price);
