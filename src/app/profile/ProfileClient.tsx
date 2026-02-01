@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import Container from '@/components/ui/Container';
-import PageHeader from '@/components/ui/PageHeader';
+
 import Button from '@/components/ui/Button';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/contexts/AuthContext';
@@ -47,8 +47,6 @@ const ProfileClient = () => {
 
   return (
     <div className='min-h-screen bg-cream pt-28 md:pt-36'>
-      <PageHeader title='My Profile' />
-
       <Container className='py-12'>
         <div className='grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto'>
           {/* Sidebar / Info Card */}

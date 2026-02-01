@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNotification } from './Notifications';
 import Button from './ui/Button';
+import apiClient from '@/lib/axios';
 
 const ContactForm = () => {
   const { success, error } = useNotification();
@@ -36,12 +37,16 @@ const ContactForm = () => {
 
     setIsLoading(true);
 
-    // Simulate API call
-    setTimeout(() => {
+    setIsLoading(true);
+    try {
+      await apiClient.post('/contact', formData);
       success("Message sent successfully! We'll get back to you soon. 📧");
       setFormData({ name: '', email: '', subject: '', message: '' });
+    } catch (err: any) {
+      error(err.message || 'Failed to send message. Please try again.');
+    } finally {
       setIsLoading(false);
-    }, 1500);
+    }
   };
 
   return (

@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Container from '@/components/ui/Container';
-import PageHeader from '@/components/ui/PageHeader';
+
 import Button from '@/components/ui/Button';
 import {
   Store,
@@ -173,11 +173,6 @@ const PartnershipClient = () => {
 
   return (
     <div className='min-h-screen bg-cream pt-28 md:pt-36'>
-      <PageHeader
-        title='Franchise & İş Ortaklığı'
-        description='Başarılı bir restoran zincirinin parçası olun'
-      />
-
       <Container className='py-16'>
         {/* Hero Section */}
         <motion.div

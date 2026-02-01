@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import Container from '@/components/ui/Container';
-import PageHeader from '@/components/ui/PageHeader';
+
 import StatsCounter from '@/components/StatsCounter';
 import { motion } from 'framer-motion';
 
@@ -62,8 +62,6 @@ const AboutPage = () => {
 
   return (
     <div className='min-h-screen pt-28 md:pt-36'>
-      <PageHeader title='About Us' />
-
       <Container>
         {/* Hero Section */}
         <section className='py-16 md:py-24'>

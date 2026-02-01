@@ -108,13 +108,13 @@ const CategoryClient: React.FC<CategoryClientProps> = ({
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'>
           {sortedProducts.map((item, index) => (
             <motion.div
-              key={item.id}
+              key={item._id || item.id || index}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 + index * 0.05 }}
             >
               <ProductCard
-                id={item.id}
+                id={item._id || item.id}
                 title={item.title}
                 desc={item.desc}
                 img={item.img}

@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import Container from '@/components/ui/Container';
-import PageHeader from '@/components/ui/PageHeader';
+
 import OrderTracker from '@/components/OrderTracker';
 import Button from '@/components/ui/Button';
 import { motion } from 'framer-motion';
@@ -47,8 +47,6 @@ const OrdersClient: React.FC<OrdersClientProps> = ({ initialOrders }) => {
 
   return (
     <div className='min-h-screen bg-cream pt-28 md:pt-36'>
-      <PageHeader title='Track Your Order' />
-
       <Container>
         {/* Track Order Section */}
         <section className='py-16'>

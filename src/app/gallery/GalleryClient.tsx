@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import Container from '@/components/ui/Container';
-import PageHeader from '@/components/ui/PageHeader';
+
 import ImageViewer from '@/components/ImageViewer';
 import { Camera, Heart } from 'lucide-react';
 
@@ -103,11 +103,6 @@ const GalleryClient = () => {
 
   return (
     <div className='min-h-screen pt-28 md:pt-36 bg-cream'>
-      <PageHeader
-        title='Galeri'
-        description='Mutfağımızdan, ekibimizden ve güzel anlarımızdan kareler'
-      />
-
       <Container className='py-16'>
         {/* Hero Text */}
         <motion.div

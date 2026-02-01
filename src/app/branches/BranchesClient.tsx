@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import Container from '@/components/ui/Container';
-import PageHeader from '@/components/ui/PageHeader';
+
 import Button from '@/components/ui/Button';
 import { BRANCHES } from '@/data/branches';
 import {
@@ -35,11 +35,6 @@ const BranchesClient = () => {
 
   return (
     <div className='min-h-screen bg-cream pt-28 md:pt-36'>
-      <PageHeader
-        title='Şubelerimiz'
-        description='İzmir genelinde 5 farklı noktada sizlere hizmet veriyoruz'
-      />
-
       <Container className='py-16'>
         {/* Hero Section */}
         <motion.div

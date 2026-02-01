@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import Container from '@/components/ui/Container';
-import PageHeader from '@/components/ui/PageHeader';
+
 import ContactForm from '@/components/ContactForm';
 import { motion } from 'framer-motion';
 
@@ -121,8 +121,6 @@ const ContactPage = () => {
 
   return (
     <div className='min-h-screen pt-28 md:pt-36'>
-      <PageHeader title='Contact Us' />
-
       <Container>
         <section className='py-16 md:py-24'>
           <div className='grid grid-cols-1 lg:grid-cols-2 gap-12'>

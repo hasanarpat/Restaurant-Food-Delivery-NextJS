@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import Container from '@/components/ui/Container';
-import PageHeader from '@/components/ui/PageHeader';
+
 import { BLOG_POSTS } from '@/data/blog';
 import {
   Calendar,
@@ -37,11 +37,6 @@ const BlogClient = () => {
 
   return (
     <div className='min-h-screen pt-28 md:pt-36 bg-cream'>
-      <PageHeader
-        title='Blog'
-        description='Türk mutfağından tarifler, ipuçları ve haberlerimiz'
-      />
-
       <Container className='py-16'>
         {/* Hero */}
         <motion.div

@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect } from 'react';
 import Container from '@/components/ui/Container';
-import PageHeader from '@/components/ui/PageHeader';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import Button from '@/components/ui/Button';
 import { motion } from 'framer-motion';
 import { useCart } from '@/context/CartContext';
@@ -205,10 +205,8 @@ const CheckoutPage = () => {
   return (
     <div className='min-h-screen bg-gradient-to-br from-cream via-white to-primary-50 py-16 md:py-24'>
       <Container>
-        <PageHeader
-          title='Checkout'
-          description='Complete your order'
-          breadcrumbs={[
+        <Breadcrumbs
+          items={[
             { label: 'Home', href: '/' },
             { label: 'Cart', href: '/cart' },
             { label: 'Checkout', href: '/checkout' },

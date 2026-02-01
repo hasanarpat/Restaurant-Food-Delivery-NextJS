@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Container from '@/components/ui/Container';
-import PageHeader from '@/components/ui/PageHeader';
+
 import Button from '@/components/ui/Button';
 import {
   Briefcase,
@@ -190,11 +190,6 @@ const CareersClient = () => {
 
   return (
     <div className='min-h-screen pt-28 md:pt-36 bg-cream'>
-      <PageHeader
-        title='Kariyer Fırsatları'
-        description='Antepli Mutfağı ailesine katılın ve kariyerinizi bizimle şekillendirin'
-      />
-
       <Container className='py-16'>
         {/* Hero Section */}
         <motion.div
