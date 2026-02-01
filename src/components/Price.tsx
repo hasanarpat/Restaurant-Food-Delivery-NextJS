@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from './ui/Button';
 import { useCart } from '@/context/CartContext';
 
@@ -11,35 +11,48 @@ type Props = {
   options?: { title: string; additionalPrice: number }[];
 };
 
+const MOCK_INGREDIENTS = ['Onion', 'Garlic', 'Tomato', 'Lettuce', 'Pickles'];
+
 const Price = ({ id, title, price, image, options }: Props) => {
   const { cart, addToCart, updateQuantity } = useCart();
   const [selected, setSelected] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [isAdded, setIsAdded] = useState(false);
+  const [excludedIngredients, setExcludedIngredients] = useState<string[]>([]);
 
   const selectedOption = options?.[selected];
   const currentSize = selectedOption?.title || 'Regular';
 
+  const areIngredientsEqual = (a: string[], b: string[]) => {
+    if (a.length !== b.length) return false;
+    const sortedA = [...a].sort();
+    const sortedB = [...b].sort();
+    return sortedA.every((val, index) => val === sortedB[index]);
+  };
+
   // Find if item is already in cart
   const cartItem = cart.find(
-    (item) => item.id === id && item.size === currentSize,
+    (item) =>
+      item.id === id &&
+      item.size === currentSize &&
+      areIngredientsEqual(item.excludedIngredients || [], excludedIngredients),
   );
 
-  // Sync quantity with cart on mount or when selection changes
-  React.useEffect(() => {
+  // Sync quantity with cart on mount or when selection/exclusions change
+  useEffect(() => {
     if (cartItem) {
       setQuantity(cartItem.quantity);
     } else {
       setQuantity(1);
     }
-  }, [cartItem, selected]); // Dependency on cartItem ensures it updates if cart changes externally
+  }, [cartItem, selected, excludedIngredients]);
 
   const handleAddToCart = () => {
     const finalPrice = price + (selectedOption?.additionalPrice || 0);
 
     if (cartItem) {
       // Update existing item
-      updateQuantity(id, quantity, currentSize);
+      updateQuantity(id, quantity, currentSize, excludedIngredients);
       setIsAdded(true);
       setTimeout(() => setIsAdded(false), 2000);
     } else {
@@ -51,11 +64,18 @@ const Price = ({ id, title, price, image, options }: Props) => {
         size: currentSize,
         image: image || '/temporary/p1.png',
         quantity: quantity,
+        excludedIngredients:
+          excludedIngredients.length > 0 ? excludedIngredients : undefined,
       });
       setIsAdded(true);
-      // Don't reset quantity here, let it stay as added
       setTimeout(() => setIsAdded(false), 2000);
     }
+  };
+
+  const toggleIngredient = (ing: string) => {
+    setExcludedIngredients((prev) =>
+      prev.includes(ing) ? prev.filter((i) => i !== ing) : [...prev, ing],
+    );
   };
 
   return (
@@ -93,6 +113,31 @@ const Price = ({ id, title, price, image, options }: Props) => {
           </div>
         </div>
       )}
+
+      {/* Ingredients Exclusion */}
+      <div>
+        <h3 className='font-heading text-sm font-semibold text-gray-700 mb-3'>
+          Remove Ingredients
+        </h3>
+        <div className='flex flex-wrap gap-2'>
+          {MOCK_INGREDIENTS.map((ing) => {
+            const isExcluded = excludedIngredients.includes(ing);
+            return (
+              <button
+                key={ing}
+                onClick={() => toggleIngredient(ing)}
+                className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all border ${
+                  isExcluded
+                    ? 'bg-red-50 border-red-200 text-red-600 line-through ring-1 ring-red-200'
+                    : 'bg-white border-gray-200 text-gray-600 hover:border-primary-500'
+                }`}
+              >
+                {ing}
+              </button>
+            );
+          })}
+        </div>
+      </div>
 
       {/* Quantity Selector */}
       <div>
@@ -156,5 +201,4 @@ const Price = ({ id, title, price, image, options }: Props) => {
     </div>
   );
 };
-
 export default Price;

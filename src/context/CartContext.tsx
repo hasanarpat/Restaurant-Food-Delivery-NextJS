@@ -14,16 +14,22 @@ export interface CartItem {
   quantity: number;
   size?: string;
   image?: string;
+  excludedIngredients?: string[];
 }
 
 interface CartContextType {
   cart: CartItem[];
   addToCart: (item: Omit<CartItem, 'quantity'> & { quantity?: number }) => void;
-  removeFromCart: (id: string | number, size?: string) => void;
+  removeFromCart: (
+    id: string | number,
+    size?: string,
+    excludedIngredients?: string[],
+  ) => void;
   updateQuantity: (
     id: string | number,
     quantity: number,
     size?: string,
+    excludedIngredients?: string[],
   ) => void;
   clearCart: () => void;
   totalItems: number;
@@ -56,13 +62,28 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [cart, isLoaded]);
 
+  const areIngredientsEqual = (a?: string[], b?: string[]) => {
+    if (!a && !b) return true;
+    if (!a || !b) return false;
+    if (a.length !== b.length) return false;
+    const sortedA = [...a].sort();
+    const sortedB = [...b].sort();
+    return sortedA.every((val, index) => val === sortedB[index]);
+  };
+
   const addToCart = (
     item: Omit<CartItem, 'quantity'> & { quantity?: number },
   ) => {
     setCart((prevCart) => {
-      // Check if item already exists (same id and size)
+      // Check if item already exists (same id, size, and exclusions)
       const existingItemIndex = prevCart.findIndex(
-        (cartItem) => cartItem.id === item.id && cartItem.size === item.size,
+        (cartItem) =>
+          cartItem.id === item.id &&
+          cartItem.size === item.size &&
+          areIngredientsEqual(
+            cartItem.excludedIngredients,
+            item.excludedIngredients,
+          ),
       );
 
       const quantityToAdd = item.quantity || 1;
@@ -79,9 +100,20 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  const removeFromCart = (id: string | number, size?: string) => {
+  const removeFromCart = (
+    id: string | number,
+    size?: string,
+    excludedIngredients?: string[],
+  ) => {
     setCart((prevCart) =>
-      prevCart.filter((item) => !(item.id === id && item.size === size)),
+      prevCart.filter(
+        (item) =>
+          !(
+            item.id === id &&
+            item.size === size &&
+            areIngredientsEqual(item.excludedIngredients, excludedIngredients)
+          ),
+      ),
     );
   };
 
@@ -89,15 +121,20 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     id: string | number,
     quantity: number,
     size?: string,
+    excludedIngredients?: string[],
   ) => {
     if (quantity < 1) {
-      removeFromCart(id, size);
+      removeFromCart(id, size, excludedIngredients);
       return;
     }
 
     setCart((prevCart) =>
       prevCart.map((item) =>
-        item.id === id && item.size === size ? { ...item, quantity } : item,
+        item.id === id &&
+        item.size === size &&
+        areIngredientsEqual(item.excludedIngredients, excludedIngredients)
+          ? { ...item, quantity }
+          : item,
       ),
     );
   };

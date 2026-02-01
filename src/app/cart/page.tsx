@@ -48,7 +48,9 @@ const CartPage = () => {
             <div className='lg:col-span-2 space-y-4'>
               {cart.map((item, index) => (
                 <motion.div
-                  key={`${item.id}-${item.size}`}
+                  key={`${item.id}-${item.size}-${
+                    item.excludedIngredients?.join(',') || ''
+                  }`}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
@@ -70,6 +72,12 @@ const CartPage = () => {
                       {item.title}
                     </h3>
                     <p className='font-ui text-sm text-gray-600'>{item.size}</p>
+                    {item.excludedIngredients &&
+                      item.excludedIngredients.length > 0 && (
+                        <p className='font-ui text-xs text-red-500 font-medium mt-1'>
+                          No {item.excludedIngredients.join(', No ')}
+                        </p>
+                      )}
                     <p className='font-heading text-lg font-bold text-primary-600 mt-1'>
                       ${(item.price * item.quantity).toFixed(2)}
                     </p>
@@ -79,7 +87,12 @@ const CartPage = () => {
                   <div className='flex items-center gap-3 bg-gray-100 rounded-lg px-3 py-2'>
                     <button
                       onClick={() =>
-                        updateQuantity(item.id, item.quantity - 1, item.size)
+                        updateQuantity(
+                          item.id,
+                          item.quantity - 1,
+                          item.size,
+                          item.excludedIngredients,
+                        )
                       }
                       className='w-6 h-6 flex items-center justify-center hover:bg-gray-200 rounded transition-colors font-bold'
                     >
@@ -90,7 +103,12 @@ const CartPage = () => {
                     </span>
                     <button
                       onClick={() =>
-                        updateQuantity(item.id, item.quantity + 1, item.size)
+                        updateQuantity(
+                          item.id,
+                          item.quantity + 1,
+                          item.size,
+                          item.excludedIngredients,
+                        )
                       }
                       className='w-6 h-6 flex items-center justify-center hover:bg-gray-200 rounded transition-colors font-bold'
                     >
@@ -100,7 +118,13 @@ const CartPage = () => {
 
                   {/* Remove Button */}
                   <button
-                    onClick={() => removeFromCart(item.id, item.size)}
+                    onClick={() =>
+                      removeFromCart(
+                        item.id,
+                        item.size,
+                        item.excludedIngredients,
+                      )
+                    }
                     className='w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors'
                     aria-label='Remove item'
                   >
