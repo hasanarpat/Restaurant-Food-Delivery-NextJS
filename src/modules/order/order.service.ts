@@ -60,8 +60,8 @@ export class OrderService {
       subTotal,
       deliveryFee,
       total,
-      status: 'PENDING',
-      paymentStatus: 'UNPAID', // Default
+      status: 'PREPARING', // Simulate active order
+      paymentStatus: 'PAID', // Simulate successful payment for portfolio demo
       customerNote: data.customerNote,
     };
 
