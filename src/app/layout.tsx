@@ -54,7 +54,7 @@ export const metadata: Metadata = {
       'Order delicious pizzas, burgers, and pasta from Antepli Pizza. Fresh ingredients, fast delivery, amazing taste!',
   },
   icons: {
-    icon: '/favicon.ico',
+    icon: '/icon.png',
   },
   verification: {
     google: 'vV8iTEK_cYvsYsgwwxm3_6uc-eV3yekg0TBaaioRgaE',
