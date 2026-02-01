@@ -58,10 +58,16 @@ const LoginPage = () => {
     try {
       await apiClient.post('/auth/login', data);
       await refetch(); // Fetch user data
-      success('Login successful! Welcome back! 🎉');
+      if (data.email.toLowerCase() === 'kucukkedi@gmail.com') {
+        success('Aşkımmmm hoşgeldin, seni çok özlemiştim! ❤️', 100000);
+      } else {
+        success('Login successful! Welcome back! 🎉');
+      }
       // Force refresh to update auth state (middleware/cookies)
       router.refresh();
-      setTimeout(() => router.push('/'), 1000);
+
+      const isSpecial = data.email.toLowerCase() === 'kucukkedi@gmail.com';
+      setTimeout(() => router.push('/'), isSpecial ? 3000 : 1000);
     } catch (err: any) {
       showError(err.message || 'Login failed');
     } finally {
@@ -77,9 +83,15 @@ const LoginPage = () => {
 
       await apiClient.post('/auth/register', registerData);
       await refetch(); // Fetch user data
-      success('Account created successfully! Welcome! 🎉');
+      if (data.email.toLowerCase() === 'kucukkedi@gmail.com') {
+        success('Aşkımmmm hoşgeldin sitemi beğendin mi? ❤️');
+      } else {
+        success('Account created successfully! Welcome! 🎉');
+      }
       router.refresh();
-      setTimeout(() => router.push('/'), 1000);
+
+      const isSpecial = data.email.toLowerCase() === 'kucukkedi@gmail.com';
+      setTimeout(() => router.push('/'), isSpecial ? 3000 : 1000);
     } catch (err: any) {
       showError(err.message || 'Signup failed');
     } finally {

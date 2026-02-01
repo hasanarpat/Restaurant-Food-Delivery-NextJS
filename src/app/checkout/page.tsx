@@ -164,7 +164,10 @@ const CheckoutPage = () => {
       });
 
       // Show success notification
-      if (user?.email === 'kucukkedi@gmail.com') {
+      const isSpecialUser =
+        user?.email?.toLowerCase() === 'kucukkedi@gmail.com';
+
+      if (isSpecialUser) {
         success(
           'Aşkım seni çok seviyorum geldiğinde sana hepsini alacağım! ❤️',
           100000,
@@ -174,10 +177,14 @@ const CheckoutPage = () => {
       }
 
       // Clear cart and redirect after a short delay
-      setTimeout(() => {
-        clearCart();
-        router.push('/orders'); // Redirect to orders page
-      }, 1500);
+      // For the special user, we stay on the page a bit longer to let them see the message clearly
+      setTimeout(
+        () => {
+          clearCart();
+          router.push('/orders'); // Redirect to orders page
+        },
+        isSpecialUser ? 10000 : 1500,
+      );
     } catch (err: any) {
       error(err.message || 'Failed to place order');
     } finally {
