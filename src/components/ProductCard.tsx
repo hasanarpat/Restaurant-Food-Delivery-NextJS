@@ -8,7 +8,7 @@ import { useCart } from '@/context/CartContext';
 import { Flame, Sparkles, Star, Check } from 'lucide-react';
 
 interface ProductCardProps {
-  id: number;
+  id: string | number;
   title: string;
   desc?: string;
   img?: string;

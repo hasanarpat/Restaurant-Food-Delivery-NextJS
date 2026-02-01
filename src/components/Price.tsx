@@ -4,7 +4,7 @@ import Button from './ui/Button';
 import { useCart } from '@/context/CartContext';
 
 type Props = {
-  id: number;
+  id: string | number;
   title: string;
   price: number;
   image?: string;

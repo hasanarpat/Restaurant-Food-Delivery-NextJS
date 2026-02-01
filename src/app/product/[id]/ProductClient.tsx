@@ -145,7 +145,7 @@ const ProductClient: React.FC<ProductClientProps> = ({ product }) => {
 
               <div className='bg-white p-6 md:p-8 rounded-3xl shadow-soft border border-gray-100'>
                 <Price
-                  id={product.id}
+                  id={id}
                   title={product.title}
                   price={product.price}
                   image={product.img}

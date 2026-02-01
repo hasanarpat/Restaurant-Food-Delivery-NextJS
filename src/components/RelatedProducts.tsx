@@ -3,7 +3,7 @@ import { featuredProducts } from '@/data';
 import ProductCard from './ProductCard';
 import { motion } from 'framer-motion';
 
-const RelatedProducts = ({ currentId }: { currentId: number }) => {
+const RelatedProducts = ({ currentId }: { currentId: string | number }) => {
   // Filter out the current product and take top 3
   const related = featuredProducts
     .filter((item) => item.id !== currentId)
