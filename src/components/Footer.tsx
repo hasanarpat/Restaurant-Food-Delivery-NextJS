@@ -125,6 +125,15 @@ const Footer = () => {
               </li>
               <li>
                 <Link
+                  href='/branches'
+                  className='hover:text-primary-400 transition-colors flex items-center gap-2 group'
+                >
+                  <ArrowRight className='w-4 h-4 text-primary-500 group-hover:translate-x-1 transition-transform' />
+                  Branches
+                </Link>
+              </li>
+              <li>
+                <Link
                   href='/about'
                   className='hover:text-primary-400 transition-colors flex items-center gap-2 group'
                 >

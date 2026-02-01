@@ -44,3 +44,22 @@ export function sendError(
   };
   return NextResponse.json(response, { status: statusCode });
 }
+
+export const apiResponse = {
+  success: <T>(data: T, meta?: Record<string, any>) =>
+    sendSuccess(data, 200, meta),
+  created: <T>(data: T, meta?: Record<string, any>) =>
+    sendSuccess(data, 201, meta),
+  error: (error: {
+    message: string;
+    statusCode?: number;
+    code?: string;
+    details?: any;
+  }) =>
+    sendError(
+      error.message,
+      error.statusCode || 400,
+      error.code || 'ERROR',
+      error.details,
+    ),
+};
