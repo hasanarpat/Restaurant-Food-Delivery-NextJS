@@ -172,7 +172,7 @@ const PartnershipClient = () => {
   };
 
   return (
-    <div className='min-h-screen bg-cream'>
+    <div className='min-h-screen bg-cream pt-28 md:pt-36'>
       <PageHeader
         title='Franchise & İş Ortaklığı'
         description='Başarılı bir restoran zincirinin parçası olun'

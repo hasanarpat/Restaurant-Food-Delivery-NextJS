@@ -36,7 +36,7 @@ const BlogClient = () => {
       : BLOG_POSTS.filter((post) => post.category === selectedCategory);
 
   return (
-    <div className='min-h-screen bg-cream'>
+    <div className='min-h-screen pt-28 md:pt-36 bg-cream'>
       <PageHeader
         title='Blog'
         description='Türk mutfağından tarifler, ipuçları ve haberlerimiz'

@@ -46,7 +46,7 @@ const OrdersClient: React.FC<OrdersClientProps> = ({ initialOrders }) => {
   };
 
   return (
-    <div className='min-h-screen'>
+    <div className='min-h-screen bg-cream pt-28 md:pt-36'>
       <PageHeader title='Track Your Order' />
 
       <Container>

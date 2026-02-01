@@ -120,7 +120,7 @@ const ContactPage = () => {
   ];
 
   return (
-    <div className='min-h-screen'>
+    <div className='min-h-screen pt-28 md:pt-36'>
       <PageHeader title='Contact Us' />
 
       <Container>

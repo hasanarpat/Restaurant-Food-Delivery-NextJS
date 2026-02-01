@@ -189,7 +189,7 @@ const CareersClient = () => {
   };
 
   return (
-    <div className='min-h-screen bg-cream'>
+    <div className='min-h-screen pt-28 md:pt-36 bg-cream'>
       <PageHeader
         title='Kariyer Fırsatları'
         description='Antepli Mutfağı ailesine katılın ve kariyerinizi bizimle şekillendirin'

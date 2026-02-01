@@ -34,7 +34,7 @@ const BranchesClient = () => {
   };
 
   return (
-    <div className='min-h-screen bg-cream'>
+    <div className='min-h-screen bg-cream pt-28 md:pt-36'>
       <PageHeader
         title='Şubelerimiz'
         description='İzmir genelinde 5 farklı noktada sizlere hizmet veriyoruz'

@@ -102,7 +102,7 @@ const GalleryClient = () => {
   };
 
   return (
-    <div className='min-h-screen bg-cream'>
+    <div className='min-h-screen pt-28 md:pt-36 bg-cream'>
       <PageHeader
         title='Galeri'
         description='Mutfağımızdan, ekibimizden ve güzel anlarımızdan kareler'

@@ -60,9 +60,6 @@ export const metadata: Metadata = {
     google: 'vV8iTEK_cYvsYsgwwxm3_6uc-eV3yekg0TBaaioRgaE',
   },
 };
-
-import BranchMap from '@/components/BranchMap';
-
 export default function RootLayout({
   children,
 }: {
@@ -79,8 +76,7 @@ export default function RootLayout({
             <CartProvider>
               <Navbar />
               <Notifications />
-              {children}
-              <BranchMap />
+              <div className='min-h-screen'>{children}</div>
               <Footer />
             </CartProvider>
           </AuthProvider>

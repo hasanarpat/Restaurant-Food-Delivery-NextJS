@@ -46,7 +46,7 @@ const ProfileClient = () => {
   };
 
   return (
-    <div className='min-h-screen bg-gray-50 pb-20'>
+    <div className='min-h-screen bg-cream pt-28 md:pt-36'>
       <PageHeader title='My Profile' />
 
       <Container className='py-12'>
