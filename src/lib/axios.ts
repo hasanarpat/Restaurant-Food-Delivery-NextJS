@@ -48,11 +48,14 @@ apiClient.interceptors.response.use(
       // Server responded with a status code outside 2xx range
       const { data, status } = error.response;
 
+      const errorCode = data?.error?.code || 'UNKNOWN_ERROR';
       const errorMessage =
         data?.error?.message || error.message || 'An unexpected error occurred';
-      const errorCode = data?.error?.code || 'UNKNOWN_ERROR';
 
-      console.error(`[API Error] ${status} - ${errorCode}: ${errorMessage}`);
+      // Only log errors that are not 401 Unauthorized
+      if (status !== 401) {
+        console.error(`[API Error] ${status} - ${errorCode}: ${errorMessage}`);
+      }
 
       // We can reject with a structured object for easier UI handling
       return Promise.reject({
