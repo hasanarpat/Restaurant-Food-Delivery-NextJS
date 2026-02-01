@@ -41,23 +41,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Helper function to check if token exists in cookies
-  const hasToken = () => {
-    if (typeof document === 'undefined') return false;
-    return document.cookie
-      .split(';')
-      .some((item) => item.trim().startsWith('token='));
-  };
-
   const fetchUser = async () => {
     try {
-      // Only fetch if token exists
-      if (!hasToken()) {
-        setUser(null);
-        setIsLoading(false);
-        return;
-      }
-
       const response = await apiClient.get('/auth/me');
       setUser(response.data.data.user);
     } catch (error) {
