@@ -8,6 +8,39 @@ import {
   baklava,
   featuredProducts,
 } from '@/data';
+import { Metadata } from 'next';
+
+const allProducts = [
+  ...pizzas,
+  ...burgers,
+  ...pastas,
+  ...lahmacun,
+  ...baklava,
+  ...featuredProducts,
+];
+
+export async function generateMetadata(props: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const params = await props.params;
+  const product = allProducts.find((p) => p.id === Number(params.id));
+
+  if (!product) {
+    return {
+      title: 'Product Not Found',
+    };
+  }
+
+  return {
+    title: product.title,
+    description: product.desc || `Order ${product.title} from Antepli Pizza`,
+    openGraph: {
+      title: product.title,
+      description: product.desc || `Order ${product.title} from Antepli Pizza`,
+      images: [product.img || ''],
+    },
+  };
+}
 
 // Generate static params for all known products
 export async function generateStaticParams() {

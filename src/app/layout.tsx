@@ -28,9 +28,33 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Antepli Pizza - Delicious Food Delivery',
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000',
+  ),
+  title: {
+    default: 'Antepli Pizza - Delicious Food Delivery',
+    template: '%s | Antepli Pizza',
+  },
   description:
     'Order delicious pizzas, burgers, and pasta from Antepli Pizza. Fresh ingredients, fast delivery, amazing taste!',
+  openGraph: {
+    title: 'Antepli Pizza - Delicious Food Delivery',
+    description:
+      'Order delicious pizzas, burgers, and pasta from Antepli Pizza. Fresh ingredients, fast delivery, amazing taste!',
+    url: '/',
+    siteName: 'Antepli Pizza',
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Antepli Pizza - Delicious Food Delivery',
+    description:
+      'Order delicious pizzas, burgers, and pasta from Antepli Pizza. Fresh ingredients, fast delivery, amazing taste!',
+  },
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
 export default function RootLayout({
