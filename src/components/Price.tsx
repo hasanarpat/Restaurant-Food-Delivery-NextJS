@@ -12,29 +12,50 @@ type Props = {
 };
 
 const Price = ({ id, title, price, image, options }: Props) => {
+  const { cart, addToCart, updateQuantity } = useCart();
   const [selected, setSelected] = useState(0);
   const [quantity, setQuantity] = useState(1);
-  const { addToCart } = useCart();
   const [isAdded, setIsAdded] = useState(false);
 
+  const selectedOption = options?.[selected];
+  const currentSize = selectedOption?.title || 'Regular';
+
+  // Find if item is already in cart
+  const cartItem = cart.find(
+    (item) => item.id === id && item.size === currentSize,
+  );
+
+  // Sync quantity with cart on mount or when selection changes
+  React.useEffect(() => {
+    if (cartItem) {
+      setQuantity(cartItem.quantity);
+    } else {
+      setQuantity(1);
+    }
+  }, [cartItem, selected]); // Dependency on cartItem ensures it updates if cart changes externally
+
   const handleAddToCart = () => {
-    const selectedOption = options?.[selected];
     const finalPrice = price + (selectedOption?.additionalPrice || 0);
 
-    for (let i = 0; i < quantity; i++) {
+    if (cartItem) {
+      // Update existing item
+      updateQuantity(id, quantity, currentSize);
+      setIsAdded(true);
+      setTimeout(() => setIsAdded(false), 2000);
+    } else {
+      // Add new item
       addToCart({
         id,
         title,
         price: finalPrice,
-        size: selectedOption?.title || 'Regular',
+        size: currentSize,
         image: image || '/temporary/p1.png',
+        quantity: quantity,
       });
+      setIsAdded(true);
+      // Don't reset quantity here, let it stay as added
+      setTimeout(() => setIsAdded(false), 2000);
     }
-
-    // Show success feedback
-    setIsAdded(true);
-    setQuantity(1); // Reset quantity
-    setTimeout(() => setIsAdded(false), 2000);
   };
 
   return (
@@ -97,12 +118,12 @@ const Price = ({ id, title, price, image, options }: Props) => {
         </div>
       </div>
 
-      {/* Add to Cart Button */}
+      {/* Add/Update Button */}
       <Button
         variant='primary'
         size='lg'
         onClick={handleAddToCart}
-        className='w-full md:w-auto'
+        className='w-full md:w-auto min-w-[200px]'
       >
         {isAdded ? (
           <>
@@ -117,16 +138,19 @@ const Price = ({ id, title, price, image, options }: Props) => {
                 clipRule='evenodd'
               />
             </svg>
-            Added to Cart!
+            {cartItem ? 'Updated!' : 'Added to Cart!'}
           </>
+        ) : cartItem ? (
+          <>Update Cart (Total: {quantity}) 🛒</> // Clear indicator it's updating
         ) : (
-          <>Add {quantity > 1 && `${quantity} `}to Cart 🛒</>
+          <>Add to Cart 🛒</>
         )}
       </Button>
 
-      {isAdded && (
-        <p className='font-ui text-sm text-primary-600'>
-          Item added successfully! Check your cart to continue.
+      {/* Helper text if items exist */}
+      {cartItem && !isAdded && (
+        <p className='font-ui text-xs text-primary-600 font-medium'>
+          You have {cartItem.quantity} of this item in your cart.
         </p>
       )}
     </div>
