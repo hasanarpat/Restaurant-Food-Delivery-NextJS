@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 
 export interface CartItem {
-  id: number;
+  id: string | number;
   title: string;
   price: number;
   quantity: number;
@@ -19,8 +19,12 @@ export interface CartItem {
 interface CartContextType {
   cart: CartItem[];
   addToCart: (item: Omit<CartItem, 'quantity'>) => void;
-  removeFromCart: (id: number, size?: string) => void;
-  updateQuantity: (id: number, quantity: number, size?: string) => void;
+  removeFromCart: (id: string | number, size?: string) => void;
+  updateQuantity: (
+    id: string | number,
+    quantity: number,
+    size?: string,
+  ) => void;
   clearCart: () => void;
   totalItems: number;
   totalPrice: number;
@@ -71,13 +75,17 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  const removeFromCart = (id: number, size?: string) => {
+  const removeFromCart = (id: string | number, size?: string) => {
     setCart((prevCart) =>
       prevCart.filter((item) => !(item.id === id && item.size === size)),
     );
   };
 
-  const updateQuantity = (id: number, quantity: number, size?: string) => {
+  const updateQuantity = (
+    id: string | number,
+    quantity: number,
+    size?: string,
+  ) => {
     if (quantity < 1) {
       removeFromCart(id, size);
       return;

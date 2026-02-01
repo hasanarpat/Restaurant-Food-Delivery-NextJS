@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Container from '@/components/ui/Container';
 import PageHeader from '@/components/ui/PageHeader';
 import Button from '@/components/ui/Button';
@@ -8,9 +8,12 @@ import { useCart } from '@/context/CartContext';
 import { useRouter } from 'next/navigation';
 import CreditCardPreview from '@/components/CreditCardPreview';
 import { useNotification } from '@/components/Notifications';
+import { useAuth } from '@/contexts/AuthContext';
+import apiClient from '@/lib/axios';
 
 const CheckoutPage = () => {
   const { cart, totalPrice, clearCart } = useCart();
+  const { user, isLoading } = useAuth();
   const router = useRouter();
   const { success, error } = useNotification();
   const [formData, setFormData] = React.useState({
@@ -26,6 +29,23 @@ const CheckoutPage = () => {
     expiryDate: '',
     cvv: '',
   });
+
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+
+  // Redirect if not logged in
+  useEffect(() => {
+    if (!isLoading && !user) {
+      router.push('/login?from=/checkout');
+    }
+    if (user) {
+      // Pre-fill if profile exists
+      setFormData((prev) => ({
+        ...prev,
+        fullName: user.profile.fullName || '',
+        phone: user.phone || '',
+      }));
+    }
+  }, [user, isLoading, router]);
 
   const serviceCost = 0;
   const deliveryCost = totalPrice > 50 ? 0 : 4.99;
@@ -106,22 +126,57 @@ const CheckoutPage = () => {
     return true;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!validateForm()) {
       return;
     }
 
-    // Show success notification
-    success('Order placed successfully! 🎉 Your food is on the way!', 6000);
+    setIsSubmitting(true);
 
-    // Clear cart and redirect after a short delay
-    setTimeout(() => {
-      clearCart();
-      router.push('/');
-    }, 2000);
+    try {
+      // Prepare Payload
+      const items = cart.map((item) => ({
+        productId: item.id.toString(),
+        quantity: item.quantity,
+        // If size exists, we treat it as an option. Ideally we should know its price diff.
+        // For now, assume 0 or handle logic.
+        // Zod schema: selectedOptions: { title: string, additionalPrice: number }[]
+        selectedOptions: item.size
+          ? [{ title: item.size, additionalPrice: 0 }]
+          : [],
+      }));
+
+      const customerNote = `Address: ${formData.address}, ${formData.city}, ${formData.zipCode}. Contact: ${formData.fullName} (${formData.phone})`;
+
+      await apiClient.post('/orders', {
+        items,
+        customerNote,
+      });
+
+      // Show success notification
+      success('Order placed successfully! 🎉 Your food is on the way!', 3000);
+
+      // Clear cart and redirect after a short delay
+      setTimeout(() => {
+        clearCart();
+        router.push('/orders'); // Redirect to orders page
+      }, 1500);
+    } catch (err: any) {
+      error(err.message || 'Failed to place order');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
+
+  if (isLoading) {
+    return (
+      <div className='min-h-screen flex items-center justify-center'>
+        Loading...
+      </div>
+    );
+  }
 
   if (cart.length === 0) {
     return (
@@ -409,9 +464,10 @@ const CheckoutPage = () => {
                 type='submit'
                 variant='primary'
                 size='lg'
-                className='w-full mt-6'
+                disabled={isSubmitting}
+                className='w-full mt-6 disabled:opacity-70 disabled:cursor-not-allowed'
               >
-                Place Order 🎉
+                {isSubmitting ? 'Placing Order...' : 'Place Order 🎉'}
               </Button>
 
               <p className='text-xs text-center text-gray-500 mt-4'>
