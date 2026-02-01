@@ -8,27 +8,27 @@ import Button from './ui/Button';
 const slides = [
   {
     id: 1,
-    slide: '/slide1.png',
+    slide: '/slider_pizza.png',
     title: 'Authentic Antep Stone Oven Pizza',
     description:
       'Crispy crust, rich toppings, and the traditional taste you crave.',
   },
   {
     id: 2,
-    slide: '/images/product_lahmacun_classic.png',
+    slide: '/slider_lahmacun.png',
     title: 'Traditional Crispy Lahmacun',
     description:
       'Freshly ground meat, herbs, and spices on thin dough. Served with fresh lemon and parsley.',
   },
   {
     id: 3,
-    slide: '/slide2.png',
+    slide: '/slider_burger.png',
     title: 'Gourmet Burgers with a Local Twist',
     description: 'Juicy 100% beef patties seasoned with special Antep spices.',
   },
   {
     id: 4,
-    slide: '/images/product_baklava_pistachio.png',
+    slide: '/slider_baklava.png',
     title: 'Premium Pistachio Baklava',
     description:
       'The perfect sweet ending. 40 layers of phyllo with the finest Antep pistachios.',
