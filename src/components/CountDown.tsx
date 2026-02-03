@@ -2,14 +2,20 @@
 import React from 'react';
 import Countdown from 'react-countdown';
 
-const CountDown = () => {
-  // Always start from 3 days, 16 hours, 7 minutes from now
-  const endingDate = new Date(
-    new Date().getTime() +
-      3 * 24 * 60 * 60 * 1000 + // 3 days
-      16 * 60 * 60 * 1000 + // 16 hours
-      7 * 60 * 1000, // 7 minutes
-  );
+interface CountDownProps {
+  targetDate?: Date;
+}
+
+const CountDown = ({ targetDate }: CountDownProps) => {
+  // Default to 3 days, 16 hours, 7 minutes from now if no targetDate provided
+  const endingDate =
+    targetDate ||
+    new Date(
+      new Date().getTime() +
+        3 * 24 * 60 * 60 * 1000 + // 3 days
+        16 * 60 * 60 * 1000 + // 16 hours
+        7 * 60 * 1000, // 7 minutes
+    );
 
   const renderer = ({ days, hours, minutes, seconds }: any) => {
     return (
