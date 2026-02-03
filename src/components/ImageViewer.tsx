@@ -177,8 +177,19 @@ const ImageViewer: React.FC<ImageViewerProps> = ({ images, title }) => {
             >
               <motion.div
                 className='relative w-full max-w-5xl aspect-square md:aspect-video'
-                animate={{ scale: scale }}
+                animate={{ scale: scale, x: 0 }}
                 transition={{ duration: 0.2 }}
+                drag={scale === 1 ? 'x' : false}
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.2}
+                onDragEnd={(e, { offset, velocity }) => {
+                  const swipe = offset.x; // + is right (prev), - is left (next)
+                  if (swipe < -50 || velocity.x < -500) {
+                    handleNext();
+                  } else if (swipe > 50 || velocity.x > 500) {
+                    handlePrev();
+                  }
+                }}
               >
                 <Image
                   src={currentImage}
