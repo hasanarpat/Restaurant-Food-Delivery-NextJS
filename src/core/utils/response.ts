@@ -20,10 +20,29 @@ export function sendSuccess<T>(
   statusCode = 200,
   meta?: Record<string, any>,
 ) {
-  const response: SuccessResponse<T> = {
+  // Check if data is already in { data, meta } format (e.g. from PaginationResult)
+  // We want to avoid { success: true, data: { data: [...], meta: {...} } } pattern
+  // and instead produce { success: true, data: [...], meta: {...} }
+
+  let finalData = data;
+  let finalMeta = meta;
+
+  if (
+    data &&
+    typeof data === 'object' &&
+    'data' in data &&
+    'meta' in data &&
+    Object.keys(data).length === 2
+  ) {
+    // It's likely a PaginationResult
+    finalData = (data as any).data;
+    finalMeta = { ...meta, ...(data as any).meta };
+  }
+
+  const response: SuccessResponse<typeof finalData> = {
     success: true,
-    data,
-    meta,
+    data: finalData,
+    meta: finalMeta,
   };
   return NextResponse.json(response, { status: statusCode });
 }
