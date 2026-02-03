@@ -37,7 +37,8 @@ export class ProductRepository {
         .populate('categoryId')
         .sort(sort)
         .skip(skip)
-        .limit(limit),
+        .limit(limit)
+        .lean(),
       Product.countDocuments(filter),
     ]);
 
@@ -53,7 +54,7 @@ export class ProductRepository {
   }
 
   async findById(id: string): Promise<IProduct | null> {
-    return Product.findById(id).populate('categoryId');
+    return Product.findById(id).populate('categoryId').lean();
   }
 
   async create(data: Partial<IProduct>): Promise<IProduct> {

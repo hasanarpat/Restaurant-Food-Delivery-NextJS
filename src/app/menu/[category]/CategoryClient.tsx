@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import Container from '@/components/ui/Container';
 import ProductCard from '@/components/ProductCard';
 import { motion } from 'framer-motion';
@@ -33,42 +33,47 @@ const CategoryClient: React.FC<CategoryClientProps> = ({
     category?.title || slug.charAt(0).toUpperCase() + slug.slice(1);
   // const categoryDesc = category?.desc || `Delicious ${categoryName}`; // Unused?
 
-  const fetchProducts = async (pageNum: number, sortOption: string) => {
-    try {
-      setLoading(true);
-      const limit = initialMeta.limit || 10;
-      const res = await fetch(
-        `/api/v1/products?catSlug=${slug}&page=${pageNum}&limit=${limit}&sort=${sortOption}`,
-      );
-      const data = await res.json();
-      if (res.ok) {
-        return { data: data.data, meta: data.meta };
+  const fetchProducts = React.useCallback(
+    async (pageNum: number, sortOption: string) => {
+      try {
+        setLoading(true);
+        const limit = initialMeta.limit || 10;
+        const res = await fetch(
+          `/api/v1/products?catSlug=${slug}&page=${pageNum}&limit=${limit}&sort=${sortOption}`,
+        );
+        const data = await res.json();
+        if (res.ok) {
+          return { data: data.data, meta: data.meta };
+        }
+        return null;
+      } catch (error) {
+        console.error('Failed to fetch products', error);
+        return null;
+      } finally {
+        setLoading(false);
       }
-      return null;
-    } catch (error) {
-      console.error('Failed to fetch products', error);
-      return null;
-    } finally {
-      setLoading(false);
-    }
-  };
+    },
+    [slug, initialMeta.limit],
+  );
 
-  const handleSortChange = async (newSort: SortOption) => {
-    setSortBy(newSort);
-    setPage(1);
-    setHasMore(true); // Assume true until fetch
-    setProducts([]); // Clear current to show loading? Or keep? Better clear or show skeleton.
-
-    // Fetch page 1 with new sort
-    const result = await fetchProducts(1, newSort);
-    if (result) {
-      setProducts(result.data);
-      setHasMore(result.meta.page < result.meta.totalPages);
+  const handleSortChange = React.useCallback(
+    async (newSort: SortOption) => {
+      setSortBy(newSort);
       setPage(1);
-    }
-  };
+      setHasMore(true);
+      setProducts([]);
 
-  const loadMore = async () => {
+      const result = await fetchProducts(1, newSort);
+      if (result) {
+        setProducts(result.data);
+        setHasMore(result.meta.page < result.meta.totalPages);
+        setPage(1);
+      }
+    },
+    [fetchProducts],
+  );
+
+  const loadMore = React.useCallback(async () => {
     if (loading || !hasMore) return;
 
     const nextPage = page + 1;
@@ -79,9 +84,9 @@ const CategoryClient: React.FC<CategoryClientProps> = ({
       setPage(result.meta.page);
       setHasMore(result.meta.page < result.meta.totalPages);
     } else {
-      setHasMore(false); // Stop trying on error
+      setHasMore(false);
     }
-  };
+  }, [loading, hasMore, page, sortBy, fetchProducts]);
 
   return (
     <div className='min-h-screen bg-gradient-to-br from-cream via-white to-primary-50 pt-40 pb-16 md:pt-52 md:pb-24'>
