@@ -42,7 +42,7 @@ function getRateLimit(ip: string, type: 'default' | 'auth') {
   };
 }
 
-export async function proxy(req: NextRequest) {
+export function middleware(req: NextRequest) {
   const ip = req.headers.get('x-forwarded-for') || '127.0.0.1';
   const path = req.nextUrl.pathname;
 
