@@ -28,34 +28,36 @@ const setFeaturedProducts = async () => {
 
   try {
     const products = await Product.find({});
-    console.log(`Found ${products.length} products.`);
+    console.log(`Found ${products.length} products total.`);
 
-    if (products.length === 0) {
-      console.log('No products found to update.');
-      return;
-    }
+    let featuredCount = 0;
 
-    // Set first 8 products as featured
-    let count = 0;
     for (const product of products) {
-      if (count < 8) {
+      let shouldFeature = false;
+
+      // Always feature Baklavas
+      if (product.title.toLowerCase().includes('baklava')) {
+        shouldFeature = true;
+      }
+      // Feature most others to verify infinite scroll (User asked for +12 items, 8+12=20, total is 21)
+      // Let's just feature almost everything except maybe 1 to test filtering if needed,
+      // or actually user asked to "add 12 more", so let's just feature 20 products.
+      else if (featuredCount < 20) {
+        shouldFeature = true;
+      }
+
+      if (shouldFeature) {
         product.isFeatured = true;
         await product.save();
         console.log(`Marked ${product.title} as featured.`);
-        count++;
-      } else {
-        // Un-feature others to keep it clean
-        product.isFeatured = false;
-        await product.save();
+        featuredCount++;
       }
     }
 
-    console.log('Successfully updated featured products.');
+    console.log(`Finished. Total featured items processed: ${featuredCount}`);
   } catch (error) {
     console.error('Error updating products:', error);
   } finally {
-    await mongoose.disconnect();
-    console.log('Disconnected from MongoDB');
     process.exit(0);
   }
 };
