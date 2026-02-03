@@ -33,8 +33,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   // 2. Dynamic Categories
-  const categories = await categoryService.getAllCategories();
-  const categoryRoutes = categories.map((cat) => ({
+  const categoriesResult: any = await categoryService.getAllCategories();
+  const categories =
+    categoriesResult.data ||
+    (Array.isArray(categoriesResult) ? categoriesResult : []);
+  const categoryRoutes = categories.map((cat: any) => ({
     url: `${baseUrl}/menu/${cat.slug}`,
     lastModified: cat.updatedAt || new Date(),
     changeFrequency: 'weekly' as const,
@@ -42,8 +45,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   // 3. Dynamic Products
-  // productService.getAllProducts returns IProduct[] directly (from repo)
-  const products = await productService.getAllProducts({});
+  const productsResult: any = await productService.getAllProducts({});
+  const products =
+    productsResult.data ||
+    (Array.isArray(productsResult) ? productsResult : []);
   const productRoutes = products.map((product: any) => ({
     url: `${baseUrl}/product/${product._id}`,
     lastModified: product.updatedAt || new Date(),
@@ -52,8 +57,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   // 4. Dynamic Blogs
-  const blogs = await blogService.getAllPosts();
-  const blogRoutes = blogs.map((post) => ({
+  const blogsResult: any = await blogService.getAllPosts();
+  const blogs =
+    blogsResult.data || (Array.isArray(blogsResult) ? blogsResult : []);
+  const blogRoutes = blogs.map((post: any) => ({
     url: `${baseUrl}/blog/${post.slug}`,
     lastModified: post.updatedAt || new Date(),
     changeFrequency: 'weekly' as const,
@@ -61,8 +68,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   // 5. Dynamic Branches
-  const branches = await branchService.getAllBranches();
-  const branchRoutes = branches.map((branch) => ({
+  const branchesResult: any = await branchService.getAllBranches();
+  const branches =
+    branchesResult.data ||
+    (Array.isArray(branchesResult) ? branchesResult : []);
+  const branchRoutes = branches.map((branch: any) => ({
     url: `${baseUrl}/branches/${branch._id}`,
     lastModified: branch.updatedAt || new Date(),
     changeFrequency: 'monthly' as const,
@@ -70,8 +80,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   // 6. Dynamic Careers
-  const careers = await careerService.getAllCareers();
-  const careerRoutes = careers.map((career) => ({
+  const careersResult: any = await careerService.getAllCareers();
+  const careers =
+    careersResult.data || (Array.isArray(careersResult) ? careersResult : []);
+  const careerRoutes = careers.map((career: any) => ({
     url: `${baseUrl}/careers/${career._id}`,
     lastModified: career.updatedAt || new Date(),
     changeFrequency: 'weekly' as const,

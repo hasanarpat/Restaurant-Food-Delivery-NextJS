@@ -39,9 +39,10 @@ export async function generateStaticParams() {
   try {
     await dbConnect();
     // Fetching all products might be heavy for huge catalogs, but fine for restaurant menu.
-    const allProducts = await productService.getAllProducts({});
+    const result = await productService.getAllProducts({});
+    const allProducts = result.data || [];
 
-    return allProducts.map((p) => ({
+    return allProducts.map((p: any) => ({
       id: p._id.toString(), // Ensure ID is string
     }));
   } catch (error) {
