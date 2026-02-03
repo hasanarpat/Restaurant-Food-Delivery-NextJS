@@ -1,5 +1,4 @@
 'use client';
-import { pizzas, burgers, pastas, lahmacun, baklava } from '@/data'; // Keep only if used for fallback, otherwise remove
 import React, { useState, useMemo } from 'react';
 import Container from '@/components/ui/Container';
 import ProductCard from '@/components/ProductCard';
@@ -37,8 +36,9 @@ const CategoryClient: React.FC<CategoryClientProps> = ({
   const fetchProducts = async (pageNum: number, sortOption: string) => {
     try {
       setLoading(true);
+      const limit = initialMeta.limit || 10;
       const res = await fetch(
-        `/api/v1/products?catSlug=${slug}&page=${pageNum}&limit=10&sort=${sortOption}`,
+        `/api/v1/products?catSlug=${slug}&page=${pageNum}&limit=${limit}&sort=${sortOption}`,
       );
       const data = await res.json();
       if (res.ok) {

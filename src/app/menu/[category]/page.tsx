@@ -75,7 +75,7 @@ const SingleCategory = async (props: {
   const products = await productService.getAllProducts({
     catSlug: params.category,
     sort: 'popular',
-    limit: 10, // Explicit limit
+    limit: 8, // Set limit to 8 as requested
   });
 
   // Serialize for Client Component
