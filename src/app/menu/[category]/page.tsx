@@ -78,7 +78,8 @@ const SingleCategory = async (props: {
 
   // Serialize for Client Component
   const parsedCategory = category ? JSON.parse(JSON.stringify(category)) : null;
-  const parsedProducts = JSON.parse(JSON.stringify(products));
+  // products is now { data: [...], meta: ... } from service
+  const parsedProducts = JSON.parse(JSON.stringify(products.data || []));
 
   return (
     <CategoryClient

@@ -13,7 +13,7 @@ export class ProductRepository {
     if (query.isFeatured) filter.isFeatured = query.isFeatured === 'true';
     // If catSlug is handled by service resolving to ID, or if we query by populated field (complicated in basic find).
     // Assuming service deals with category ID or passed in filter:
-    if (query.category) filter.category = query.category;
+    if (query.categoryId) filter.categoryId = query.categoryId;
 
     const [data, total] = await Promise.all([
       Product.find(filter)

@@ -10,7 +10,7 @@ export class ProductService {
     if (query.catSlug) {
       const category = await categoryRepository.findBySlug(query.catSlug);
       if (category) {
-        filter.category = category._id;
+        filter.categoryId = category._id;
       }
     }
 

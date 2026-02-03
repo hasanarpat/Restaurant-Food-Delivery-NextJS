@@ -25,10 +25,11 @@ const OrdersPage = async () => {
   }
 
   await dbConnect();
-  const orders = await orderService.getUserOrders(userId);
+  const ordersResponse = await orderService.getUserOrders(userId);
 
   // Serialize for Client Component
-  const parsedOrders = JSON.parse(JSON.stringify(orders));
+  // ordersResponse is { data: [...], meta: ... }
+  const parsedOrders = JSON.parse(JSON.stringify(ordersResponse.data || []));
 
   return <OrdersClient initialOrders={parsedOrders} />;
 };
