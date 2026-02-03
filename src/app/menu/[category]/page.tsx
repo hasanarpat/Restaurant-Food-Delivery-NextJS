@@ -74,17 +74,21 @@ const SingleCategory = async (props: {
   // Note: productService filter uses 'catSlug'
   const products = await productService.getAllProducts({
     catSlug: params.category,
+    sort: 'popular',
+    limit: 10, // Explicit limit
   });
 
   // Serialize for Client Component
   const parsedCategory = category ? JSON.parse(JSON.stringify(category)) : null;
   // products is now { data: [...], meta: ... } from service
-  const parsedProducts = JSON.parse(JSON.stringify(products.data || []));
+  const initialProducts = JSON.parse(JSON.stringify(products.data || []));
+  const initialMeta = JSON.parse(JSON.stringify(products.meta || {}));
 
   return (
     <CategoryClient
       category={parsedCategory}
-      products={parsedProducts}
+      initialProducts={initialProducts}
+      initialMeta={initialMeta}
       slug={params.category}
     />
   );

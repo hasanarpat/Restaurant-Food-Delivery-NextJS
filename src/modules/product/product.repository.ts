@@ -9,16 +9,33 @@ export class ProductRepository {
 
     const filter: any = { isAvailable: true }; // Default filter
 
-    // Explicit filtering logic
     if (query.isFeatured) filter.isFeatured = query.isFeatured === 'true';
-    // If catSlug is handled by service resolving to ID, or if we query by populated field (complicated in basic find).
-    // Assuming service deals with category ID or passed in filter:
     if (query.categoryId) filter.categoryId = query.categoryId;
+
+    let sort: any = { createdAt: -1 };
+    if (query.sort) {
+      switch (query.sort) {
+        case 'popular':
+          sort = { isFeatured: -1, createdAt: -1 };
+          break;
+        case 'price-low':
+          sort = { price: 1 };
+          break;
+        case 'price-high':
+          sort = { price: -1 };
+          break;
+        case 'newest':
+          sort = { createdAt: -1 };
+          break;
+        default:
+          sort = { createdAt: -1 };
+      }
+    }
 
     const [data, total] = await Promise.all([
       Product.find(filter)
         .populate('categoryId')
-        .sort({ createdAt: -1 })
+        .sort(sort)
         .skip(skip)
         .limit(limit),
       Product.countDocuments(filter),
