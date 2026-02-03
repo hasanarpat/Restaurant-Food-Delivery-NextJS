@@ -71,7 +71,10 @@ export default function RootLayout({
       className={`${outfit.variable} ${poppins.variable} ${inter.variable}`}
       suppressHydrationWarning
     >
-      <body className={`${inter.className} bg-cream text-gray-900`}>
+      <body
+        className={`${inter.className} bg-cream text-gray-900`}
+        suppressHydrationWarning
+      >
         <NotificationProvider>
           <AuthProvider>
             <CartProvider>

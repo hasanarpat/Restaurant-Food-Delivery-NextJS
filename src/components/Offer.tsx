@@ -3,91 +3,131 @@ import React from 'react';
 import CountDown from './CountDown';
 import Image from 'next/image';
 import Button from './ui/Button';
-import Container from './ui/Container';
 import { motion } from 'framer-motion';
+import { Flame, Users, Clock } from 'lucide-react';
 
 const Offer = () => {
   return (
-    <section className='relative py-16 md:py-24 bg-gradient-to-br from-primary-50 via-accent-50 to-secondary-50 overflow-hidden'>
-      {/* Floating decorative elements */}
-      <div className='absolute top-10 right-10 w-32 h-32 bg-primary-300 rounded-full blur-3xl opacity-30 animate-float' />
-      <div
-        className='absolute bottom-20 left-20 w-40 h-40 bg-accent-300 rounded-full blur-3xl opacity-20 animate-float'
-        style={{ animationDelay: '1.5s' }}
-      />
+    <section className='relative py-12 md:py-20 overflow-hidden'>
+      {/* Background with gradient */}
+      <div className='absolute inset-0 bg-gradient-to-br from-primary-500 via-primary-600 to-primary-700' />
 
-      <Container>
-        <div className='flex flex-col lg:flex-row items-center gap-12'>
-          {/* Text Content */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className='flex-1 text-center lg:text-left space-y-6 z-10'
-          >
-            <div className='inline-block'>
-              <span className='inline-flex items-center gap-2 px-4 py-2 bg-accent-500 text-white rounded-full text-sm font-bold animate-pulse'>
-                <span className='relative flex h-3 w-3'>
-                  <span className='animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75'></span>
-                  <span className='relative inline-flex rounded-full h-3 w-3 bg-white'></span>
+      {/* Decorative pattern overlay */}
+      <div className='absolute inset-0 opacity-10'>
+        <div className='absolute top-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl' />
+        <div className='absolute bottom-0 left-0 w-96 h-96 bg-accent-300 rounded-full blur-3xl' />
+      </div>
+
+      <div className='container mx-auto px-4 relative z-10'>
+        <div className='max-w-7xl mx-auto'>
+          <div className='grid lg:grid-cols-2 gap-8 lg:gap-12 items-center'>
+            {/* Left: Content */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className='text-white space-y-6 order-2 lg:order-1'
+            >
+              {/* Badge */}
+              <div className='inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full border border-white/30'>
+                <span className='relative flex h-2 w-2'>
+                  <span className='animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-400 opacity-75' />
+                  <span className='relative inline-flex rounded-full h-2 w-2 bg-accent-400' />
                 </span>
-                Limited Time Offer
-              </span>
-            </div>
+                <span className='text-sm font-semibold text-white'>
+                  Limited Time Offer
+                </span>
+                <Flame className='w-4 h-4 text-accent-300' />
+              </div>
 
-            <h2 className='text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-gray-900'>
-              Delicious Burger <span className='text-gradient'>&</span> French
-              Fries
-            </h2>
+              {/* Title */}
+              <h2 className='text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight'>
+                Special Deal of
+                <br />
+                <span className='text-accent-300'>the Week!</span>
+              </h2>
 
-            <p className='text-lg md:text-xl text-gray-700 font-body max-w-xl'>
-              Get ready for a taste of heaven with our limited-time offer!
-              Indulge in our signature burger and French fries, available only
-              for a limited time. Don't miss out on this delicious opportunity!
-            </p>
+              {/* Description */}
+              <p className='text-lg md:text-xl text-white/90 font-body max-w-xl leading-relaxed'>
+                Indulge in our signature selection! Premium ingredients,
+                authentic taste, and incredible value - all in one amazing deal.
+              </p>
 
-            <div className='space-y-4'>
-              <CountDown />
+              {/* Countdown */}
+              <div className='bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20'>
+                <div className='flex items-center gap-2 mb-3'>
+                  <Clock className='w-5 h-5 text-accent-300' />
+                  <span className='font-semibold text-white'>
+                    Offer Ends In:
+                  </span>
+                </div>
+                <CountDown />
+              </div>
 
-              <div className='flex flex-col sm:flex-row gap-4 items-center lg:items-start'>
-                <Button size='lg' variant='primary'>
-                  Order Now 🍔
+              {/* CTA Section */}
+              <div className='flex flex-col sm:flex-row gap-4 items-center'>
+                <Button
+                  size='lg'
+                  variant='primary'
+                  className='!bg-accent-500 text-primary-600 hover:!bg-accent-400 shadow-xl'
+                >
+                  Order Now 🔥
                 </Button>
-                <div className='flex items-center gap-3'>
-                  <div className='flex -space-x-2'>
-                    <div className='w-10 h-10 rounded-full bg-primary-400 border-2 border-white' />
-                    <div className='w-10 h-10 rounded-full bg-accent-400 border-2 border-white' />
-                    <div className='w-10 h-10 rounded-full bg-success-400 border-2 border-white' />
+
+                <div className='flex items-center gap-3 bg-white/10 backdrop-blur-sm px-4 py-3 rounded-xl border border-white/20'>
+                  <div className='flex -space-x-3'>
+                    <div className='w-10 h-10 rounded-full bg-gradient-to-br from-primary-300 to-primary-400 border-2 border-white' />
+                    <div className='w-10 h-10 rounded-full bg-gradient-to-br from-accent-300 to-accent-400 border-2 border-white' />
+                    <div className='w-10 h-10 rounded-full bg-gradient-to-br from-success-300 to-success-400 border-2 border-white' />
                   </div>
-                  <div className='text-sm text-gray-600'>
-                    <p className='font-semibold'>1,234 people</p>
-                    <p>ordered today</p>
+                  <div className='text-sm'>
+                    <div className='flex items-center gap-1.5'>
+                      <Users className='w-4 h-4 text-accent-300' />
+                      <p className='font-bold text-white'>1,234+</p>
+                    </div>
+                    <p className='text-white/80'>ordered today</p>
                   </div>
                 </div>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
 
-          {/* Image */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className='flex-1 relative z-10'
-          >
-            <div className='relative w-full aspect-square max-w-md mx-auto'>
-              <div className='absolute inset-0 bg-gradient-to-br from-primary-300 to-accent-300 rounded-full blur-2xl opacity-30 animate-pulse-slow' />
-              <Image
-                src='/offerProduct.png'
-                alt='Special Offer Product'
-                fill
-                sizes='(max-width: 768px) 100vw, 50vw'
-                className='object-contain drop-shadow-2xl animate-float'
-              />
-            </div>
-          </motion.div>
+            {/* Right: Image - Always visible on mobile */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className='relative order-1 lg:order-2'
+            >
+              {/* Card container for the product */}
+              <div className='relative bg-white/10 backdrop-blur-xl rounded-3xl p-6 md:p-8 border border-white/20 shadow-2xl'>
+                {/* Glow effect */}
+                <div className='absolute -inset-4 bg-gradient-to-r from-accent-400/20 to-primary-300/20 rounded-3xl blur-2xl' />
+
+                {/* Product Image */}
+                <div className='relative aspect-square w-full max-w-md mx-auto'>
+                  <div className='absolute inset-0 bg-gradient-to-br from-white/5 to-transparent rounded-2xl' />
+                  <Image
+                    src='/offerProduct.png'
+                    alt='Special Offer Product'
+                    fill
+                    sizes='(max-width: 768px) 90vw, 50vw'
+                    className='object-contain drop-shadow-2xl'
+                    priority
+                  />
+                </div>
+
+                {/* Price tag */}
+                <div className='absolute -top-4 -right-4 bg-accent-500 text-white rounded-full w-20 h-20 md:w-24 md:h-24 flex items-center justify-center shadow-xl border-4 border-white/20 transform rotate-12'>
+                  <div className='text-center transform -rotate-12'>
+                    <p className='text-xs md:text-sm font-semibold'>Only</p>
+                    <p className='text-xl md:text-2xl font-bold'>$12</p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
         </div>
-      </Container>
+      </div>
     </section>
   );
 };
