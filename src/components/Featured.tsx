@@ -27,7 +27,6 @@ const Featured = () => {
       // API returns: { success: true, data: [...], meta: ... }
       const newProducts = res.data.data || [];
       const meta = res.data.meta;
-      console.log(newProducts);
       setProducts((prev) => {
         // Avoid duplicates if React.StrictMode causes double render/fetch
         const existingIds = new Set(prev.map((p) => p._id));
