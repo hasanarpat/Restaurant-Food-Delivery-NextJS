@@ -5,13 +5,12 @@ import { IProduct } from './product.schema';
 
 export class ProductService {
   async getAllProducts(query: any = {}) {
-    const filter: any = { ...query }; // Pass raw query (page, limit etc)
+    const filter: any = { ...query };
 
-    // Custom logic: If category slug is provided, resolve to ID
     if (query.catSlug) {
       const category = await categoryRepository.findBySlug(query.catSlug);
       if (category) {
-        filter.category = category._id; // Repos expects 'category' field for filter
+        filter.category = category._id;
       }
     }
 
@@ -31,7 +30,6 @@ export class ProductService {
   }
 
   async createProduct(data: any) {
-    // Map 'category' (from FE/Zod) to 'categoryId' (DB Schema)
     if (data.category) {
       data.categoryId = data.category;
       delete data.category;

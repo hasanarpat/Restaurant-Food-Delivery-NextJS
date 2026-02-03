@@ -55,6 +55,18 @@ apiClient.interceptors.response.use(
       // Only log errors that are not 401 Unauthorized
       if (status !== 401) {
         console.error(`[API Error] ${status} - ${errorCode}: ${errorMessage}`);
+
+        // Dispatch global event for UI notification
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(
+            new CustomEvent('api-error', {
+              detail: {
+                message: errorMessage,
+                type: 'error',
+              },
+            }),
+          );
+        }
       }
 
       // We can reject with a structured object for easier UI handling
@@ -67,9 +79,23 @@ apiClient.interceptors.response.use(
     } else if (error.request) {
       // Request was made but no response received
       console.error('[API Error] No response received', error.request);
+
+      const netErrorMsg =
+        'No response from server. Please check your internet connection.';
+
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(
+          new CustomEvent('api-error', {
+            detail: {
+              message: netErrorMsg,
+              type: 'error',
+            },
+          }),
+        );
+      }
+
       return Promise.reject({
-        message:
-          'No response from server. Please check your internet connection.',
+        message: netErrorMsg,
         code: 'NETWORK_ERROR',
         status: 0,
       });

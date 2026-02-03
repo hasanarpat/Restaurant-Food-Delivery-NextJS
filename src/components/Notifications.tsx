@@ -58,6 +58,22 @@ export const NotificationProvider = ({
     [],
   );
 
+  // Global Error Listener from Axios
+  React.useEffect(() => {
+    const handleApiError = (event: Event) => {
+      const customEvent = event as CustomEvent;
+      if (customEvent.detail && customEvent.detail.message) {
+        showNotification(
+          customEvent.detail.type || 'error',
+          customEvent.detail.message,
+        );
+      }
+    };
+
+    window.addEventListener('api-error', handleApiError);
+    return () => window.removeEventListener('api-error', handleApiError);
+  }, [showNotification]);
+
   const success = useCallback(
     (message: string, duration?: number) =>
       showNotification('success', message, duration),
