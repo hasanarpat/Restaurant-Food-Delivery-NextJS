@@ -1,7 +1,7 @@
 import { userRepository } from './user.repository';
 import { CreateUserDTO, UpdateUserDTO } from './user.types';
 import { AppError } from '@/core/errors/AppError';
-// import bcrypt from 'bcryptjs'; // We might need this if we hash passwords here, but usually Auth service does registration.
+import bcrypt from 'bcryptjs';
 
 export const userService = {
   async createUser(data: CreateUserDTO) {
@@ -15,14 +15,11 @@ export const userService = {
       });
     }
 
-    // Note: Password hashing should typically happen here or in Auth Service.
-    // If this createUser is used by Admin to create users, we should hash the password.
-    // For now, assuming the incoming password needs hashing.
-    // const passwordHash = await bcrypt.hash(data.password, 12);
-    // data.password = passwordHash;
-    // However, to avoid adding dependencies or making assumptions about imports without checking package.json (I know bcryptjs is there),
-    // I will acknowledge that this generic createUser is risky without hashing if used directly.
-    // But adhering to the pattern:
+    // Hash password if provided (it should be for creation)
+    if (data.password) {
+      const salt = await bcrypt.genSalt(12);
+      data.password = await bcrypt.hash(data.password, salt);
+    }
 
     const user = await userRepository.create(data);
     return user;
@@ -64,5 +61,9 @@ export const userService = {
       });
     }
     await userRepository.softDelete(id);
+  },
+
+  async getAllUsers(params: { page: number; limit: number }) {
+    return await userRepository.findAll(params);
   },
 };

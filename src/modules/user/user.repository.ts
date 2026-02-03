@@ -65,4 +65,25 @@ export const userRepository = {
   async softDelete(id: string): Promise<void> {
     await User.findByIdAndUpdate(id, { deletedAt: new Date() });
   },
+
+  async findAll({ page, limit }: { page: number; limit: number }) {
+    const skip = (page - 1) * limit;
+    const [users, total] = await Promise.all([
+      User.find({ deletedAt: null })
+        .skip(skip)
+        .limit(limit)
+        .sort({ createdAt: -1 }),
+      User.countDocuments({ deletedAt: null }),
+    ]);
+
+    return {
+      data: users,
+      meta: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
+  },
 };
