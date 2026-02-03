@@ -11,6 +11,12 @@ export class ProductRepository {
 
     if (query.isFeatured) filter.isFeatured = query.isFeatured === 'true';
     if (query.categoryId) filter.categoryId = query.categoryId;
+    if (query.search) {
+      filter.$or = [
+        { title: { $regex: query.search, $options: 'i' } },
+        { desc: { $regex: query.search, $options: 'i' } },
+      ];
+    }
 
     let sort: any = { createdAt: -1 };
     if (query.sort) {
