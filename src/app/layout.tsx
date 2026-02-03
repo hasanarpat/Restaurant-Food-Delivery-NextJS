@@ -69,6 +69,7 @@ export default function RootLayout({
     <html
       lang='en'
       className={`${outfit.variable} ${poppins.variable} ${inter.variable}`}
+      suppressHydrationWarning
     >
       <body className={`${inter.className} bg-cream text-gray-900`}>
         <NotificationProvider>

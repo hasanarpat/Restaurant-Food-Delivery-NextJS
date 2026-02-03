@@ -158,6 +158,7 @@ const Navbar = () => {
               src='/images/logo_orange.png'
               alt='Antepli Pizza'
               fill
+              sizes='100px'
               className='object-cover'
               priority
             />

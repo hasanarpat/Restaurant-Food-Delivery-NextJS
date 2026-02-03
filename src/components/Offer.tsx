@@ -81,6 +81,7 @@ const Offer = () => {
                 src='/offerProduct.png'
                 alt='Special Offer Product'
                 fill
+                sizes='(max-width: 768px) 100vw, 50vw'
                 className='object-contain drop-shadow-2xl animate-float'
               />
             </div>
