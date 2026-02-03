@@ -1,145 +1,128 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from 'lucide-react';
+import { ZoomIn, X } from 'lucide-react';
 
 interface ImageViewerProps {
-  images: { src: string; alt: string; description?: string }[];
-  currentIndex: number;
-  onClose: () => void;
-  onPrevious: () => void;
-  onNext: () => void;
+  images: string[];
+  title: string;
 }
 
-const ImageViewer: React.FC<ImageViewerProps> = ({
-  images,
-  currentIndex,
-  onClose,
-  onPrevious,
-  onNext,
-}) => {
-  const [zoom, setZoom] = React.useState(1);
+const ImageViewer: React.FC<ImageViewerProps> = ({ images, title }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+
+  // If no images or empty array, fallback to placeholder (should be handled by parent but safe to check)
+  if (!images || images.length === 0) {
+    return (
+      <div className='relative aspect-square bg-white rounded-[2.5rem] shadow-soft-lg overflow-hidden p-8 md:p-12 border border-gray-100 flex items-center justify-center'>
+        <span className='text-gray-400'>No Image</span>
+      </div>
+    );
+  }
+
   const currentImage = images[currentIndex];
 
-  const handleZoomIn = () => setZoom((prev) => Math.min(prev + 0.25, 3));
-  const handleZoomOut = () => setZoom((prev) => Math.max(prev - 0.25, 1));
-
   return (
-    <AnimatePresence>
+    <div className='flex flex-col gap-4'>
+      {/* Main Image */}
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className='fixed inset-0 bg-black/95 z-[200] flex items-center justify-center'
-        onClick={onClose}
+        layoutId={`product-image-${currentIndex}`}
+        className='relative aspect-square bg-white rounded-[2.5rem] shadow-soft-lg overflow-hidden p-8 md:p-12 border border-gray-100 group cursor-zoom-in'
+        onClick={() => setIsLightboxOpen(true)}
       >
-        {/* Close Button */}
-        <button
-          onClick={onClose}
-          className='absolute top-4 right-4 z-10 p-3 bg-white/10 hover:bg-white/20 rounded-full transition-colors backdrop-blur-sm'
-        >
-          <X size={24} className='text-white' />
-        </button>
+        <Image
+          src={currentImage}
+          alt={`${title} - View ${currentIndex + 1}`}
+          fill
+          className='object-contain hover:scale-105 transition-transform duration-700'
+          priority
+        />
 
-        {/* Navigation Buttons */}
-        {images.length > 1 && (
-          <>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onPrevious();
-                setZoom(1);
-              }}
-              className='absolute left-4 top-1/2 -translate-y-1/2 z-10 p-3 bg-white/10 hover:bg-white/20 rounded-full transition-colors backdrop-blur-sm'
-            >
-              <ChevronLeft size={32} className='text-white' />
-            </button>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onNext();
-                setZoom(1);
-              }}
-              className='absolute right-4 top-1/2 -translate-y-1/2 z-10 p-3 bg-white/10 hover:bg-white/20 rounded-full transition-colors backdrop-blur-sm'
-            >
-              <ChevronRight size={32} className='text-white' />
-            </button>
-          </>
-        )}
-
-        {/* Zoom Controls */}
-        <div className='absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex gap-2 bg-white/10 backdrop-blur-sm rounded-full p-2'>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              handleZoomOut();
-            }}
-            className='p-2 hover:bg-white/20 rounded-full transition-colors'
-            disabled={zoom <= 1}
-          >
-            <ZoomOut size={20} className='text-white' />
-          </button>
-          <span className='text-white font-semibold px-3 py-2 text-sm'>
-            {Math.round(zoom * 100)}%
-          </span>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              handleZoomIn();
-            }}
-            className='p-2 hover:bg-white/20 rounded-full transition-colors'
-            disabled={zoom >= 3}
-          >
-            <ZoomIn size={20} className='text-white' />
-          </button>
+        <div className='absolute bottom-6 right-6 bg-white/90 backdrop-blur-md p-3 rounded-full shadow-sm text-gray-800 opacity-0 group-hover:opacity-100 transition-opacity'>
+          <ZoomIn className='w-5 h-5' />
         </div>
-
-        {/* Image Counter */}
-        {images.length > 1 && (
-          <div className='absolute top-4 left-1/2 -translate-x-1/2 z-10 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2'>
-            <span className='text-white font-semibold text-sm'>
-              {currentIndex + 1} / {images.length}
-            </span>
-          </div>
-        )}
-
-        {/* Image Container */}
-        <motion.div
-          key={currentIndex}
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.9 }}
-          transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-          className='max-w-7xl max-h-[90vh] w-full h-full flex flex-col items-center justify-center p-8'
-          onClick={(e) => e.stopPropagation()}
-        >
-          <div className='relative overflow-hidden rounded-2xl'>
-            <motion.img
-              src={currentImage.src}
-              alt={currentImage.alt}
-              className='max-w-full max-h-[75vh] object-contain'
-              style={{ scale: zoom }}
-              transition={{ type: 'spring', damping: 20, stiffness: 200 }}
-            />
-          </div>
-
-          {/* Image Description */}
-          {currentImage.description && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className='mt-6 bg-white/10 backdrop-blur-sm rounded-2xl px-6 py-4 max-w-2xl'
-            >
-              <p className='text-white text-center font-ui leading-relaxed'>
-                {currentImage.description}
-              </p>
-            </motion.div>
-          )}
-        </motion.div>
       </motion.div>
-    </AnimatePresence>
+
+      {/* Thumbnails */}
+      {images.length > 1 && (
+        <div className='flex gap-4 overflow-x-auto pb-2 px-2'>
+          {images.map((img, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentIndex(index)}
+              className={`relative w-20 h-20 rounded-2xl overflow-hidden border-2 transition-all flex-shrink-0 ${
+                index === currentIndex
+                  ? 'border-primary-500 shadow-md ring-2 ring-primary-100'
+                  : 'border-transparent opacity-70 hover:opacity-100'
+              }`}
+            >
+              <Image
+                src={img}
+                alt={`${title} thumbnail ${index + 1}`}
+                fill
+                className='object-cover'
+              />
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Lightbox / Modal */}
+      <AnimatePresence>
+        {isLightboxOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className='fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4'
+            onClick={() => setIsLightboxOpen(false)}
+          >
+            <button
+              className='absolute top-6 right-6 text-white bg-white/10 p-2 rounded-full hover:bg-white/20 transition-colors'
+              onClick={() => setIsLightboxOpen(false)}
+            >
+              <X className='w-8 h-8' />
+            </button>
+
+            <motion.div
+              layoutId={`product-image-${currentIndex}`}
+              className='relative w-full max-w-5xl aspect-square md:aspect-video'
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Image
+                src={currentImage}
+                alt={title}
+                fill
+                className='object-contain'
+              />
+            </motion.div>
+
+            {/* Thumbnails in Lightbox */}
+            {images.length > 1 && (
+              <div className='absolute bottom-10 left-0 right-0 flex justify-center gap-2'>
+                {images.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setCurrentIndex(index);
+                    }}
+                    className={`w-3 h-3 rounded-full transition-colors ${
+                      index === currentIndex
+                        ? 'bg-white'
+                        : 'bg-white/30 hover:bg-white/50'
+                    }`}
+                  />
+                ))}
+              </div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 };
 

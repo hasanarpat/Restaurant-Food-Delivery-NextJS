@@ -10,6 +10,7 @@ import Reviews from '@/components/Reviews';
 import NutritionalInfo from '@/components/NutritionalInfo';
 import RelatedProducts from '@/components/RelatedProducts';
 import { Flame, AlertTriangle, Star } from 'lucide-react';
+import ImageViewer from '@/components/ImageViewer';
 
 interface ProductClientProps {
   product: any; // Ideally IProduct
@@ -53,6 +54,15 @@ const ProductClient: React.FC<ProductClientProps> = ({ product }) => {
         <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 mb-12'>
           {/* Left Column: Image & Nutrition */}
           <div className='flex flex-col gap-6'>
+            <ImageViewer
+              images={
+                product.images && product.images.length > 0
+                  ? product.images
+                  : [product.img]
+              }
+              title={product.title}
+            />
+            {/* 
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
@@ -67,12 +77,12 @@ const ProductClient: React.FC<ProductClientProps> = ({ product }) => {
                   priority
                 />
               )}
-              {/* Floating Badge */}
               <div className='absolute top-6 right-6 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full shadow-sm text-sm font-bold text-gray-800 flex items-center gap-1'>
                 <Flame className='w-4 h-4 text-orange-500 fill-orange-500' />{' '}
                 Popular
               </div>
-            </motion.div>
+            </motion.div> 
+            */}
 
             {/* Desktop Nutritional Info (Visible on LG) */}
             <div className='hidden lg:block'>
