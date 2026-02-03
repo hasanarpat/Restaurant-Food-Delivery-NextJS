@@ -61,7 +61,7 @@ Proje ilerledikçe kodun karışmasını önlemek için **Modüler Mimari** yap�
 4.  **API Routes:** Dış dünyayla iletişimi sağlar.
 
 > **Görsel 1: Klasör Yapısı ve Modüler Dağılım**
-> ![Project Structure](https://raw.githubusercontent.com/hasanarpat/Restaurant-Food-Delivery-NextJS/main/public/docs/structure.png)
+> ![Project Structure](/docs/structure.png)
 > _Açıklama: Her modülün kendi içinde Service ve Repository katmanlarına ayrıldığını görebilirsiniz._
 
 ---
@@ -99,7 +99,7 @@ Kullanıcı deneyimini artıran en önemli özelliklerden biri olan **Infinite S
 4.  **State Update:** Gelen yeni ürünler mevcut listeye eklenir.
 
 > **Görsel 2: Infinite Scroll Akış Diyagramı**
-> ![Infinite Scroll Workflow](https://raw.githubusercontent.com/hasanarpat/Restaurant-Food-Delivery-NextJS/main/public/docs/infinite-scroll-flow.png)
+> ![Infinite Scroll Workflow](/docs/infinite-scroll-flow.png)
 > _Açıklama: Kullanıcı kaydırdıkça tetiklenen veri çekme ve UI güncelleme döngüsü._
 
 ---
@@ -115,7 +115,7 @@ Kullanıcı deneyimini artıran en önemli özelliklerden biri olan **Infinite S
 - **Keyboard Support:** Masaüstünde Ok tuşları ile resimler arası geçiş ve `ESC` ile galeriyi kapatma desteği sundum.
 
 > **Görsel 3: ImageViewer Lightbox ve Kontroller**
-> ![ImageViewer UI](https://raw.githubusercontent.com/hasanarpat/Restaurant-Food-Delivery-NextJS/main/public/docs/image-viewer.png)
+> ![ImageViewer UI](/docs/image-viewer.png)
 > _Açıklama: Zoom kontrolleri, navigasyon okları ve mobil uyumlu swipe alanı._
 
 ---
