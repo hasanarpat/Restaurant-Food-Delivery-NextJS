@@ -2,10 +2,37 @@ import { Product, IProduct } from './product.schema';
 import mongoose from 'mongoose';
 
 export class ProductRepository {
-  async findAll(filter: any = {}): Promise<IProduct[]> {
-    return Product.find({ ...filter, isAvailable: true })
-      .populate('categoryId')
-      .sort({ createdAt: -1 });
+  async findAll(query: any = {}): Promise<any> {
+    const page = Number(query.page) || 1;
+    const limit = Number(query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    const filter: any = { isAvailable: true }; // Default filter
+
+    // Explicit filtering logic
+    if (query.isFeatured) filter.isFeatured = query.isFeatured === 'true';
+    // If catSlug is handled by service resolving to ID, or if we query by populated field (complicated in basic find).
+    // Assuming service deals with category ID or passed in filter:
+    if (query.category) filter.category = query.category;
+
+    const [data, total] = await Promise.all([
+      Product.find(filter)
+        .populate('categoryId')
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit),
+      Product.countDocuments(filter),
+    ]);
+
+    return {
+      data,
+      meta: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
   }
 
   async findById(id: string): Promise<IProduct | null> {

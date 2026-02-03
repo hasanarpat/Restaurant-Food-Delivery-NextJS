@@ -4,14 +4,8 @@ import { ICareer } from './career.schema';
 
 export class CareerService {
   async getAllCareers(query: any = {}) {
-    const filter: any = {};
-    if (query.isActive !== undefined) {
-      filter.isActive = query.isActive === 'true';
-    }
-    // Default to showing only active careers for public view if not specified?
-    // For now, let's allow filtering. If no filter, show all non-deleted.
-
-    return careerRepository.findAll(filter);
+    // The repository now handles filtering (type, department, isActive) and pagination
+    return careerRepository.findAll(query);
   }
 
   async getCareerById(id: string) {

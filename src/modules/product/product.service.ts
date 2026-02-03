@@ -5,14 +5,13 @@ import { IProduct } from './product.schema';
 
 export class ProductService {
   async getAllProducts(query: any = {}) {
-    const filter: any = {};
-    if (query.isFeatured === 'true') filter.isFeatured = true;
+    const filter: any = { ...query }; // Pass raw query (page, limit etc)
 
-    // If category slug is provided
+    // Custom logic: If category slug is provided, resolve to ID
     if (query.catSlug) {
       const category = await categoryRepository.findBySlug(query.catSlug);
       if (category) {
-        filter.categoryId = category._id; // Ensure logic handles ObjectID
+        filter.category = category._id; // Repos expects 'category' field for filter
       }
     }
 

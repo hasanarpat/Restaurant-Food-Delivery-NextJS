@@ -26,14 +26,10 @@ const createProductSchema = z.object({
 export async function GET(req: NextRequest) {
   await dbConnect();
   try {
-    const { searchParams } = new URL(req.url); // Use URL directly for searchParams
-    const catSlug = searchParams.get('cat');
-    const isFeatured = searchParams.get('featured');
+    const { searchParams } = new URL(req.url);
+    const query = Object.fromEntries(searchParams.entries());
 
-    const products = await productService.getAllProducts({
-      catSlug,
-      isFeatured,
-    });
+    const products = await productService.getAllProducts(query);
     return sendSuccess(products);
   } catch (error: any) {
     return sendError(error.message, error.statusCode || 500);

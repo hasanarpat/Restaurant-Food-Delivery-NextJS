@@ -36,22 +36,18 @@ export async function GET(req: NextRequest) {
   await dbConnect();
   try {
     const user = await getAuthenticatedUser();
-
-    // Admin can see all orders, User sees only distinct?
-    // Actually typically GET /orders is for "My Orders" if user, or all if Admin + filtered?
-    // Let's implement: User gets their orders. Admin should use a separate route or query param?
-    // Project usually has /api/v1/orders for User and /api/v1/admin/orders for Admin.
-    // Or we filter by role inside here.
+    const { searchParams } = new URL(req.url);
+    const query = Object.fromEntries(searchParams.entries());
 
     if (user.role === 'ADMIN') {
-      // Check for ?all=true or query params
-      // For now, let's just return user orders if they are asking.
-      // Start with "My Orders" behavior.
-      // Actually, users need to see THEIR orders.
-      const orders = await orderService.getUserOrders(user.userId);
+      // Admin gets all orders by default, or filtered
+      // If query has 'userId', can filter by user. If not, all.
+      // Assuming admin wants to see all orders for dashboard.
+      const orders = await orderService.getAllOrders(query);
       return sendSuccess(orders);
     } else {
-      const orders = await orderService.getUserOrders(user.userId);
+      // Normal user gets their own orders
+      const orders = await orderService.getUserOrders(user.userId, query);
       return sendSuccess(orders);
     }
   } catch (error: any) {

@@ -106,12 +106,12 @@ export class OrderService {
     return orderRepository.create(orderData);
   }
 
-  async getUserOrders(userId: string) {
-    return orderRepository.findByUserId(userId);
+  async getUserOrders(userId: string, query: any = {}) {
+    return orderRepository.findByUserId(userId, query);
   }
 
-  async getAllOrders() {
-    return orderRepository.findAll();
+  async getAllOrders(query: any = {}) {
+    return orderRepository.findAll(query);
   }
 
   async getOrderById(id: string) {
